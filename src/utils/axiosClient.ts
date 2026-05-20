@@ -1,9 +1,4 @@
-import axios from 'axios';
-
-const instance = axios.create({
-  baseURL: 'https://mate.academy/students-api',
-  // application/json is a default Content-Type
-});
+import { instance } from '../api/axiosInstance';
 
 export const client = {
   async get<T>(url: string) {
