@@ -1,7 +1,7 @@
-import React, { useEffect, useMemo, useState } from 'react';
-import { instance } from '../../api/axiosInstance';
-import { AuthContext } from './AuthContext';
-import type { AuthContextType, UserData, User } from '../../types/AuthContext';
+import React, { useEffect, useState } from "react";
+import { instance } from "../../api/axiosInstance";
+import { AuthContext } from "./AuthContext";
+import type { AuthContextType, UserData, User } from "../../types/AuthContext";
 
 export type Props = {
   children: React.ReactNode;
@@ -15,20 +15,20 @@ export const AuthContextProvider: React.FC<Props> = ({ children }) => {
   const isAuthenticated = Boolean(user && accessToken);
 
   const register = async (data: UserData) => {
-    const response = await instance.post('/register', data);
+    const response = await instance.post("/register", data);
 
     setAccessToken(response.data.access_token);
   };
 
   const login = async (data: UserData) => {
-    const response = await instance.post('/login', data);
+    const response = await instance.post("/login", data);
 
     setAccessToken(response.data.access_token);
   };
 
   const logout = async () => {
     try {
-      await instance.post('/logout');
+      await instance.post("/logout");
     } finally {
       setAccessToken(null);
     }
@@ -66,18 +66,15 @@ export const AuthContextProvider: React.FC<Props> = ({ children }) => {
     };
   }, [accessToken]);
 
-  const value = useMemo<AuthContextType>(
-    () => ({
-      user,
-      accessToken,
-      isAuthenticated,
-      isLoading,
-      register,
-      login,
-      logout,
-    }),
-    [user, accessToken, isAuthenticated, isLoading],
-  );
+  const value: AuthContextType = {
+    user,
+    accessToken,
+    isAuthenticated,
+    isLoading,
+    register,
+    login,
+    logout,
+  };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };

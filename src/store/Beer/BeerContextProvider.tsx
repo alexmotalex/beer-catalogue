@@ -1,7 +1,7 @@
-import React, { useEffect, useMemo, useState } from 'react';
-import type { Beer, BeerResponse } from '../../types/Beer';
-import { BeerContext } from './BeerContext';
-import { fetchBeer } from '../../services/fetchBeerFromServer';
+import React, { useEffect, useState } from "react";
+import type { Beer, BeerResponse } from "../../types/Beer";
+import { BeerContext } from "./BeerContext";
+import { fetchBeer } from "../../services/fetchBeerFromServer";
 
 type BeerContextValue = {
   beers: Beer[];
@@ -14,7 +14,7 @@ type Props = {
   children: React.ReactNode;
 };
 
-export const ProductsContextProvider: React.FC<Props> = ({ children }) => {
+export const BeerContextProvider: React.FC<Props> = ({ children }) => {
   const [beers, setBeers] = useState<Beer[]>([]);
   const [nextOffset, setNextOffset] = useState<number | null>(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -30,15 +30,12 @@ export const ProductsContextProvider: React.FC<Props> = ({ children }) => {
       .finally(() => setIsLoading(false));
   }, []);
 
-  const value: BeerContextValue = useMemo(
-    () => ({
-      beers,
-      nextOffset,
-      isLoading,
-      isError,
-    }),
-    [beers, nextOffset, isLoading, isError],
-  );
+  const value: BeerContextValue = {
+    beers,
+    nextOffset,
+    isLoading,
+    isError,
+  };
 
   return <BeerContext.Provider value={value}>{children}</BeerContext.Provider>;
 };
