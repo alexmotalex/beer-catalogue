@@ -1,7 +1,17 @@
 import React, { useEffect, useState } from "react";
 import { instance } from "../../api/axiosInstance";
 import { AuthContext } from "./AuthContext";
-import type { AuthContextType, UserData, User } from "../../types/AuthContext";
+import type { User, UserData } from "../../types/User";
+
+export type AuthContextType = {
+  user: User | null;
+  accessToken: string | null;
+  isAuthenticated: boolean;
+  isLoading: boolean;
+  login: (data: UserData) => Promise<void>;
+  register: (data: UserData) => Promise<void>;
+  logout: () => void;
+};
 
 export type Props = {
   children: React.ReactNode;

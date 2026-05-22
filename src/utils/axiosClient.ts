@@ -1,29 +1,25 @@
-import { instance } from '../api/axiosInstance';
+import { instance } from "../api/axiosInstance";
 
 export const client = {
-  async get<T>(url: string) {
+  async get<T>(url: string): Promise<T> {
     const response = await instance.get<T>(url);
 
-    // no need to run `response.json()` data is already prepared
     return response.data;
   },
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  async post<T>(url: string, data: any) {
+  async post<T, D>(url: string, data: D): Promise<T> {
     const response = await instance.post<T>(url, data);
 
     return response.data;
   },
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  async patch<T>(url: string, data: any) {
+  async patch<T, D>(url: string, data: D): Promise<T> {
     const response = await instance.patch<T>(url, data);
 
     return response.data;
   },
 
-  async delete(url: string) {
-    // if we don't need the response data
-    return instance.delete(url);
+  async delete(url: string): Promise<void> {
+    await instance.delete(url);
   },
 };

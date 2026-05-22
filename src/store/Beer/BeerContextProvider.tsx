@@ -3,11 +3,12 @@ import type { Beer, BeerResponse } from "../../types/Beer";
 import { BeerContext } from "./BeerContext";
 import { fetchBeer } from "../../services/fetchBeerFromServer";
 
-type BeerContextValue = {
+export type BeerContextValue = {
   beers: Beer[];
   nextOffset: number | null;
   isLoading: boolean;
   isError: boolean;
+  loadBeers: (offset: number | null) => Promise<void>;
 };
 
 type Props = {
@@ -19,6 +20,23 @@ export const BeerContextProvider: React.FC<Props> = ({ children }) => {
   const [nextOffset, setNextOffset] = useState<number | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isError, setIsError] = useState(false);
+
+  const loadBeers = async (offset: number | null) => {
+    try {
+      setIsLoading(true);
+      setIsError(false);
+
+      const data = await fetchBeer(offset ?? undefined);
+
+      setBeers((currentBeers) => [...currentBeers, ...data.beers]);
+
+      setNextOffset(data.next_offset);
+    } catch {
+      setIsError(true);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   useEffect(() => {
     fetchBeer()
@@ -35,6 +53,7 @@ export const BeerContextProvider: React.FC<Props> = ({ children }) => {
     nextOffset,
     isLoading,
     isError,
+    loadBeers,
   };
 
   return <BeerContext.Provider value={value}>{children}</BeerContext.Provider>;
