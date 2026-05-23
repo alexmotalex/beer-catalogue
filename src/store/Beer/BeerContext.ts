@@ -1,4 +1,4 @@
 import { createContext } from "react";
-import type { BeerContextValue } from "./BeerContextProvider";
+import type { BeerContextType } from "./BeerContextProvider";
 
-export const BeerContext = createContext<BeerContextValue | null>(null);
+export const BeerContext = createContext<BeerContextType | null>(null);

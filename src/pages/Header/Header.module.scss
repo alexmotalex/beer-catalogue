@@ -1,6 +1,106 @@
 .header {
+  width: 100%;
   display: flex;
-  flex-direction: column;
   align-items: center;
-  border-bottom: 1px solid;
+  justify-content: space-between;
+  padding: 1rem 5rem;
+  border-bottom: 1px solid #e0e0e0;
+  background-color: #fff;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  a {
+    margin: 0;
+    text-decoration: none;
+    color: inherit;
+
+    &:hover {
+      opacity: 0.8;
+    }
+  }
+
+  img {
+    width: 40px;
+  }
+}
+
+.logoText {
+  color: #d4a574;
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+}
+
+.nav {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+}
+
+.navList {
+  display: flex;
+  list-style: none;
+  gap: 2.5rem;
+  margin: 0;
+  padding: 0;
+
+  li {
+    a {
+      text-decoration: none;
+      color: #333;
+      font-size: 1rem;
+      font-weight: 500;
+      transition: color 0.3s ease;
+
+      &:hover {
+        color: #d4a574;
+      }
+    }
+  }
+}
+
+.icons {
+  display: flex;
+  gap: 1rem;
+  flex-shrink: 0;
+}
+
+.icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+}
+
+.iconBtn {
+  margin: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.5rem;
+  width: 2rem;
+  height: 2rem;
+  color: #333;
+  transition: color 0.3s ease;
+
+  svg {
+    width: 100%;
+    height: 100%;
+  }
+
+  &:hover {
+    color: #d4a574;
+  }
+
+  &:active {
+    transform: scale(0.95);
+  }
 }

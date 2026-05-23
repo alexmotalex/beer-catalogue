@@ -3,7 +3,7 @@ import type { Beer, BeerResponse } from "../../types/Beer";
 import { BeerContext } from "./BeerContext";
 import { fetchBeer } from "../../services/fetchBeerFromServer";
 
-export type BeerContextValue = {
+export type BeerContextType = {
   beers: Beer[];
   nextOffset: number | null;
   isLoading: boolean;
@@ -48,7 +48,7 @@ export const BeerContextProvider: React.FC<Props> = ({ children }) => {
       .finally(() => setIsLoading(false));
   }, []);
 
-  const value: BeerContextValue = {
+  const value = {
     beers,
     nextOffset,
     isLoading,

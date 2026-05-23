@@ -5,8 +5,6 @@ import { useBeer } from "../../hooks/useBeer";
 export const HomePage = () => {
   const { nextOffset, loadBeers } = useBeer();
 
-  console.log(nextOffset);
-
   return (
     <section className={styles.homePage}>
       <h1>Home Page</h1>

@@ -76,7 +76,7 @@ export const AuthContextProvider: React.FC<Props> = ({ children }) => {
     };
   }, [accessToken]);
 
-  const value: AuthContextType = {
+  const value = {
     user,
     accessToken,
     isAuthenticated,
