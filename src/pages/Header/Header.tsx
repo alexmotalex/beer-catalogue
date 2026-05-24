@@ -9,7 +9,7 @@ export const Header = () => {
     <header className={styles.header}>
       <div className={styles.logo}>
         <Link to="/">
-          <img src="./img/beer_logo.png" alt="Beer" />
+          <img src="./img/beer-logo.png" alt="Beer" />
           <span className="sr-only">Craft Beer</span>
         </Link>
       </div>
