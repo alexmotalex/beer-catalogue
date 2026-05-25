@@ -1,6 +1,4 @@
 import { Link } from "react-router";
-import clsx from "clsx";
-
 import styles from "./Footer.module.scss";
 
 export const Footer = () => {
@@ -67,7 +65,7 @@ export const Footer = () => {
         </nav>
       </section>
 
-      <section className={clsx(styles.column, styles.socialColumn)}>
+      <section className={styles.column}>
         <h2 className={styles.title}>Social</h2>
 
         <nav>

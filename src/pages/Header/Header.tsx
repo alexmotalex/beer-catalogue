@@ -14,7 +14,7 @@ export const Header = () => {
         </Link>
       </div>
 
-      <nav className={styles.nav}>
+      <nav>
         <ul className={styles.navList}>
           <li>
             <Link to="/">Home</Link>
@@ -29,7 +29,7 @@ export const Header = () => {
       </nav>
 
       <div className={styles.icons}>
-        <Link to="/cart" className={styles.iconBtn}>
+        <Link to="/basket" className={styles.iconBtn}>
           <PiShoppingCartSimple />
         </Link>
 

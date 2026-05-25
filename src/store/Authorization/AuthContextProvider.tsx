@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { instance } from "../../api/axiosInstance";
 import { AuthContext } from "./AuthContext";
 import type { User, UserData } from "../../types/User";
@@ -76,15 +76,18 @@ export const AuthContextProvider: React.FC<Props> = ({ children }) => {
     };
   }, [accessToken]);
 
-  const value = {
-    user,
-    accessToken,
-    isAuthenticated,
-    isLoading,
-    register,
-    login,
-    logout,
-  };
+  const value = useMemo(
+    () => ({
+      user,
+      accessToken,
+      isAuthenticated,
+      isLoading,
+      register,
+      login,
+      logout,
+    }),
+    [user, accessToken, isAuthenticated, isLoading],
+  );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };

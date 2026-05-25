@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import type { Beer, BeerResponse } from "../../types/Beer";
 import { BeerContext } from "./BeerContext";
 import { fetchBeer } from "../../services/fetchBeerFromServer";
@@ -48,13 +48,16 @@ export const BeerContextProvider: React.FC<Props> = ({ children }) => {
       .finally(() => setIsLoading(false));
   }, []);
 
-  const value = {
-    beers,
-    nextOffset,
-    isLoading,
-    isError,
-    loadBeers,
-  };
+  const value = useMemo(
+    () => ({
+      beers,
+      nextOffset,
+      isLoading,
+      isError,
+      loadBeers,
+    }),
+    [beers, isError, isLoading, nextOffset],
+  );
 
   return <BeerContext.Provider value={value}>{children}</BeerContext.Provider>;
 };
