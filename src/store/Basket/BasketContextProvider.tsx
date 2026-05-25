@@ -1,8 +1,8 @@
-import type React from "react";
-import type { Beer } from "../../types/Beer";
-import { useMemo, useState } from "react";
-import type { BasketItem } from "../../types/BasketItem";
-import { BasketContext } from "./BasketContext";
+import type React from 'react';
+import type { Beer } from '../../types/Beer';
+import { useMemo, useState } from 'react';
+import type { BasketItem } from '../../types/BasketItem';
+import { BasketContext } from './BasketContext';
 
 export type BasketContextType = {
   basketList: BasketItem[];
@@ -21,8 +21,8 @@ export const BasketContextProvider: React.FC<Props> = ({ children }) => {
   const [basketList, setBasketList] = useState<BasketItem[]>([]);
 
   const addToBasket = (beer: Beer) => {
-    setBasketList((prev) => {
-      const isAlreadyInBasket = prev.some((p) => p.id === beer.id);
+    setBasketList(prev => {
+      const isAlreadyInBasket = prev.some(p => p.id === beer.id);
 
       if (isAlreadyInBasket) {
         return prev;
@@ -33,7 +33,7 @@ export const BasketContextProvider: React.FC<Props> = ({ children }) => {
   };
 
   const deleteFromBasket = (id: number) => {
-    setBasketList((prev) => prev.filter((p) => p.id !== id));
+    setBasketList(prev => prev.filter(p => p.id !== id));
   };
 
   const clearBasket = () => {
