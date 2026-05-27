@@ -1,20 +1,21 @@
-import { Link } from "react-router";
-import styles from "./HomePage.module.scss";
-import { useBeer } from "../../hooks/useBeer";
+import styles from './HomePage.module.scss';
 
 export const HomePage = () => {
-  const { nextOffset, loadBeers } = useBeer();
-
   return (
-    <section className={styles.homePage}>
-      <h1>Home Page</h1>
+    <div className={styles.homePage}>
+      <section className={styles.aboutUs}>
+        <div className={styles.overview}>
+          <h2 className={styles.sloganPart1}>Small batches.</h2>
+          <h2 className={styles.sloganPart2}>Big personality.</h2>
 
-      <Link to="/login">Log In</Link>
-      <Link to="/register">Sign In</Link>
+          <p className={styles.text}>
+            Small-batch brews with bold character, crafted for those who value
+            real taste over mass production.
+          </p>
+        </div>
 
-      {nextOffset && (
-        <button onClick={() => loadBeers(nextOffset)}>Load more</button>
-      )}
-    </section>
+        <button>Browse beers</button>
+      </section>
+    </div>
   );
 };

@@ -1,11 +1,39 @@
+@import '../../styles/index';
+
 .homePage {
-  height: 100%;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  flex: 1;
 }
 
-a {
-  margin: 10px;
+.aboutUs {
+  display: flex;
+  flex-direction: column;
+  height: 790px;
+  background-image: url('./img/home-bg-pic.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+
+.overview {
+  display: flex;
+  flex-direction: column;
+  width: 50%;
+  margin: 116px 0 0 108px;
+}
+
+.sloganPart1 {
+  margin: 0;
+  color: $active-link-color;
+  font-size: 56px;
+  font-weight: 700;
+  letter-spacing: -0.05em;
+}
+
+.sloganPart2 {
+  margin: 0;
+  color: $active-link-color;
+  font-size: 72px;
+  font-weight: 700;
+  letter-spacing: -0.05em;
+  text-transform: uppercase;
 }
