@@ -1,0 +1,81 @@
+@import '../../styles/index.scss';
+
+.header {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 108px;
+  background-color: $bg-white-color;
+}
+
+.logoLink {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  @include hover(opacity, 0.8);
+}
+
+.logoImage {
+  width: 121px;
+  height: 60px;
+}
+
+.navigationList {
+  margin: 0;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  gap: 51px;
+}
+
+.navigationItem {
+  display: flex;
+  align-items: center;
+}
+
+.navigationLink {
+  margin: 0;
+  position: relative;
+  color: $brown-color;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 32px;
+  text-decoration: none;
+
+  &IsActive {
+    @include active-link;
+  }
+}
+
+.actions {
+  display: flex;
+  gap: 16px;
+}
+
+.actionLink {
+  width: 40px;
+  height: 40px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  @include hover(opacity, 0.8);
+}
+
+.icon {
+  display: block;
+  width: 24px;
+  height: 24px;
+  background-size: cover;
+}
+
+.cartIcon {
+  background-image: url('./cart-logo.svg');
+}
+
+.accountIcon {
+  background-image: url('./acc-logo.svg');
+}
