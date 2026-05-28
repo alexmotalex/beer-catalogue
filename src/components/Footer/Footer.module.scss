@@ -19,17 +19,18 @@
 .column {
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
   gap: 24px;
 }
 
 .brandColumn {
   gap: 36px;
+  max-width: 30%;
+  flex: 1;
 }
 
 .title {
   margin: 0;
-  color: $footer-title-color;
+  color: $brown-10-color;
   font-size: 24px;
   font-weight: 500;
   line-height: 135%;
@@ -106,7 +107,7 @@
   justify-content: center;
 
   border-radius: 2px;
-  background-color: $footer-title-color;
+  background-color: $brown-10-color;
 
   @include hover(opacity, 0.8);
 }

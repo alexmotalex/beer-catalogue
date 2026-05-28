@@ -7,7 +7,7 @@
 }
 
 @mixin active-link {
-  color: $active-link-color;
+  color: $brown-100-color;
 
   &::after {
     content: '';
@@ -16,6 +16,23 @@
     height: 2px;
     bottom: 0;
     left: 0;
-    background-color: $active-link-line-color;
+    background-color: $primary-90-color;
   }
+}
+
+@mixin button-primary {
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  background-color: $primary-90-color;
+  text-align: center;
+  border: none;
+  border-radius: 4px;
+  color: $brown-10-color;
+  font-family: inherit;
+  font-weight: 500;
+  font-size: 16px;
+  cursor: pointer;
+
+  @include hover(opacity, 0.8);
 }

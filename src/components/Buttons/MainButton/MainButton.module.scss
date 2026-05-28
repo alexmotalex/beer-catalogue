@@ -1,0 +1,5 @@
+@import '../../../styles/index';
+
+.mainButton {
+  @include button-primary;
+}
