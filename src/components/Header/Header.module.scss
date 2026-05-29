@@ -67,11 +67,11 @@
 
   &IsActive {
     .cartIcon {
-      background-image: url('logo/cart-logo-active.svg');
+      background-image: url('/logo/cart-logo-active.svg');
     }
 
     .accountIcon {
-      background-image: url('logo/acc-logo-active.svg');
+      background-image: url('/logo/acc-logo-active.svg');
     }
 
     @include active-link;
@@ -83,9 +83,9 @@
 }
 
 .cartIcon {
-  background-image: url('logo/cart-logo.svg');
+  background-image: url('/logo/cart-logo.svg');
 }
 
 .accountIcon {
-  background-image: url('logo/acc-logo.svg');
+  background-image: url('/logo/acc-logo.svg');
 }
