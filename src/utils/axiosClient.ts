@@ -1,4 +1,4 @@
-import { instance } from "../api/axiosInstance";
+import { instance } from '../api/axiosInstance';
 
 export const client = {
   async get<T>(url: string): Promise<T> {

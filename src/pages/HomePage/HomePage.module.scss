@@ -174,3 +174,37 @@
   width: 2px;
   background-color: $brown-10-color;
 }
+
+.picks {
+  padding: 80px 108px;
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+
+  &Title {
+    margin: 0;
+    font-size: 32px;
+    font-weight: 600;
+    line-height: 120%;
+    letter-spacing: -0.03em;
+    text-transform: uppercase;
+  }
+
+  &CartsContainer {
+    display: flex;
+    gap: 24px;
+    align-items: center;
+    justify-content: center;
+  }
+
+  &Carts {
+    width: 100%;
+    height: 553px;
+  }
+
+  &Button {
+    width: 392px;
+    height: 48px;
+    align-self: center;
+  }
+}

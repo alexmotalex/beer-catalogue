@@ -1,0 +1,5 @@
+@import '../../../styles/index';
+
+.secondaryButton {
+  @include button-secondary;
+}

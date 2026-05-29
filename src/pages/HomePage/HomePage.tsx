@@ -1,10 +1,15 @@
 import React from 'react';
-import { MainButton } from '../../components/Buttons/MainButton';
+import { PrimaryButton } from '../../components/Buttons/PrimaryButton';
 import { beerDescriptions } from '../../constants/beerDescriptions';
 import { storyParagraphs } from '../../constants/storyParagraphs';
 import styles from './HomePage.module.scss';
+import { SecondaryButton } from '../../components/Buttons/SecondaryButton';
+import { useBeer } from '../../hooks/useBeer';
+import { ProductCard } from '../../components/ProductCard';
 
 export const HomePage = () => {
+  const { beers } = useBeer();
+
   return (
     <div className={styles.homePage}>
       <section className={styles.brew}>
@@ -22,7 +27,7 @@ export const HomePage = () => {
           </div>
 
           <div className={styles.brewButtonWrapper}>
-            <MainButton title="Browse beers" handleClick={() => {}} />
+            <PrimaryButton title="Browse beers" handleClick={() => {}} />
           </div>
         </div>
       </section>
@@ -59,6 +64,22 @@ export const HomePage = () => {
             )}
           </React.Fragment>
         ))}
+      </section>
+
+      <section className={styles.picks}>
+        <h2 className={styles.picksTitle}>Our Picks</h2>
+
+        <div className={styles.picksCartsContainer}>
+          {beers.slice(0, 3).map(b => (
+            <div key={b.id} className={styles.picksCarts}>
+              <ProductCard product={b} />
+            </div>
+          ))}
+        </div>
+
+        <div className={styles.picksButton}>
+          <SecondaryButton title="View all" handleClick={() => {}} />
+        </div>
       </section>
     </div>
   );

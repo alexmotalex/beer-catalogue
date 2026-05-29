@@ -1,7 +1,7 @@
-import React, { useEffect, useMemo, useState } from "react";
-import { instance } from "../../api/axiosInstance";
-import { AuthContext } from "./AuthContext";
-import type { User, UserData } from "../../types/User";
+import React, { useEffect, useMemo, useState } from 'react';
+import { instance } from '../../api/axiosInstance';
+import { AuthContext } from './AuthContext';
+import type { User, UserData } from '../../types/User';
 
 export type AuthContextType = {
   user: User | null;
@@ -25,20 +25,20 @@ export const AuthContextProvider: React.FC<Props> = ({ children }) => {
   const isAuthenticated = Boolean(user && accessToken);
 
   const register = async (data: UserData) => {
-    const response = await instance.post("/register", data);
+    const response = await instance.post('/register', data);
 
     setAccessToken(response.data.access_token);
   };
 
   const login = async (data: UserData) => {
-    const response = await instance.post("/login", data);
+    const response = await instance.post('/login', data);
 
     setAccessToken(response.data.access_token);
   };
 
   const logout = async () => {
     try {
-      await instance.post("/logout");
+      await instance.post('/logout');
     } finally {
       setAccessToken(null);
     }
@@ -63,7 +63,7 @@ export const AuthContextProvider: React.FC<Props> = ({ children }) => {
   // }, []);
 
   useEffect(() => {
-    const interceptorId = instance.interceptors.request.use((config) => {
+    const interceptorId = instance.interceptors.request.use(config => {
       if (accessToken) {
         config.headers.Authorization = `Bearer ${accessToken}`;
       }

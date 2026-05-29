@@ -1,7 +1,7 @@
-import React, { useEffect, useMemo, useState } from "react";
-import type { Beer, BeerResponse } from "../../types/Beer";
-import { BeerContext } from "./BeerContext";
-import { fetchBeer } from "../../services/fetchBeerFromServer";
+import React, { useEffect, useMemo, useState } from 'react';
+import type { Beer, BeerResponse } from '../../types/Beer';
+import { BeerContext } from './BeerContext';
+import { fetchBeer } from '../../services/fetchBeerFromServer';
 
 export type BeerContextType = {
   beers: Beer[];
@@ -28,7 +28,7 @@ export const BeerContextProvider: React.FC<Props> = ({ children }) => {
 
       const data = await fetchBeer(offset ?? undefined);
 
-      setBeers((currentBeers) => [...currentBeers, ...data.beers]);
+      setBeers(currentBeers => [...currentBeers, ...data.beers]);
 
       setNextOffset(data.next_offset);
     } catch {

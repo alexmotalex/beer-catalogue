@@ -37,6 +37,24 @@
   @include hover(background-color, $primary-100-color);
 }
 
+@mixin button-secondary {
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  background-color: transparent;
+  text-align: center;
+  border: 2px solid $primary-90-color;
+  border-radius: 4px;
+  color: $primary-90-color;
+  font-family: inherit;
+  font-weight: 500;
+  font-size: 16px;
+  cursor: pointer;
+
+  @include hover(background-color, $primary-100-color);
+  @include hover(color, $brown-10-color);
+}
+
 @mixin icon-style {
   display: block;
   width: 24px;

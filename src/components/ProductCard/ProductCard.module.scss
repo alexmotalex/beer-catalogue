@@ -1,0 +1,70 @@
+@import '../../styles/index';
+
+.productCard {
+  width: 100%;
+  height: 100%;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 16px;
+  border-radius: 4px;
+  background-color: $brown-10-color;
+}
+
+.imgContent {
+  align-self: center;
+  max-width: 345px;
+  aspect-ratio: 1 / 1;
+}
+
+.productImg {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+}
+
+.productInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.mainInfo {
+  display: flex;
+  justify-content: space-between;
+}
+
+.name,
+.price {
+  margin: 0;
+  color: $brown-100-color;
+  font-size: 24px;
+  font-weight: 600;
+  line-height: 135%;
+}
+
+.characteristics {
+  display: flex;
+  gap: 8px;
+
+  &Item {
+    height: 40px;
+    width: 100%;
+    padding: 8px 20px;
+    display: flex;
+    justify-content: center;
+    border-radius: 4px;
+    color: $brown-60-color;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 150%;
+    background-color: $white-color;
+  }
+}
+
+.productCardButton {
+  height: 48px;
+  width: 100%;
+}
