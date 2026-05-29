@@ -112,20 +112,17 @@
 }
 
 .icon {
-  display: block;
-  width: 24px;
-  height: 24px;
-  background-size: cover;
+  @include icon-style;
 }
 
 .facebookIcon {
-  background-image: url('/facebook-logo.svg');
+  background-image: url('logo/facebook-logo.svg');
 }
 
 .instagramIcon {
-  background-image: url('/instagram-logo.svg');
+  background-image: url('logo/instagram-logo.svg');
 }
 
 .xIcon {
-  background-image: url('/x-logo.svg');
+  background-image: url('logo/x-logo.svg');
 }

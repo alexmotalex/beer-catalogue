@@ -4,6 +4,7 @@ import styles from './Header.module.scss';
 import { createNavLinkClass } from '../../utils/createNavLinkClass';
 
 const getNavLinkClassName = createNavLinkClass(styles, 'navigationLink');
+const getActionLinkClassName = createNavLinkClass(styles, 'actionLink');
 
 export const Header = () => {
   return (
@@ -43,23 +44,27 @@ export const Header = () => {
       </nav>
 
       <div className={styles.actions}>
-        <Link to="/cart" className={styles.actionLink} aria-label="Open cart">
+        <NavLink
+          to="/cart"
+          className={getActionLinkClassName}
+          aria-label="Open cart"
+        >
           <span
-            className={clsx(styles.icon, styles.cartIcon)}
+            className={clsx(styles.actionLinkIcon, styles.cartIcon)}
             aria-hidden="true"
           />
-        </Link>
+        </NavLink>
 
-        <Link
+        <NavLink
           to="/login"
-          className={styles.actionLink}
+          className={getActionLinkClassName}
           aria-label="Open login page"
         >
           <span
-            className={clsx(styles.icon, styles.accountIcon)}
+            className={clsx(styles.actionLinkIcon, styles.accountIcon)}
             aria-hidden="true"
           />
-        </Link>
+        </NavLink>
       </div>
     </header>
   );

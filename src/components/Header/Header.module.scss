@@ -45,6 +45,8 @@
   text-decoration: none;
 
   &IsActive {
+    color: $brown-100-color;
+
     @include active-link;
   }
 }
@@ -55,6 +57,7 @@
 }
 
 .actionLink {
+  position: relative;
   width: 40px;
   height: 40px;
 
@@ -62,20 +65,27 @@
   align-items: center;
   justify-content: center;
 
-  @include hover(opacity, 0.8);
+  &IsActive {
+    .cartIcon {
+      background-image: url('logo/cart-logo-active.svg');
+    }
+
+    .accountIcon {
+      background-image: url('logo/acc-logo-active.svg');
+    }
+
+    @include active-link;
+  }
 }
 
-.icon {
-  display: block;
-  width: 24px;
-  height: 24px;
-  background-size: cover;
+.actionLinkIcon {
+  @include icon-style;
 }
 
 .cartIcon {
-  background-image: url('/cart-logo.svg');
+  background-image: url('logo/cart-logo.svg');
 }
 
 .accountIcon {
-  background-image: url('/acc-logo.svg');
+  background-image: url('logo/acc-logo.svg');
 }

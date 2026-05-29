@@ -36,3 +36,12 @@
 
   @include hover(background-color, $primary-100-color);
 }
+
+@mixin icon-style {
+  display: block;
+  width: 24px;
+  height: 24px;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+}
