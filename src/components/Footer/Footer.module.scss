@@ -6,14 +6,13 @@
   gap: 127px;
   justify-content: space-between;
   padding: 96px 108px;
-  background-color: $bg-dark-color;
+  background-color: $primary-100-color;
 }
 
 .content {
   width: 100%;
   display: flex;
   gap: 136px;
-  padding-right: 60px;
 }
 
 .column {
@@ -39,7 +38,7 @@
 .description,
 .copyright {
   margin: 0;
-  color: $footer-text-color;
+  color: $brown-20-color;
   font-weight: 400;
   font-size: 16px;
   line-height: 150%;
@@ -59,7 +58,7 @@
   font-size: 16px;
   font-weight: 400;
   line-height: 150%;
-  color: $footer-text-color;
+  color: $brown-20-color;
   text-decoration: none;
   white-space: nowrap;
 
@@ -120,13 +119,13 @@
 }
 
 .facebookIcon {
-  background-image: url('./facebook-logo.svg');
+  background-image: url('/facebook-logo.svg');
 }
 
 .instagramIcon {
-  background-image: url('./instagram-logo.svg');
+  background-image: url('/instagram-logo.svg');
 }
 
 .xIcon {
-  background-image: url('./x-logo.svg');
+  background-image: url('/x-logo.svg');
 }

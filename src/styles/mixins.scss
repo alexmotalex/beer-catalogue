@@ -34,5 +34,5 @@
   font-size: 16px;
   cursor: pointer;
 
-  @include hover(opacity, 0.8);
+  @include hover(background-color, $primary-100-color);
 }

@@ -6,7 +6,7 @@
   align-items: center;
   justify-content: space-between;
   padding: 16px 108px;
-  background-color: $bg-white-color;
+  background-color: $white-color;
 }
 
 .logoLink {
@@ -38,7 +38,7 @@
 .navigationLink {
   margin: 0;
   position: relative;
-  color: $brown-color;
+  color: $brown-60-color;
   font-size: 16px;
   font-weight: 500;
   line-height: 32px;
@@ -73,9 +73,9 @@
 }
 
 .cartIcon {
-  background-image: url('./cart-logo.svg');
+  background-image: url('/cart-logo.svg');
 }
 
 .accountIcon {
-  background-image: url('./acc-logo.svg');
+  background-image: url('/acc-logo.svg');
 }
