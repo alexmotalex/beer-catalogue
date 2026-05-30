@@ -1,0 +1,12 @@
+{
+  "id": 1,
+  "name": "Amber Dawn Lager",
+  "price": "4.90",
+  "image_url": "./img/product_img.jpg",
+  "alcohol_percentage": "4.50",
+  "is_filtered": true,
+  "beer_type": "light",
+  "volume": 500,
+  "is_available": true,
+  "description": "Light craft lager with soft malt sweetness and a clean crisp finish."
+}

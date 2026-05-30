@@ -30,7 +30,7 @@ export const Header = () => {
           </li>
 
           <li className={styles.navigationItem}>
-            <NavLink className={getNavLinkClassName} to="/catalogue">
+            <NavLink className={getNavLinkClassName} to="/beers">
               Catalogue
             </NavLink>
           </li>

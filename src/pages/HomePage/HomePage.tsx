@@ -4,11 +4,12 @@ import { beerDescriptions } from '../../constants/beerDescriptions';
 import { storyParagraphs } from '../../constants/storyParagraphs';
 import styles from './HomePage.module.scss';
 import { SecondaryButton } from '../../components/Buttons/SecondaryButton';
-import { useBeer } from '../../hooks/useBeer';
+import { useBeers } from '../../hooks/useBeers';
 import { ProductCard } from '../../components/ProductCard';
 
 export const HomePage = () => {
-  const { beers } = useBeer();
+  const { beers } = useBeers();
+  // const picksBeers = getThreeUniqueRandoms(beers);
 
   return (
     <div className={styles.homePage}>

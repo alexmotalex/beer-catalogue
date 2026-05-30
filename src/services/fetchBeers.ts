@@ -1,7 +1,7 @@
 import type { BeerResponse } from '../types/Beer';
 import { client } from '../utils/localClient';
 
-// export function fetchBeer(offset?: number) {
+// export function fetchBeers(offset?: number) {
 //   const searchParams = new URLSearchParams();
 
 //   if (offset !== undefined) {
@@ -10,11 +10,12 @@ import { client } from '../utils/localClient';
 //   return client.get<BeerResponse>(`beers?${searchParams.toString()}`);
 // }
 
-export function fetchBeer(offset?: number) {
+export function fetchBeers(offset?: number) {
   const searchParams = new URLSearchParams();
 
   if (offset !== undefined) {
     searchParams.set('offset', String(offset));
   }
+
   return client.get<BeerResponse>(`api/beers.json`);
 }

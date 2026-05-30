@@ -8,9 +8,10 @@ export type Beer = {
   beer_type: string;
   volume: number;
   is_available: boolean;
+  description: string;
 };
 
 export type BeerResponse = {
-  beers: Beer[];
+  beers: Omit<Beer, 'description'>[];
   next_offset: number;
 };

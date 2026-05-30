@@ -1,10 +1,10 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import type { Beer, BeerResponse } from '../../types/Beer';
 import { BeerContext } from './BeerContext';
-import { fetchBeer } from '../../services/fetchBeerFromServer';
+import { fetchBeers } from '../../services/fetchBeers';
 
 export type BeerContextType = {
-  beers: Beer[];
+  beers: Omit<Beer, 'description'>[];
   nextOffset: number | null;
   isLoading: boolean;
   isError: boolean;
@@ -16,7 +16,7 @@ type Props = {
 };
 
 export const BeerContextProvider: React.FC<Props> = ({ children }) => {
-  const [beers, setBeers] = useState<Beer[]>([]);
+  const [beers, setBeers] = useState<Omit<Beer, 'description'>[]>([]);
   const [nextOffset, setNextOffset] = useState<number | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isError, setIsError] = useState(false);
@@ -26,7 +26,7 @@ export const BeerContextProvider: React.FC<Props> = ({ children }) => {
       setIsLoading(true);
       setIsError(false);
 
-      const data = await fetchBeer(offset ?? undefined);
+      const data = await fetchBeers(offset ?? undefined);
 
       setBeers(currentBeers => [...currentBeers, ...data.beers]);
 
@@ -39,7 +39,7 @@ export const BeerContextProvider: React.FC<Props> = ({ children }) => {
   };
 
   useEffect(() => {
-    fetchBeer()
+    fetchBeers()
       .then((data: BeerResponse) => {
         setBeers(data.beers);
         setNextOffset(data.next_offset);

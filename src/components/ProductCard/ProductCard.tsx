@@ -4,9 +4,10 @@ import { Link } from 'react-router';
 import { PrimaryButton } from '../Buttons/PrimaryButton';
 import { capitalizeFirstLetter } from '../../utils/capitalizeFirstLetter';
 import styles from './ProductCard.module.scss';
+import { buildProductPath } from '../../utils/buildProductPath ';
 
 type Props = {
-  product: Beer;
+  product: Omit<Beer, 'description'>;
 };
 
 export const ProductCard: React.FC<Props> = ({ product }) => {
@@ -19,6 +20,8 @@ export const ProductCard: React.FC<Props> = ({ product }) => {
     volume,
     is_filtered,
   } = product;
+
+  const productPath = buildProductPath(1);
 
   const productCharacteristics = [
     {
@@ -41,11 +44,11 @@ export const ProductCard: React.FC<Props> = ({ product }) => {
 
   return (
     <article className={styles.productCard}>
-      <Link to="/" className={styles.imgContent}>
+      <Link to={productPath} className={styles.imageContent}>
         <img
           src={image_url}
           alt={name}
-          className={styles.productImg}
+          className={styles.productImage}
           loading="lazy"
         />
       </Link>

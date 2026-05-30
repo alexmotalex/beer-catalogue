@@ -1,11 +1,11 @@
 import { useContext } from 'react';
 import { BeerContext } from '../store/Beer/BeerContext';
 
-export const useBeer = () => {
+export const useBeers = () => {
   const context = useContext(BeerContext);
 
   if (!context) {
-    throw new Error('useBeer must be used inside BeerProvider');
+    throw new Error('useBeers must be used inside BeerProvider');
   }
 
   return context;

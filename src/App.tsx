@@ -5,6 +5,8 @@ import { HomePage } from './pages/HomePage';
 import { RegisterPage } from './pages/RegisterPage/RegisterPage';
 import { Cart } from './pages/Cart';
 import './App.scss';
+import { Catalogue } from './pages/Catalogue';
+import { ProductPage } from './pages/ProductPage';
 
 function App() {
   return (
@@ -14,6 +16,8 @@ function App() {
           <Route index element={<HomePage />} />
           <Route path="login" element={<LoginPage />} />
           <Route path="register" element={<RegisterPage />} />
+          <Route path="beers" element={<Catalogue />} />
+          <Route path="product/:productId" element={<ProductPage />} />
           <Route path="cart" element={<Cart />} />
           <Route path="*" element={<h1>Not Found</h1>} />
         </Route>
