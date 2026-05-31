@@ -28,7 +28,7 @@ export const HomePage = () => {
           </div>
 
           <div className={styles.brewButtonWrapper}>
-            <PrimaryButton title="Browse beers" handleClick={() => {}} />
+            <PrimaryButton title="Browse beers" onClick={() => {}} />
           </div>
         </div>
       </section>
@@ -79,7 +79,7 @@ export const HomePage = () => {
         </div>
 
         <div className={styles.picksButton}>
-          <SecondaryButton title="View all" handleClick={() => {}} />
+          <SecondaryButton title="View all" onClick={() => {}} />
         </div>
       </section>
     </div>

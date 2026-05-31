@@ -1,22 +1,22 @@
 import clsx from 'clsx';
-import style from './PrimaryButton.module.scss';
+import styles from './PrimaryButton.module.scss';
 
 type Props = {
   title: string;
-  handleClick: () => void;
+  onClick: () => void;
   isInCart?: boolean;
 };
 
 export const PrimaryButton: React.FC<Props> = ({
   title,
-  handleClick,
+  onClick,
   isInCart = false,
 }) => {
   return (
     <button
       type="button"
-      className={clsx(style.primaryButton, { [style.isAdded]: isInCart })}
-      onClick={handleClick}
+      className={clsx(styles.primaryButton, { [styles.isAdded]: isInCart })}
+      onClick={onClick}
     >
       {title}
     </button>

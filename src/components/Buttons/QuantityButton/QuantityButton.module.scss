@@ -1,0 +1,17 @@
+@import '../../../styles/index';
+
+.quantityButton {
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid $brown-20-color;
+  border-radius: 4px;
+  background-color: transparent;
+  cursor: pointer;
+}
+
+.icon {
+  @include icon-style;
+}

@@ -2,16 +2,12 @@ import style from './SecondaryButton.module.scss';
 
 type Props = {
   title: string;
-  handleClick: () => void;
+  onClick: () => void;
 };
 
-export const SecondaryButton: React.FC<Props> = ({ title, handleClick }) => {
+export const SecondaryButton: React.FC<Props> = ({ title, onClick }) => {
   return (
-    <button
-      type="button"
-      className={style.secondaryButton}
-      onClick={handleClick}
-    >
+    <button type="button" className={style.secondaryButton} onClick={onClick}>
       {title}
     </button>
   );

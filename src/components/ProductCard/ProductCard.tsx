@@ -69,7 +69,7 @@ export const ProductCard: React.FC<Props> = ({ product }) => {
       </div>
 
       <div className={styles.productCardButton}>
-        <PrimaryButton title="Add to cart" handleClick={() => {}} />
+        <PrimaryButton title="Add to cart" onClick={() => {}} />
       </div>
     </article>
   );
