@@ -110,19 +110,3 @@
 
   @include hover(opacity, 0.8);
 }
-
-.icon {
-  @include icon-style;
-}
-
-.facebookIcon {
-  background-image: url('/icons/facebook-icon.svg');
-}
-
-.instagramIcon {
-  background-image: url('/icons/instagram-icon.svg');
-}
-
-.xIcon {
-  background-image: url('/icons/x-icon.svg');
-}

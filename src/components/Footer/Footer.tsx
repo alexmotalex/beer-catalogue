@@ -1,8 +1,12 @@
 import { Link } from 'react-router';
-import styles from './Footer.module.scss';
+import { Icon } from '../Icon';
+import { ICON_COLOR_MAP } from '../../constants/colors';
 import clsx from 'clsx';
+import styles from './Footer.module.scss';
 
 export const Footer = () => {
+  const colors = ICON_COLOR_MAP['alternative'];
+
   return (
     <footer className={styles.footer}>
       <section className={styles.content}>
@@ -106,10 +110,7 @@ export const Footer = () => {
                 className={styles.socialLink}
                 aria-label="Facebook"
               >
-                <span
-                  className={clsx(styles.icon, styles.facebookIcon)}
-                  aria-hidden="true"
-                />
+                <Icon name="facebook" defaultColor={colors.default} />
               </a>
             </li>
 
@@ -120,10 +121,7 @@ export const Footer = () => {
                 className={styles.socialLink}
                 aria-label="Instagram"
               >
-                <span
-                  className={clsx(styles.icon, styles.instagramIcon)}
-                  aria-hidden="true"
-                />
+                <Icon name="instagram" defaultColor={colors.default} />
               </a>
             </li>
 
@@ -134,10 +132,7 @@ export const Footer = () => {
                 className={styles.socialLink}
                 aria-label="X"
               >
-                <span
-                  className={clsx(styles.icon, styles.xIcon)}
-                  aria-hidden="true"
-                />
+                <Icon name="x" defaultColor={colors.default} />
               </a>
             </li>
           </ul>

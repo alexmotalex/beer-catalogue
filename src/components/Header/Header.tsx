@@ -1,12 +1,15 @@
 import { Link, NavLink } from 'react-router';
-import clsx from 'clsx';
-import styles from './Header.module.scss';
+import { Icon } from '../Icon';
 import { createNavLinkClass } from '../../utils/createNavLinkClass';
+import { ICON_COLOR_MAP } from '../../constants/colors';
+import styles from './Header.module.scss';
 
 const getNavLinkClassName = createNavLinkClass(styles, 'navigationLink');
 const getActionLinkClassName = createNavLinkClass(styles, 'actionLink');
 
 export const Header = () => {
+  const colors = ICON_COLOR_MAP['main'];
+
   return (
     <header className={styles.header}>
       <Link
@@ -49,10 +52,14 @@ export const Header = () => {
           className={getActionLinkClassName}
           aria-label="Open cart"
         >
-          <span
-            className={clsx(styles.actionLinkIcon, styles.cartIcon)}
-            aria-hidden="true"
-          />
+          {({ isActive }) => (
+            <Icon
+              name="cart"
+              active={isActive}
+              defaultColor={colors.default}
+              activeColor={colors.active}
+            />
+          )}
         </NavLink>
 
         <NavLink
@@ -60,10 +67,14 @@ export const Header = () => {
           className={getActionLinkClassName}
           aria-label="Open login page"
         >
-          <span
-            className={clsx(styles.actionLinkIcon, styles.accountIcon)}
-            aria-hidden="true"
-          />
+          {({ isActive }) => (
+            <Icon
+              name="acc"
+              active={isActive}
+              defaultColor={colors.default}
+              activeColor={colors.active}
+            />
+          )}
         </NavLink>
       </div>
     </header>

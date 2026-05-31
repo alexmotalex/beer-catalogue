@@ -70,26 +70,6 @@
   justify-content: center;
 
   &IsActive {
-    .cartIcon {
-      background-image: url('/icons/cart-icon-active.svg');
-    }
-
-    .accountIcon {
-      background-image: url('/icons/acc-icon-active.svg');
-    }
-
     @include active-link;
   }
-}
-
-.actionLinkIcon {
-  @include icon-style;
-}
-
-.cartIcon {
-  background-image: url('/icons/cart-icon.svg');
-}
-
-.accountIcon {
-  background-image: url('/icons/acc-icon.svg');
 }
