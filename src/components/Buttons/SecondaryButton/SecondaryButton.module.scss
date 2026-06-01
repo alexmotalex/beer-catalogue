@@ -2,4 +2,11 @@
 
 .secondaryButton {
   @include button-secondary;
+
+  &:disabled {
+    color: $brown-30-color;
+    border-color: $brown-30-color;
+    background-color: transparent;
+    cursor: not-allowed;
+  }
 }

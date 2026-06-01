@@ -1,12 +1,15 @@
 import { Link } from 'react-router';
 import { Icon } from '../Icon';
-import { ICON_COLOR_MAP } from '../../constants/colors';
 import clsx from 'clsx';
 import styles from './Footer.module.scss';
+import {
+  FOOTER_LEGAL_LINKS,
+  FOOTER_SOCIAL_LINKS,
+  FOOTER_SUPPORTS_LINKS,
+} from '../../constants/navLinks';
+import { ROUTES } from '../../constants/routes';
 
 export const Footer = () => {
-  const colors = ICON_COLOR_MAP['alternative'];
-
   return (
     <footer className={styles.footer}>
       <section className={styles.content}>
@@ -28,29 +31,15 @@ export const Footer = () => {
 
           <nav aria-label="Support navigation">
             <ul className={styles.linkList}>
-              <li>
-                <Link className={styles.footerLink} to="/faq">
-                  FAQ
+              {FOOTER_SUPPORTS_LINKS.map(item => (
+                <Link
+                  key={item.label}
+                  className={styles.footerLink}
+                  to={item.to}
+                >
+                  {item.label}
                 </Link>
-              </li>
-
-              <li>
-                <Link className={styles.footerLink} to="/contact">
-                  Contact
-                </Link>
-              </li>
-
-              <li>
-                <Link className={styles.footerLink} to="/delivery">
-                  Delivery & Returns
-                </Link>
-              </li>
-
-              <li>
-                <Link className={styles.footerLink} to="/accessibility">
-                  Accessibility
-                </Link>
-              </li>
+              ))}
             </ul>
           </nav>
         </div>
@@ -60,29 +49,13 @@ export const Footer = () => {
 
           <nav aria-label="Legal navigation">
             <ul className={styles.linkList}>
-              <li>
-                <Link className={styles.footerLink} to="/privacy">
-                  Privacy Policy
-                </Link>
-              </li>
-
-              <li>
-                <Link className={styles.footerLink} to="/terms">
-                  Terms of Service
-                </Link>
-              </li>
-
-              <li>
-                <Link className={styles.footerLink} to="/cookie">
-                  Cookie Policy
-                </Link>
-              </li>
-
-              <li>
-                <Link className={styles.footerLink} to="/responsibility">
-                  Responsibility
-                </Link>
-              </li>
+              {FOOTER_LEGAL_LINKS.map(item => (
+                <li key={item.label}>
+                  <Link className={styles.footerLink} to={item.to}>
+                    {item.label}
+                  </Link>
+                </li>
+              ))}
             </ul>
           </nav>
         </div>
@@ -90,7 +63,7 @@ export const Footer = () => {
 
       <section className={styles.social}>
         <Link
-          to="/"
+          to={ROUTES.home}
           className={styles.logoLink}
           aria-label="Craft Beer home page"
         >
@@ -103,38 +76,18 @@ export const Footer = () => {
 
         <nav aria-label="Social media links">
           <ul className={styles.socialList}>
-            <li>
-              <a
-                href="/"
-                target="_blank"
-                className={styles.socialLink}
-                aria-label="Facebook"
-              >
-                <Icon name="facebook" defaultColor={colors.default} />
-              </a>
-            </li>
-
-            <li>
-              <a
-                href="/"
-                target="_blank"
-                className={styles.socialLink}
-                aria-label="Instagram"
-              >
-                <Icon name="instagram" defaultColor={colors.default} />
-              </a>
-            </li>
-
-            <li>
-              <a
-                href="/"
-                target="_blank"
-                className={styles.socialLink}
-                aria-label="X"
-              >
-                <Icon name="x" defaultColor={colors.default} />
-              </a>
-            </li>
+            {FOOTER_SOCIAL_LINKS.map(item => (
+              <li key={item.label}>
+                <a
+                  href={item.to}
+                  target="_blank"
+                  className={styles.socialLink}
+                  aria-label={item.label}
+                >
+                  <Icon name={item.name} />
+                </a>
+              </li>
+            ))}
           </ul>
         </nav>
       </section>

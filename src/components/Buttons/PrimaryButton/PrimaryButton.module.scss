@@ -2,4 +2,10 @@
 
 .primaryButton {
   @include button-primary;
+
+  &:disabled {
+    color: $brown-40-color;
+    background-color: $brown-30-color;
+    cursor: not-allowed;
+  }
 }

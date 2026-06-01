@@ -6,29 +6,19 @@ const ICON_SIZE_24 = 24;
 
 type Props = {
   name: string;
-  defaultColor: string;
-  activeColor?: string;
+  color?: string;
   size?: number;
-  active?: boolean;
 };
 
-export const Icon: React.FC<Props> = ({
-  name,
-  defaultColor,
-  activeColor,
-  active = false,
-  size = ICON_SIZE_24,
-}) => {
-  const iconColor = active ? activeColor : defaultColor;
-
+export const Icon: React.FC<Props> = ({ name, color, size = ICON_SIZE_24 }) => {
   const iconHref = `${ICONS_SPRITE_PATH}#${name}-icon`;
 
   return (
     <svg
       className={styles.icon}
-      style={{ color: iconColor }}
-      width={size}
-      height={size}
+      style={{ color: color }}
+      width={`${size}px`}
+      height={`${size}px`}
       aria-hidden="true"
     >
       <use href={iconHref} />

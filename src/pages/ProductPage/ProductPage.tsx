@@ -2,8 +2,8 @@
 
 import { useParams } from 'react-router';
 import { BackButton } from '../../components/Buttons/BackButton';
-import { QuantityButton } from '../../components/Buttons/QuantityButton';
 import { PrimaryButton } from '../../components/Buttons/PrimaryButton';
+import { Stepper } from '../../components/Stepper';
 import { useBeerById } from '../../hooks/useBeerById';
 import styles from './ProductPage.module.scss';
 
@@ -34,9 +34,14 @@ export const ProductPage = () => {
     alcohol_percentage,
     is_filtered,
     volume,
+    is_available,
   } = beer;
 
-  const beerSpecifications = [
+  const handleIncrease = () => {};
+  const handleDecrease = () => {};
+  const handleDelete = () => {};
+
+  const specifications = [
     {
       label: 'Type',
       value: beer_type,
@@ -55,6 +60,10 @@ export const ProductPage = () => {
     },
   ];
 
+  const buttonTitle = is_available
+    ? `Add to basket | $${price}`
+    : 'Out of stock';
+
   return (
     <div className={styles.product}>
       <BackButton />
@@ -69,7 +78,7 @@ export const ProductPage = () => {
             <div className={styles.productInfo}>
               <span className={styles.productBarrel}>Old Barrel</span>
               <h1 className={styles.productTitle}>{name}</h1>
-              <h3 className={styles.productPrice}>Price ${price}</h3>
+              <p className={styles.productPrice}>Price ${price}</p>
             </div>
 
             <p className={styles.productDetail}>{description}</p>
@@ -80,16 +89,16 @@ export const ProductPage = () => {
               </h2>
 
               <div className={styles.productSpecificationsList}>
-                {beerSpecifications.map(item => (
+                {specifications.map(specification => (
                   <div
-                    key={item.label}
+                    key={specification.label}
                     className={styles.productSpecificationsItem}
                   >
                     <span className={styles.productSpecificationsLabel}>
-                      {item.label}
+                      {specification.label}
                     </span>
                     <span className={styles.productSpecificationsValue}>
-                      {item.value}
+                      {specification.value}
                     </span>
                   </div>
                 ))}
@@ -98,28 +107,18 @@ export const ProductPage = () => {
           </div>
 
           <div className={styles.productButtons}>
-            <div className={styles.productButtonsQtyContainer}>
-              <div className={styles.productButtonsQtyItem}>
-                <QuantityButton
-                  iconPath="./icons/minus-icon.svg"
-                  onClick={() => {}}
-                  ariaLabel="Decrease quantity"
-                />
-              </div>
-              <div className={styles.productButtonsQtyItem}>1</div>
-              <div className={styles.productButtonsQtyItem}>
-                <QuantityButton
-                  iconPath="./icons/plus-icon.svg"
-                  onClick={() => {}}
-                  ariaLabel="Increase quantity"
-                />
-              </div>
-            </div>
+            <Stepper
+              value={0}
+              onDecrease={handleDecrease}
+              onIncrease={handleIncrease}
+              onDelete={handleDelete}
+            />
 
             <div className={styles.productButtonsAddToBasket}>
               <PrimaryButton
-                title={`Add to basket  |  $${price}`}
+                title={buttonTitle}
                 onClick={() => {}}
+                disabled={!is_available}
               />
             </div>
           </div>

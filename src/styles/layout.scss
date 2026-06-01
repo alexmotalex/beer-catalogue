@@ -3,8 +3,9 @@
 }
 
 :root {
-  --brown-60-color: #765d57;
   --brown-100-color: #1f1411;
+  --brown-60-color: #765d57;
+  --brown-30-color: #cabbb6;
 }
 
 .page {
@@ -25,6 +26,5 @@
 
 .main {
   width: 100%;
-  margin-inline: auto;
   flex: 1;
 }

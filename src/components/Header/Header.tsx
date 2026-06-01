@@ -1,15 +1,16 @@
 import { Link, NavLink } from 'react-router';
 import { Icon } from '../Icon';
 import { createNavLinkClass } from '../../utils/createNavLinkClass';
-import { ICON_COLOR_MAP } from '../../constants/colors';
 import styles from './Header.module.scss';
+import {
+  HEADER_ACTIONS_LINKS,
+  HEADER_MAIN_LINKS,
+} from '../../constants/navLinks';
 
 const getNavLinkClassName = createNavLinkClass(styles, 'navigationLink');
 const getActionLinkClassName = createNavLinkClass(styles, 'actionLink');
 
 export const Header = () => {
-  const colors = ICON_COLOR_MAP['main'];
-
   return (
     <header className={styles.header}>
       <Link
@@ -26,56 +27,27 @@ export const Header = () => {
 
       <nav aria-label="Main navigation">
         <ul className={styles.navigationList}>
-          <li className={styles.navigationItem}>
-            <NavLink className={getNavLinkClassName} to="/">
-              Home
-            </NavLink>
-          </li>
-
-          <li className={styles.navigationItem}>
-            <NavLink className={getNavLinkClassName} to="/beers">
-              Catalogue
-            </NavLink>
-          </li>
-
-          <li className={styles.navigationItem}>
-            <NavLink className={getNavLinkClassName} to="/about">
-              About Us
-            </NavLink>
-          </li>
+          {HEADER_MAIN_LINKS.map(item => (
+            <li key={item.label} className={styles.navigationItem}>
+              <NavLink className={getNavLinkClassName} to={item.to}>
+                {item.label}
+              </NavLink>
+            </li>
+          ))}
         </ul>
       </nav>
 
       <div className={styles.actions}>
-        <NavLink
-          to="/cart"
-          className={getActionLinkClassName}
-          aria-label="Open cart"
-        >
-          {({ isActive }) => (
-            <Icon
-              name="cart"
-              active={isActive}
-              defaultColor={colors.default}
-              activeColor={colors.active}
-            />
-          )}
-        </NavLink>
-
-        <NavLink
-          to="/login"
-          className={getActionLinkClassName}
-          aria-label="Open login page"
-        >
-          {({ isActive }) => (
-            <Icon
-              name="acc"
-              active={isActive}
-              defaultColor={colors.default}
-              activeColor={colors.active}
-            />
-          )}
-        </NavLink>
+        {HEADER_ACTIONS_LINKS.map(item => (
+          <NavLink
+            key={item.label}
+            to={item.to}
+            className={getActionLinkClassName}
+            aria-label={item.label}
+          >
+            <Icon name={item.name} />
+          </NavLink>
+        ))}
       </div>
     </header>
   );

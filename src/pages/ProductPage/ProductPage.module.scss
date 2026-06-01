@@ -15,7 +15,7 @@
 
   &ImageContent {
     height: 553px;
-    width: 40%;
+    flex: 4;
     align-self: center;
     border-radius: 4px;
   }
@@ -29,8 +29,7 @@
 
   &About {
     display: flex;
-    max-width: 50%;
-    flex: 1;
+    flex: 5;
     flex-direction: column;
     gap: 116px;
     justify-content: space-between;
@@ -128,23 +127,6 @@
   &Buttons {
     display: flex;
     gap: 24px;
-
-    &QtyContainer {
-      display: flex;
-    }
-
-    &QtyItem {
-      width: 48px;
-      height: 48px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-
-      font-size: 24px;
-      font-weight: 500;
-      line-height: 135%;
-      color: $brown-100-color;
-    }
 
     &AddToBasket {
       width: 100%;
