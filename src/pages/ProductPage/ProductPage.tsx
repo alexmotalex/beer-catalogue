@@ -66,7 +66,7 @@ export const ProductPage = () => {
     : 'Out of stock';
 
   return (
-    <div className={styles.product}>
+    <section className={styles.product}>
       <BackButton />
 
       <div className={styles.productOverall}>
@@ -130,6 +130,6 @@ export const ProductPage = () => {
           </div>
         </section>
       </div>
-    </div>
+    </section>
   );
 };

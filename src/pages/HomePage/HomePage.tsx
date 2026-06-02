@@ -2,10 +2,10 @@ import React from 'react';
 import { PrimaryButton } from '../../components/Buttons/PrimaryButton';
 import { beerDescriptions } from '../../constants/beerDescriptions';
 import { storyParagraphs } from '../../constants/storyParagraphs';
-import styles from './HomePage.module.scss';
 import { SecondaryButton } from '../../components/Buttons/SecondaryButton';
 import { useBeers } from '../../hooks/useBeers';
 import { ProductCard } from '../../components/ProductCard';
+import styles from './HomePage.module.scss';
 
 export const HomePage = () => {
   const { beers } = useBeers();

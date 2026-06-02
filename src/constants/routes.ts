@@ -2,7 +2,7 @@ export const ROUTES = {
   home: '/',
   login: '/login',
   account: '/account',
-  register: '/register',
+  signUp: '/signup',
   beers: '/beers',
   cart: '/cart',
   productPage: '/product/:productId',
