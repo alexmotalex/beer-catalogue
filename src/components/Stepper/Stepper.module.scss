@@ -1,4 +1,4 @@
-@import '../../styles/index.scss';
+@use '../../styles/variables' as var;
 
 .stepper {
   display: flex;
@@ -9,14 +9,14 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    color: $brown-100-color;
-    border: 1px solid $brown-20-color;
+    color: var.$brown-100-color;
+    border: 1px solid var.$brown-20-color;
     border-radius: 4px;
     background-color: transparent;
     cursor: pointer;
 
     &:disabled {
-      color: $brown-30-color;
+      color: var.$brown-30-color;
 
       cursor: not-allowed;
     }
@@ -32,10 +32,10 @@
     font-size: 24px;
     font-weight: 500;
     line-height: 135%;
-    color: $brown-100-color;
+    color: var.$brown-100-color;
 
     &Disabled {
-      color: $brown-30-color;
+      color: var.$brown-30-color;
     }
   }
 }

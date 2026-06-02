@@ -5,6 +5,7 @@ import { BackButton } from '../../components/Buttons/BackButton';
 import { PrimaryButton } from '../../components/Buttons/PrimaryButton';
 import { Stepper } from '../../components/Stepper';
 import { useBeerById } from '../../hooks/useBeerById';
+import clsx from 'clsx';
 import styles from './ProductPage.module.scss';
 
 export const ProductPage = () => {
@@ -69,7 +70,12 @@ export const ProductPage = () => {
       <BackButton />
 
       <div className={styles.productOverall}>
-        <div className={styles.productImageContent}>
+        <div
+          className={clsx(
+            styles.productImageContent,
+            !is_available && styles.productImageContentSoldOut,
+          )}
+        >
           <img src={image_url} alt={name} className={styles.productImage} />
         </div>
 
@@ -108,7 +114,7 @@ export const ProductPage = () => {
 
           <div className={styles.productButtons}>
             <Stepper
-              value={0}
+              value={1}
               onDecrease={handleDecrease}
               onIncrease={handleIncrease}
               onDelete={handleDelete}

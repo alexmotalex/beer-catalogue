@@ -1,11 +1,12 @@
-@import '../../../styles/index';
+@use '../../../styles/variables' as var;
+@use '../../../styles/mixins' as mixins;
 
 .secondaryButton {
-  @include button-secondary;
+  @include mixins.button-secondary;
 
   &:disabled {
-    color: $brown-30-color;
-    border-color: $brown-30-color;
+    color: var.$brown-30-color;
+    border-color: var.$brown-30-color;
     background-color: transparent;
     cursor: not-allowed;
   }

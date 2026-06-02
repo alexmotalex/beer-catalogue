@@ -1,4 +1,5 @@
-@import '../../styles/index.scss';
+@use '../../styles/variables' as var;
+@use '../../styles/mixins' as mixins;
 
 .header {
   z-index: 10;
@@ -10,7 +11,7 @@
   align-items: center;
   justify-content: space-between;
   padding: 16px 108px;
-  background-color: $white-color;
+  background-color: var.$white-color;
 }
 
 .logoLink {
@@ -18,7 +19,7 @@
   align-items: center;
   justify-content: center;
 
-  @include hover(opacity, 0.8);
+  @include mixins.hover(opacity, 0.8);
 }
 
 .logoImage {
@@ -42,16 +43,16 @@
 .navigationLink {
   margin: 0;
   position: relative;
-  color: $brown-60-color;
+  color: var.$brown-60-color;
   font-size: 16px;
   font-weight: 500;
   line-height: 32px;
   text-decoration: none;
 
   &IsActive {
-    color: $brown-100-color;
+    color: var.$brown-100-color;
 
-    @include active-link;
+    @include mixins.active-link;
   }
 }
 
@@ -64,15 +65,15 @@
   position: relative;
   width: 40px;
   height: 40px;
-  color: $brown-60-color;
+  color: var.$brown-60-color;
 
   display: flex;
   align-items: center;
   justify-content: center;
 
   &IsActive {
-    color: $brown-100-color;
+    color: var.$brown-100-color;
 
-    @include active-link;
+    @include mixins.active-link;
   }
 }

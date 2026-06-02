@@ -1,4 +1,4 @@
-@import '../../../styles/index';
+@use '../../../styles/variables' as var;
 
 .backButton {
   padding: 0;
@@ -10,12 +10,6 @@
   font-size: 16px;
   font-weight: 500;
   line-height: 100%;
-  color: $brown-60-color;
+  color: var.$brown-60-color;
   cursor: pointer;
-}
-
-.backIcon {
-  width: 18px;
-  height: 18px;
-  background-image: url('/icons/arrow-left-icon.svg');
 }

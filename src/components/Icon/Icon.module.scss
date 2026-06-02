@@ -1,5 +1,5 @@
-@import '../../styles/index.scss';
+@use '../../styles/mixins' as mixins;
 
 .icon {
-  @include icon-style;
+  @include mixins.icon-style;
 }

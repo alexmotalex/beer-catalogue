@@ -1,11 +1,12 @@
-@import '../../../styles/index';
+@use '../../../styles/variables' as var;
+@use '../../../styles/mixins' as mixins;
 
 .primaryButton {
-  @include button-primary;
+  @include mixins.button-primary;
 
   &:disabled {
-    color: $brown-40-color;
-    background-color: $brown-30-color;
+    color: var.$brown-40-color;
+    background-color: var.$brown-30-color;
     cursor: not-allowed;
   }
 }

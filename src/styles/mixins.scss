@@ -1,5 +1,7 @@
+@use '../styles/variables' as var;
+
 @mixin hover($property, $toValue) {
-  transition: #{$property} $effectDuration;
+  transition: #{$property} var.$effectDuration;
 
   &:hover {
     #{$property}: $toValue;
@@ -7,7 +9,7 @@
 }
 
 @mixin active-link {
-  color: $brown-100-color;
+  color: var.$brown-100-color;
 
   &::after {
     content: '';
@@ -16,7 +18,7 @@
     height: 2px;
     bottom: 0;
     left: 0;
-    background-color: $primary-90-color;
+    background-color: var.$primary-90-color;
   }
 }
 
@@ -24,17 +26,17 @@
   height: 100%;
   width: 100%;
   margin: 0;
-  background-color: $primary-90-color;
+  background-color: var.$primary-90-color;
   text-align: center;
   border: none;
   border-radius: 4px;
-  color: $brown-10-color;
+  color: var.$brown-10-color;
   font-family: inherit;
   font-weight: 500;
   font-size: 16px;
   cursor: pointer;
 
-  @include hover(background-color, $primary-100-color);
+  @include hover(background-color, var.$primary-100-color);
 }
 
 @mixin button-secondary {
@@ -43,16 +45,16 @@
   margin: 0;
   background-color: transparent;
   text-align: center;
-  border: 2px solid $primary-90-color;
+  border: 2px solid var.$primary-90-color;
   border-radius: 4px;
-  color: $primary-90-color;
+  color: var.$primary-90-color;
   font-family: inherit;
   font-weight: 500;
   font-size: 16px;
   cursor: pointer;
 
-  @include hover(background-color, $primary-100-color);
-  @include hover(color, $brown-10-color);
+  @include hover(background-color, var.$primary-100-color);
+  @include hover(color, var.$brown-10-color);
 }
 
 @mixin icon-style {

@@ -1,5 +1,6 @@
 import { useNavigate } from 'react-router';
 import styles from './BackButton.module.scss';
+import { Icon } from '../../Icon';
 
 export const BackButton = () => {
   const navigate = useNavigate();
@@ -10,7 +11,7 @@ export const BackButton = () => {
 
   return (
     <button type="button" onClick={handleGoBack} className={styles.backButton}>
-      <span className={styles.backIcon} aria-hidden="true" />
+      <Icon name="back-arrow" size={18} />
       Back
     </button>
   );
