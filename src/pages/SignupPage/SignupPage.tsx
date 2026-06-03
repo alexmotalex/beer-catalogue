@@ -3,6 +3,8 @@ import styles from './SignupPage.module.scss';
 import type { SignupFormData } from '../../types/SignupFormData';
 import { BackButton } from '../../components/Buttons/BackButton';
 import { LabeledInput } from '../../components/LabeledInput';
+import { Checkbox } from '../../components/Checkbox';
+import { PrimaryButton } from '../../components/Buttons/PrimaryButton';
 
 export const SignupPage = () => {
   const [formData, setFormData] = useState<SignupFormData>({
@@ -55,20 +57,20 @@ export const SignupPage = () => {
   //   return newErrors;
   // };
 
-  const handleSubmit = async (e: React.SubmitEvent<HTMLFormElement>) => {
-    e.preventDefault(); // Prevent page refresh
-    const validationErrors = validateForm();
+  // const handleSubmit = async (e: React.SubmitEvent<HTMLFormElement>) => {
+  //   e.preventDefault(); // Prevent page refresh
+  //   const validationErrors = validateForm();
 
-    if (Object.keys(validationErrors).length === 0) {
-      setErrors({});
-      setIsSubmitted(true);
-      console.log('Registration Data Submitted:', formData);
-      // Integrate backend APIs or authentication calls here
-    } else {
-      setErrors(validationErrors);
-      setIsSubmitted(false);
-    }
-  };
+  //   if (Object.keys(validationErrors).length === 0) {
+  //     setErrors({});
+  //     setIsSubmitted(true);
+  //     console.log('Registration Data Submitted:', formData);
+  //     // Integrate backend APIs or authentication calls here
+  //   } else {
+  //     setErrors(validationErrors);
+  //     setIsSubmitted(false);
+  //   }
+  // };
 
   return (
     <section className={styles.signupPage}>
@@ -80,7 +82,7 @@ export const SignupPage = () => {
 
       <p className={styles.signupPageSubtitle}>Create your personal account</p>
 
-      <form className={styles.signupForm} onSubmit={handleSubmit}>
+      <form className={styles.signupForm} onSubmit={() => {}}>
         <div className={styles.inputsWrapper}>
           <LabeledInput
             label="First name"
@@ -104,7 +106,6 @@ export const SignupPage = () => {
             label="Email"
             name="email"
             type="email"
-            className={styles.signupFormInput}
             value={formData.email}
             onChange={handleChange}
             placeholder="john.doe@email.com "
@@ -115,7 +116,6 @@ export const SignupPage = () => {
             label="Password"
             name="password"
             type="password"
-            className={styles.signupFormInput}
             value={formData.password}
             onChange={handleChange}
             placeholder="••••••••"
@@ -124,34 +124,33 @@ export const SignupPage = () => {
         </div>
 
         <div className={styles.checkboxesWrapper}>
-          <label htmlFor="age" className={styles.checkbox}>
-            <input
-              id="age"
-              name="age"
-              type="checkbox"
-              checked={formData.age}
-              onChange={handleChange}
-              required
-            />
-            I confirm that I am at least 18 years old
-          </label>
+          <Checkbox
+            label="I confirm that I am at least 18 years old"
+            name="age"
+            type="checkbox"
+            checked={formData.age}
+            onChange={handleChange}
+            required
+          />
 
-          <label htmlFor="terms" className={styles.checkbox}>
-            <input
-              id="terms"
-              name="terms"
-              type="checkbox"
-              checked={formData.terms}
-              onChange={handleChange}
-              required
-            />
-            I agree to the terms and conditions
-          </label>
+          <Checkbox
+            label="I agree to the terms and conditions"
+            name="terms"
+            type="checkbox"
+            checked={formData.terms}
+            onChange={handleChange}
+            required
+          />
         </div>
 
-        <button type="submit" className={styles.button}>
-          Sign Up
-        </button>
+        <div className={styles.checkboxButton}>
+          <PrimaryButton
+            title="Sign Up"
+            type="submit"
+            onClick={() => {}}
+            disabled={false}
+          />
+        </div>
       </form>
     </section>
   );

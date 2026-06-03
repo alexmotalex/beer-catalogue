@@ -4,6 +4,7 @@ import styles from './LabeledInput.module.scss';
 
 type Props = React.InputHTMLAttributes<HTMLInputElement> & {
   label: string;
+  type?: string;
 };
 
 export const LabeledInput: React.FC<Props> = ({
@@ -17,7 +18,7 @@ export const LabeledInput: React.FC<Props> = ({
       <label htmlFor={inputId} className={styles.label}>
         {label}
       </label>
-      <input id={inputId} type={type} {...rest} className={styles.input} />
+      <input id={inputId} type={type} className={styles.input} {...rest} />
     </div>
   );
 };

@@ -66,4 +66,9 @@
   color: var.$brown-100-color;
   display: flex;
   align-items: center;
+
+  &Button {
+    height: 48px;
+    width: 100%;
+  }
 }
