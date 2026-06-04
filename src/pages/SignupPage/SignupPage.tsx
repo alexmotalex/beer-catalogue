@@ -1,10 +1,13 @@
-import React, { useState } from 'react';
-import styles from './SignupPage.module.scss';
-import type { SignupFormData } from '../../types/SignupFormData';
+import React, { useMemo, useState } from 'react';
 import { BackButton } from '../../components/Buttons/BackButton';
 import { LabeledInput } from '../../components/LabeledInput';
 import { Checkbox } from '../../components/Checkbox';
 import { PrimaryButton } from '../../components/Buttons/PrimaryButton';
+import { validateForm } from '../../utils/validateForm';
+import { Link } from 'react-router';
+import { ROUTES } from '../../constants/routes';
+import type { SignupFormData } from '../../types/Forms';
+import styles from './SignupPage.module.scss';
 
 export const SignupPage = () => {
   const [formData, setFormData] = useState<SignupFormData>({
@@ -15,7 +18,7 @@ export const SignupPage = () => {
     age: false,
     terms: false,
   });
-  // const [errors, setErrors] = useState({});
+  // const [errors, setErrors] = useState<SignupFormErrors>({});
   // const [isSubmitted, setIsSubmitted] = useState(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -27,50 +30,40 @@ export const SignupPage = () => {
     }));
   };
 
-  // const validateForm = () => {
-  //   const newErrors = {};
+  const handleSubmit = async (e: React.SubmitEvent<HTMLFormElement>) => {
+    e.preventDefault(); // Prevent page refresh
+    const validationErrors = validateForm(formData);
 
-  //   if (!formData.firstName.trim()) {
-  //     newErrors.firstName = 'Username is required.';
-  //   }
+    if (Object.keys(validationErrors).length === 0) {
+      setErrors({});
+      setIsSubmitted(true);
+      console.log('Registration Data Submitted:', formData);
+      // Integrate backend APIs or authentication calls here
+    } else {
+      setErrors(validationErrors);
+      setIsSubmitted(false);
+    }
+  };
 
-  //   if (!formData.firstName.trim()) {
-  //     newErrors.lastName = 'Username is required.';
-  //   }
+  const isFormValid = useMemo(() => {
+    return (
+      formData.firstName.trim() !== '' &&
+      formData.lastName.trim() !== '' &&
+      formData.email.trim() !== '' &&
+      formData.password.length >= 8 &&
+      formData.age === true &&
+      formData.terms === true
+    );
+  }, [formData]);
 
-  //   if (!formData.email.trim()) {
-  //     newErrors.email = 'Email is required.';
-  //   } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
-  //     newErrors.email = 'Please enter a valid email address.';
-  //   }
-
-  //   if (!formData.password) {
-  //     newErrors.password = 'Password is required.';
-  //   } else if (formData.password.length < 8) {
-  //     newErrors.password = 'Password must be at least 8 characters.';
-  //   }
-
-  //   if (formData.password !== formData.confirmPassword) {
-  //     newErrors.confirmPassword = 'Passwords do not match.';
-  //   }
-
-  //   return newErrors;
-  // };
-
-  // const handleSubmit = async (e: React.SubmitEvent<HTMLFormElement>) => {
-  //   e.preventDefault(); // Prevent page refresh
-  //   const validationErrors = validateForm();
-
-  //   if (Object.keys(validationErrors).length === 0) {
-  //     setErrors({});
-  //     setIsSubmitted(true);
-  //     console.log('Registration Data Submitted:', formData);
-  //     // Integrate backend APIs or authentication calls here
-  //   } else {
-  //     setErrors(validationErrors);
-  //     setIsSubmitted(false);
-  //   }
-  // };
+  const agreeLabel = (
+    <>
+      I agree to{' '}
+      <Link to={ROUTES.terms} className={styles.formLink}>
+        Terms & Conditions
+      </Link>
+    </>
+  );
 
   return (
     <section className={styles.signupPage}>
@@ -82,7 +75,11 @@ export const SignupPage = () => {
 
       <p className={styles.signupPageSubtitle}>Create your personal account</p>
 
-      <form className={styles.signupForm} onSubmit={() => {}}>
+      <form
+        className={styles.signupForm}
+        onSubmit={handleSubmit}
+        autoComplete="off"
+      >
         <div className={styles.inputsWrapper}>
           <LabeledInput
             label="First name"
@@ -112,15 +109,21 @@ export const SignupPage = () => {
             required
           />
 
-          <LabeledInput
-            label="Password"
-            name="password"
-            type="password"
-            value={formData.password}
-            onChange={handleChange}
-            placeholder="••••••••"
-            required
-          />
+          <div className={styles.passwordWrapper}>
+            <LabeledInput
+              label="Password"
+              name="password"
+              type="password"
+              value={formData.password}
+              onChange={handleChange}
+              placeholder="••••••••"
+              required
+            />
+
+            <span className={styles.passwordCondition}>
+              At least 8 characters, including numbers
+            </span>
+          </div>
         </div>
 
         <div className={styles.checkboxesWrapper}>
@@ -134,7 +137,7 @@ export const SignupPage = () => {
           />
 
           <Checkbox
-            label="I agree to the terms and conditions"
+            label={agreeLabel}
             name="terms"
             type="checkbox"
             checked={formData.terms}
@@ -143,13 +146,21 @@ export const SignupPage = () => {
           />
         </div>
 
-        <div className={styles.checkboxButton}>
+        <div className={styles.submitButton}>
           <PrimaryButton
             title="Sign Up"
             type="submit"
-            onClick={() => {}}
-            disabled={false}
+            disabled={!isFormValid}
           />
+        </div>
+
+        <div className={styles.bottomText}>
+          <span className={styles.alreadyRegistered}>
+            Already registered?{' '}
+            <Link to={ROUTES.signIn} className={styles.formLink}>
+              Sign In
+            </Link>{' '}
+          </span>
         </div>
       </form>
     </section>

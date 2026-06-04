@@ -1,25 +1,12 @@
 import styles from './PrimaryButton.module.scss';
 
-type Props = {
+type Props = React.ButtonHTMLAttributes<HTMLButtonElement> & {
   title: string;
-  onClick: () => Promise<void> | void;
-  type?: 'button' | 'submit' | 'reset';
-  disabled?: boolean;
 };
 
-export const PrimaryButton: React.FC<Props> = ({
-  title,
-  onClick,
-  type = 'button',
-  disabled = false,
-}) => {
+export const PrimaryButton: React.FC<Props> = ({ title, ...rest }) => {
   return (
-    <button
-      type={type}
-      className={styles.primaryButton}
-      onClick={onClick}
-      disabled={disabled}
-    >
+    <button className={styles.primaryButton} {...rest}>
       {title}
     </button>
   );

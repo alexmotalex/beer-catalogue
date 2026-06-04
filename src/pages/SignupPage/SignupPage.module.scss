@@ -1,4 +1,5 @@
 @use '../../styles/variables' as var;
+@use '../../styles/mixins' as mixins;
 
 .signupPage {
   padding: 32px 108px 139px;
@@ -7,6 +8,10 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  background-image: url('/img/bg-sign.webp');
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
 
   &Title {
     margin: 0;
@@ -53,6 +58,19 @@
   gap: 16px;
 }
 
+.passwordWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.passwordCondition {
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 140%;
+  color: var.$brown-50-color;
+}
+
 .checkboxesWrapper {
   display: flex;
   flex-direction: column;
@@ -60,15 +78,39 @@
 }
 
 .checkbox {
+  display: flex;
+  align-items: center;
   font-size: 16px;
   font-weight: 400;
   line-height: 150%;
   color: var.$brown-100-color;
-  display: flex;
-  align-items: center;
+}
 
-  &Button {
-    height: 48px;
-    width: 100%;
+.submitButton {
+  height: 48px;
+  width: 100%;
+}
+
+.formLink {
+  position: relative;
+  font-size: 16px;
+  font-weight: 500;
+  color: var.$brown-60-color;
+  text-decoration: none;
+
+  &:hover {
+    @include mixins.hover(color, var.$brown-100-color);
   }
+}
+
+.bottomText {
+  display: flex;
+  justify-content: center;
+}
+
+.alreadyRegistered {
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 150%;
+  color: var.$brown-100-color;
 }

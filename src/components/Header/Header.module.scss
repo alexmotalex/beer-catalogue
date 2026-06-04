@@ -54,6 +54,10 @@
 
     @include mixins.active-link;
   }
+
+  &:hover {
+    @include mixins.hover(color, var.$brown-100-color);
+  }
 }
 
 .actions {

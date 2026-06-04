@@ -6,3 +6,5 @@ export type SignupFormData = {
   age: boolean;
   terms: boolean;
 };
+
+export type SignupFormErrors = Partial<Record<keyof SignupFormData, string>>;
