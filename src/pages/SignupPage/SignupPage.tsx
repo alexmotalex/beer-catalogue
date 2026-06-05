@@ -1,12 +1,14 @@
 import React, { useMemo, useState } from 'react';
+import { Link } from 'react-router';
 import { BackButton } from '../../components/Buttons/BackButton';
 import { LabeledInput } from '../../components/LabeledInput';
 import { Checkbox } from '../../components/Checkbox';
 import { PrimaryButton } from '../../components/Buttons/PrimaryButton';
+import { Icon } from '../../components/Icon';
+import { useAuth } from '../../hooks/useAuth';
 import { validateForm } from '../../utils/validateForm';
-import { Link } from 'react-router';
 import { ROUTES } from '../../constants/routes';
-import type { SignupFormData } from '../../types/Forms';
+import type { SignupFormData, SignupFormErrors } from '../../types/Forms';
 import styles from './SignupPage.module.scss';
 
 export const SignupPage = () => {
@@ -18,8 +20,9 @@ export const SignupPage = () => {
     age: false,
     terms: false,
   });
-  // const [errors, setErrors] = useState<SignupFormErrors>({});
-  // const [isSubmitted, setIsSubmitted] = useState(false);
+  const [formErrors, setFormErrors] = useState<SignupFormErrors>({});
+
+  const { register } = useAuth();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value, type, checked } = e.target;
@@ -31,17 +34,15 @@ export const SignupPage = () => {
   };
 
   const handleSubmit = async (e: React.SubmitEvent<HTMLFormElement>) => {
-    e.preventDefault(); // Prevent page refresh
+    e.preventDefault();
     const validationErrors = validateForm(formData);
 
     if (Object.keys(validationErrors).length === 0) {
-      setErrors({});
-      setIsSubmitted(true);
-      console.log('Registration Data Submitted:', formData);
-      // Integrate backend APIs or authentication calls here
+      setFormErrors({});
+
+      register(formData);
     } else {
-      setErrors(validationErrors);
-      setIsSubmitted(false);
+      setFormErrors(validationErrors);
     }
   };
 
@@ -50,7 +51,7 @@ export const SignupPage = () => {
       formData.firstName.trim() !== '' &&
       formData.lastName.trim() !== '' &&
       formData.email.trim() !== '' &&
-      formData.password.length >= 8 &&
+      formData.password.trim() !== '' &&
       formData.age === true &&
       formData.terms === true
     );
@@ -75,11 +76,7 @@ export const SignupPage = () => {
 
       <p className={styles.signupPageSubtitle}>Create your personal account</p>
 
-      <form
-        className={styles.signupForm}
-        onSubmit={handleSubmit}
-        autoComplete="off"
-      >
+      <form className={styles.signupForm} onSubmit={handleSubmit}>
         <div className={styles.inputsWrapper}>
           <LabeledInput
             label="First name"
@@ -99,17 +96,27 @@ export const SignupPage = () => {
             required
           />
 
-          <LabeledInput
-            label="Email"
-            name="email"
-            type="email"
-            value={formData.email}
-            onChange={handleChange}
-            placeholder="john.doe@email.com "
-            required
-          />
+          <div className={styles.labelInputWrapper}>
+            <LabeledInput
+              label="Email"
+              name="email"
+              type="email"
+              value={formData.email}
+              onChange={handleChange}
+              placeholder="john.doe@email.com"
+              autoComplete="off"
+              required
+            />
 
-          <div className={styles.passwordWrapper}>
+            {formErrors.email && (
+              <div className={styles.inputErrorWrapper}>
+                <Icon name="error" size={14} />
+                <span className={styles.errorText}>{formErrors.email}</span>
+              </div>
+            )}
+          </div>
+
+          <div className={styles.labelInputWrapper}>
             <LabeledInput
               label="Password"
               name="password"
@@ -119,6 +126,13 @@ export const SignupPage = () => {
               placeholder="••••••••"
               required
             />
+
+            {formErrors.password && (
+              <div className={styles.inputErrorWrapper}>
+                <Icon name="error" size={14} />
+                <span className={styles.errorText}>{formErrors.password}</span>
+              </div>
+            )}
 
             <span className={styles.passwordCondition}>
               At least 8 characters, including numbers

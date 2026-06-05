@@ -8,6 +8,8 @@ export type AuthContextType = {
   accessToken: string | null;
   isAuthenticated: boolean;
   isLoading: boolean;
+  success: boolean;
+  submitError: string;
   login: (data: UserData) => Promise<void>;
   register: (data: UserData) => Promise<void>;
   logout: () => void;
@@ -20,14 +22,28 @@ export type Props = {
 export const AuthContextProvider: React.FC<Props> = ({ children }) => {
   const [user] = useState<User | null>(null);
   const [accessToken, setAccessToken] = useState<string | null>(null);
-  const [isLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(true);
+  const [submitError, setSubmitError] = useState('');
+  const [success, setSuccess] = useState(false);
 
   const isAuthenticated = Boolean(user && accessToken);
 
   const register = async (data: UserData) => {
-    const response = await instance.post('/register', data);
+    setIsLoading(true);
+    setSubmitError('');
 
-    setAccessToken(response.data.access_token);
+    try {
+      await instance.post('/register', data);
+
+      setSuccess(true);
+    } catch (error: unknown) {
+      const message =
+        error instanceof Error ? error.message : 'An unexpected error occurred';
+
+      setSubmitError(message);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const login = async (data: UserData) => {
@@ -82,11 +98,13 @@ export const AuthContextProvider: React.FC<Props> = ({ children }) => {
       accessToken,
       isAuthenticated,
       isLoading,
+      success,
+      submitError,
       register,
       login,
       logout,
     }),
-    [user, accessToken, isAuthenticated, isLoading],
+    [user, accessToken, isAuthenticated, isLoading, success, submitError],
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

@@ -2,6 +2,8 @@ import type { SignupFormData } from '../types/Forms';
 
 type SignupFormErrors = Partial<Record<keyof SignupFormData, string>>;
 
+const PASSWORD_REGEX = /^(?=.*\d).{8,}$/;
+
 export const validateForm = (formData: SignupFormData) => {
   const newErrors: SignupFormErrors = {};
 
@@ -21,8 +23,8 @@ export const validateForm = (formData: SignupFormData) => {
 
   if (!formData.password) {
     newErrors.password = 'Password is required.';
-  } else if (formData.password.length < 8) {
-    newErrors.password = 'Password must be at least 8 characters.';
+  } else if (!PASSWORD_REGEX.test(formData.password)) {
+    newErrors.password = 'Password requirements not met.';
   }
 
   return newErrors;
