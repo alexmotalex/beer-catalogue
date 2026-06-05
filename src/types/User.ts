@@ -5,7 +5,14 @@ export type User = {
   activation_token: 'string';
 };
 
-export type UserData = {
+export type RegisterUserData = {
+  email: string;
+  password: string;
+  first_name: string;
+  last_name: string;
+};
+
+export type LoginUserData = {
   email: string;
   password: string;
 };

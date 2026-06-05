@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router';
 import { BackButton } from '../../components/Buttons/BackButton';
 import { LabeledInput } from '../../components/LabeledInput';
@@ -7,22 +7,24 @@ import { PrimaryButton } from '../../components/Buttons/PrimaryButton';
 import { Icon } from '../../components/Icon';
 import { useAuth } from '../../hooks/useAuth';
 import { validateForm } from '../../utils/validateForm';
+import { mapToRegisterData } from '../../utils/mapToRegisterData';
 import { ROUTES } from '../../constants/routes';
+import { emptySignUpForm } from '../../constants/formsData';
 import type { SignupFormData, SignupFormErrors } from '../../types/Forms';
+import { scrollToTop } from '../../utils/scrollToTop';
 import styles from './SignupPage.module.scss';
 
 export const SignupPage = () => {
-  const [formData, setFormData] = useState<SignupFormData>({
-    firstName: '',
-    lastName: '',
-    email: '',
-    password: '',
-    age: false,
-    terms: false,
-  });
+  const [formData, setFormData] = useState<SignupFormData>(emptySignUpForm);
   const [formErrors, setFormErrors] = useState<SignupFormErrors>({});
 
-  const { register } = useAuth();
+  const { register, isLoading, isSuccess, submitError, setSubmitError } =
+    useAuth();
+
+  const validationErrors = validateForm(formData);
+  const isFormValid = Object.keys(validationErrors).length === 0;
+  const isEmailExistsError =
+    submitError === 'User with this email already exists.';
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value, type, checked } = e.target;
@@ -35,27 +37,28 @@ export const SignupPage = () => {
 
   const handleSubmit = async (e: React.SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const validationErrors = validateForm(formData);
 
-    if (Object.keys(validationErrors).length === 0) {
-      setFormErrors({});
+    if (submitError) {
+      setSubmitError('');
+    }
 
-      register(formData);
-    } else {
+    if (!isFormValid) {
       setFormErrors(validationErrors);
+
+      return;
+    }
+
+    setFormErrors({});
+
+    const payload = mapToRegisterData(formData);
+
+    const registrationSuccess = await register(payload);
+
+    if (registrationSuccess) {
+      setFormData(emptySignUpForm);
+      scrollToTop();
     }
   };
-
-  const isFormValid = useMemo(() => {
-    return (
-      formData.firstName.trim() !== '' &&
-      formData.lastName.trim() !== '' &&
-      formData.email.trim() !== '' &&
-      formData.password.trim() !== '' &&
-      formData.age === true &&
-      formData.terms === true
-    );
-  }, [formData]);
 
   const agreeLabel = (
     <>
@@ -72,6 +75,16 @@ export const SignupPage = () => {
         <BackButton />
       </div>
 
+      {isSuccess && (
+        <div className={styles.successMessage}>
+          <h2>Registration Successful!</h2>
+          <p>
+            We've sent a verification link to your email. Please check your
+            inbox.
+          </p>
+        </div>
+      )}
+
       <h1 className={styles.signupPageTitle}>Sign Up</h1>
 
       <p className={styles.signupPageSubtitle}>Create your personal account</p>
@@ -79,6 +92,7 @@ export const SignupPage = () => {
       <form className={styles.signupForm} onSubmit={handleSubmit}>
         <div className={styles.inputsWrapper}>
           <LabeledInput
+            autoComplete="given-name"
             label="First name"
             name="firstName"
             value={formData.firstName}
@@ -88,6 +102,7 @@ export const SignupPage = () => {
           />
 
           <LabeledInput
+            autoComplete="family-name"
             label="Last name"
             name="lastName"
             value={formData.lastName}
@@ -98,26 +113,29 @@ export const SignupPage = () => {
 
           <div className={styles.labelInputWrapper}>
             <LabeledInput
+              autoComplete="email"
               label="Email"
               name="email"
               type="email"
               value={formData.email}
               onChange={handleChange}
               placeholder="john.doe@email.com"
-              autoComplete="off"
               required
             />
 
-            {formErrors.email && (
+            {isEmailExistsError && (
               <div className={styles.inputErrorWrapper}>
                 <Icon name="error" size={14} />
-                <span className={styles.errorText}>{formErrors.email}</span>
+                <span className={styles.errorText}>
+                  An accoutn with this email already exists.
+                </span>
               </div>
             )}
           </div>
 
           <div className={styles.labelInputWrapper}>
             <LabeledInput
+              autoComplete="new-password"
               label="Password"
               name="password"
               type="password"
@@ -162,9 +180,9 @@ export const SignupPage = () => {
 
         <div className={styles.submitButton}>
           <PrimaryButton
-            title="Sign Up"
+            title={isLoading ? 'Signing Up...' : 'Sign Up'}
             type="submit"
-            disabled={!isFormValid}
+            disabled={!isFormValid || isLoading}
           />
         </div>
 

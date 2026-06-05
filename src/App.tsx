@@ -7,6 +7,7 @@ import { Cart } from './pages/Cart';
 import './App.scss';
 import { Catalogue } from './pages/Catalogue';
 import { ProductPage } from './pages/ProductPage';
+import { ActivatePage } from './pages/ActivatePage';
 
 function App() {
   return (
@@ -14,8 +15,9 @@ function App() {
       <Routes>
         <Route path="/" element={<MainLayout />}>
           <Route index element={<HomePage />} />
-          <Route path="login" element={<LoginPage />} />
           <Route path="signup" element={<SignupPage />} />
+          <Route path="activate" element={<ActivatePage />} />
+          <Route path="login" element={<LoginPage />} />
           <Route path="beers" element={<Catalogue />} />
           <Route path="product/:productId" element={<ProductPage />} />
           <Route path="cart" element={<Cart />} />

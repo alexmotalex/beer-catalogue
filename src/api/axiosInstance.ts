@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-export const API_URL = 'https://tragedy-sacred-oboe.ngrok-free.dev';
+export const API_URL = 'http://127.0.0.1:8000';
 
 export const instance = axios.create({
   baseURL: API_URL,

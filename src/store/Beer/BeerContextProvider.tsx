@@ -21,8 +21,6 @@ export const BeerContextProvider: React.FC<Props> = ({ children }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [isError, setIsError] = useState(false);
 
-  console.log(beers);
-
   const loadBeers = async (offset: number | null) => {
     try {
       setIsLoading(true);

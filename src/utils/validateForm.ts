@@ -2,17 +2,17 @@ import type { SignupFormData } from '../types/Forms';
 
 type SignupFormErrors = Partial<Record<keyof SignupFormData, string>>;
 
-const PASSWORD_REGEX = /^(?=.*\d).{8,}$/;
+export const PASSWORD_REGEX = /^(?=.*\d).{8,}$/;
 
 export const validateForm = (formData: SignupFormData) => {
   const newErrors: SignupFormErrors = {};
 
   if (!formData.firstName.trim()) {
-    newErrors.firstName = 'Username is required.';
+    newErrors.firstName = 'First name is required.';
   }
 
   if (!formData.lastName.trim()) {
-    newErrors.lastName = 'Username is required.';
+    newErrors.lastName = 'Last name is required.';
   }
 
   if (!formData.email.trim()) {
@@ -25,6 +25,14 @@ export const validateForm = (formData: SignupFormData) => {
     newErrors.password = 'Password is required.';
   } else if (!PASSWORD_REGEX.test(formData.password)) {
     newErrors.password = 'Password requirements not met.';
+  }
+
+  if (!formData.age) {
+    newErrors.age = 'You must confirm your age.';
+  }
+
+  if (!formData.terms) {
+    newErrors.terms = 'You must accept the terms.';
   }
 
   return newErrors;

@@ -1,18 +1,20 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { instance } from '../../api/axiosInstance';
 import { AuthContext } from './AuthContext';
-import type { User, UserData } from '../../types/User';
+import type { LoginUserData, RegisterUserData, User } from '../../types/User';
+import { client } from '../../utils/axiosClient';
 
 export type AuthContextType = {
   user: User | null;
   accessToken: string | null;
   isAuthenticated: boolean;
   isLoading: boolean;
-  success: boolean;
+  isSuccess: boolean;
   submitError: string;
-  login: (data: UserData) => Promise<void>;
-  register: (data: UserData) => Promise<void>;
-  logout: () => void;
+  setSubmitError: (arg: string) => void;
+  login: (data: LoginUserData) => Promise<void>;
+  register: (data: RegisterUserData) => Promise<boolean>;
+  logout: () => Promise<void>;
 };
 
 export type Props = {
@@ -22,31 +24,52 @@ export type Props = {
 export const AuthContextProvider: React.FC<Props> = ({ children }) => {
   const [user] = useState<User | null>(null);
   const [accessToken, setAccessToken] = useState<string | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const [submitError, setSubmitError] = useState('');
-  const [success, setSuccess] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
 
   const isAuthenticated = Boolean(user && accessToken);
 
-  const register = async (data: UserData) => {
+  const register = async (data: RegisterUserData) => {
     setIsLoading(true);
     setSubmitError('');
 
     try {
-      await instance.post('/register', data);
+      await client.post('/users/register', data);
 
-      setSuccess(true);
+      setIsSuccess(true);
+
+      return true;
     } catch (error: unknown) {
-      const message =
-        error instanceof Error ? error.message : 'An unexpected error occurred';
+      const axiosError = error as {
+        response?: { data?: { detail?: unknown; message?: string } };
+      };
+      // 1. Check for the FastAPI 'detail' array structure
+      const details = axiosError.response?.data?.detail;
 
-      setSubmitError(message);
+      let finalMessage = 'An unexpected error occurred';
+
+      if (Array.isArray(details) && details.length > 0) {
+        // Take the message from the first error found
+        // e.g., "Field 'email' is invalid"
+        finalMessage = details[0].msg;
+      } else if (typeof details === 'string') {
+        // Sometimes 'detail' is just a string
+        finalMessage = details;
+      } else if (axiosError.response?.data?.message) {
+        // Fallback to your original logic
+        finalMessage = axiosError.response.data.message;
+      }
+
+      setSubmitError(finalMessage);
+
+      return false;
     } finally {
       setIsLoading(false);
     }
   };
 
-  const login = async (data: UserData) => {
+  const login = async (data: LoginUserData) => {
     const response = await instance.post('/login', data);
 
     setAccessToken(response.data.access_token);
@@ -98,13 +121,14 @@ export const AuthContextProvider: React.FC<Props> = ({ children }) => {
       accessToken,
       isAuthenticated,
       isLoading,
-      success,
+      isSuccess,
       submitError,
+      setSubmitError,
       register,
       login,
       logout,
     }),
-    [user, accessToken, isAuthenticated, isLoading, success, submitError],
+    [user, accessToken, isAuthenticated, isLoading, isSuccess, submitError],
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
