@@ -1,0 +1,28 @@
+@use '../../styles/variables' as var;
+@use '../../styles/mixins' as mixins;
+
+.infoHeader {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  text-decoration: none;
+  color: var.$brown-60-color;
+  cursor: pointer;
+
+  @include mixins.hover(color, var.$primary-100-color);
+
+  &Title {
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 150%;
+  }
+
+  &Icon {
+    display: flex;
+    align-items: center;
+    width: 18px;
+    height: 18px;
+
+    @include mixins.hover(color, var.$primary-100-color);
+  }
+}

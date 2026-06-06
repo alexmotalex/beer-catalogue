@@ -3,6 +3,7 @@ export const ROUTES = {
   account: '/account',
   signIn: '/signin',
   signUp: '/signup',
+  help: '/help',
   beers: '/beers',
   cart: '/cart',
   productPage: '/product/:productId',
@@ -19,3 +20,5 @@ export const ROUTES = {
   instagram: '/',
   x: '/',
 } as const;
+
+export const HIDDEN_ROUTES = [ROUTES.signUp, ROUTES.signIn] as const;

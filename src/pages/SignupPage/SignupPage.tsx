@@ -8,26 +8,39 @@ import { Icon } from '../../components/Icon';
 import { useAuth } from '../../hooks/useAuth';
 import { validateForm } from '../../utils/validateForm';
 import { mapToRegisterData } from '../../utils/mapToRegisterData';
+import { scrollToTop } from '../../utils/scrollToTop';
 import { ROUTES } from '../../constants/routes';
 import { emptySignUpForm } from '../../constants/formsData';
 import type { SignupFormData, SignupFormErrors } from '../../types/Forms';
-import { scrollToTop } from '../../utils/scrollToTop';
+import { SuccessMessage } from '../../components/SuccessMessage';
 import styles from './SignupPage.module.scss';
 
 export const SignupPage = () => {
   const [formData, setFormData] = useState<SignupFormData>(emptySignUpForm);
   const [formErrors, setFormErrors] = useState<SignupFormErrors>({});
 
-  const { register, isLoading, isSuccess, submitError, setSubmitError } =
-    useAuth();
+  const {
+    register,
+    isLoading,
+    isSuccess,
+    submitError,
+    setSubmitError,
+    setIsSuccess,
+  } = useAuth();
 
   const validationErrors = validateForm(formData);
   const isFormValid = Object.keys(validationErrors).length === 0;
-  const isEmailExistsError =
+  const isEmailErrorExists =
     submitError === 'User with this email already exists.';
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value, type, checked } = e.target;
+
+    setIsSuccess(false);
+
+    if (name === 'email' && submitError) {
+      setSubmitError('');
+    }
 
     setFormData(prev => ({
       ...prev,
@@ -37,10 +50,6 @@ export const SignupPage = () => {
 
   const handleSubmit = async (e: React.SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
-
-    if (submitError) {
-      setSubmitError('');
-    }
 
     if (!isFormValid) {
       setFormErrors(validationErrors);
@@ -76,12 +85,8 @@ export const SignupPage = () => {
       </div>
 
       {isSuccess && (
-        <div className={styles.successMessage}>
-          <h2>Registration Successful!</h2>
-          <p>
-            We've sent a verification link to your email. Please check your
-            inbox.
-          </p>
+        <div className={styles.successMessageWrapper}>
+          <SuccessMessage title="User created. Please check your email." />
         </div>
       )}
 
@@ -123,7 +128,7 @@ export const SignupPage = () => {
               required
             />
 
-            {isEmailExistsError && (
+            {isEmailErrorExists && (
               <div className={styles.inputErrorWrapper}>
                 <Icon name="error" size={14} />
                 <span className={styles.errorText}>

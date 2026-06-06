@@ -1,8 +1,8 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { instance } from '../../api/axiosInstance';
 import { AuthContext } from './AuthContext';
-import type { LoginUserData, RegisterUserData, User } from '../../types/User';
 import { client } from '../../utils/axiosClient';
+import type { LoginUserData, RegisterUserData, User } from '../../types/User';
 
 export type AuthContextType = {
   user: User | null;
@@ -11,6 +11,7 @@ export type AuthContextType = {
   isLoading: boolean;
   isSuccess: boolean;
   submitError: string;
+  setIsSuccess: (arg: boolean) => void;
   setSubmitError: (arg: string) => void;
   login: (data: LoginUserData) => Promise<void>;
   register: (data: RegisterUserData) => Promise<boolean>;
@@ -57,7 +58,7 @@ export const AuthContextProvider: React.FC<Props> = ({ children }) => {
         // Sometimes 'detail' is just a string
         finalMessage = details;
       } else if (axiosError.response?.data?.message) {
-        // Fallback to your original logic
+        // Fallback to original logic
         finalMessage = axiosError.response.data.message;
       }
 
@@ -123,6 +124,7 @@ export const AuthContextProvider: React.FC<Props> = ({ children }) => {
       isLoading,
       isSuccess,
       submitError,
+      setIsSuccess,
       setSubmitError,
       register,
       login,

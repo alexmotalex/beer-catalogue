@@ -128,3 +128,11 @@
   line-height: 150%;
   color: var.$brown-100-color;
 }
+
+.successMessageWrapper {
+  z-index: 11;
+  position: absolute;
+  top: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+}
