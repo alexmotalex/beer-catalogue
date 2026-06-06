@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router';
 import { BackButton } from '../../components/Buttons/BackButton';
 import { LabeledInput } from '../../components/LabeledInput';
 import { Checkbox } from '../../components/Checkbox';
 import { PrimaryButton } from '../../components/Buttons/PrimaryButton';
+import { SuccessMessage } from '../../components/SuccessMessage';
 import { Icon } from '../../components/Icon';
+import { AuthRedirect } from '../../components/AuthRedirect';
 import { useAuth } from '../../hooks/useAuth';
 import { validateForm } from '../../utils/validateForm';
 import { mapToRegisterData } from '../../utils/mapToRegisterData';
@@ -12,7 +13,6 @@ import { scrollToTop } from '../../utils/scrollToTop';
 import { ROUTES } from '../../constants/routes';
 import { emptySignUpForm } from '../../constants/formsData';
 import type { SignupFormData, SignupFormErrors } from '../../types/Forms';
-import { SuccessMessage } from '../../components/SuccessMessage';
 import styles from './SignupPage.module.scss';
 
 export const SignupPage = () => {
@@ -70,12 +70,11 @@ export const SignupPage = () => {
   };
 
   const agreeLabel = (
-    <>
-      I agree to{' '}
-      <Link to={ROUTES.terms} className={styles.formLink}>
-        Terms & Conditions
-      </Link>
-    </>
+    <AuthRedirect
+      to={ROUTES.terms}
+      text="I agree to"
+      linkText="Terms & Conditions"
+    />
   );
 
   return (
@@ -191,14 +190,11 @@ export const SignupPage = () => {
           />
         </div>
 
-        <div className={styles.bottomText}>
-          <span className={styles.alreadyRegistered}>
-            Already registered?{' '}
-            <Link to={ROUTES.signIn} className={styles.formLink}>
-              Sign In
-            </Link>{' '}
-          </span>
-        </div>
+        <AuthRedirect
+          to={ROUTES.signIn}
+          text="Already registered?"
+          linkText="Sign In"
+        />
       </form>
     </section>
   );

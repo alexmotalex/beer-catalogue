@@ -68,3 +68,16 @@
   background-repeat: no-repeat;
   background-position: center;
 }
+
+@mixin form-link {
+  position: relative;
+  font-size: 16px;
+  font-weight: 500;
+  color: var.$brown-60-color;
+  text-decoration: none;
+
+  &:hover {
+    @include active-link;
+    @include hover(color, var.$brown-100-color);
+  }
+}

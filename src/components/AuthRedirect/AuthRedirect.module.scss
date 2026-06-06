@@ -1,0 +1,16 @@
+@use '../../styles/variables' as var;
+@use '../../styles/mixins' as mixins;
+
+.authRedirect {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 150%;
+  color: var.$brown-100-color;
+
+  &Link {
+    @include mixins.form-link;
+  }
+}

@@ -104,19 +104,6 @@
   width: 100%;
 }
 
-.formLink {
-  position: relative;
-  font-size: 16px;
-  font-weight: 500;
-  color: var.$brown-60-color;
-  text-decoration: none;
-
-  &:hover {
-    @include mixins.active-link;
-    @include mixins.hover(color, var.$brown-100-color);
-  }
-}
-
 .bottomText {
   display: flex;
   justify-content: center;
