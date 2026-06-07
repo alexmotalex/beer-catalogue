@@ -1,5 +1,5 @@
-// import styles from './Catalogue.module.scss';
+import styles from './Catalogue.module.scss';
 
 export const Catalogue = () => {
-  return <>Catalogue</>;
+  return <section className={styles.catalogue}></section>;
 };

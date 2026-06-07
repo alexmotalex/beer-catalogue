@@ -51,7 +51,7 @@ export const Header = () => {
   return (
     <header className={styles.header}>
       <Link
-        to="/"
+        to={ROUTES.home}
         className={styles.logoLink}
         aria-label="Craft Beer home page"
       >

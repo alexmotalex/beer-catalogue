@@ -1,1 +1,7 @@
 @use '../../styles/variables' as var;
+
+.catalogue {
+  padding: 48px 108px;
+  display: flex;
+  flex-direction: column;
+}

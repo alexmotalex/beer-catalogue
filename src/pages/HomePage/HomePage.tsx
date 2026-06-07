@@ -6,9 +6,12 @@ import { SecondaryButton } from '../../components/Buttons/SecondaryButton';
 import { useBeers } from '../../hooks/useBeers';
 import { ProductCard } from '../../components/ProductCard';
 import styles from './HomePage.module.scss';
+import { useNavigate } from 'react-router';
+import { ROUTES } from '../../constants/routes';
 
 export const HomePage = () => {
   const { beers } = useBeers();
+  const navigate = useNavigate();
   // const picksBeers = getThreeUniqueRandoms(beers);
 
   return (
@@ -79,7 +82,10 @@ export const HomePage = () => {
         </div>
 
         <div className={styles.picksButton}>
-          <SecondaryButton title="View all" onClick={() => {}} />
+          <SecondaryButton
+            title="View all"
+            onClick={() => navigate(ROUTES.catalogue)}
+          />
         </div>
       </section>
     </div>
