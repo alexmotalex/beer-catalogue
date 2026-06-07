@@ -1,6 +1,4 @@
-import type { SignupFormData } from '../types/Forms';
-
-type SignupFormErrors = Partial<Record<keyof SignupFormData, string>>;
+import type { SignupFormData, SignupFormErrors } from '../types/Forms';
 
 export const PASSWORD_REGEX = /^(?=.*\d).{8,}$/;
 

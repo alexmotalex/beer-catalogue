@@ -4,7 +4,6 @@ import { LabeledInput } from '../../components/LabeledInput';
 import { Checkbox } from '../../components/Checkbox';
 import { PrimaryButton } from '../../components/Buttons/PrimaryButton';
 import { SuccessMessage } from '../../components/SuccessMessage';
-import { Icon } from '../../components/Icon';
 import { AuthRedirect } from '../../components/AuthRedirect';
 import { useAuth } from '../../hooks/useAuth';
 import { validateForm } from '../../utils/validateForm';
@@ -13,9 +12,10 @@ import { scrollToTop } from '../../utils/scrollToTop';
 import { ROUTES } from '../../constants/routes';
 import { emptySignUpForm } from '../../constants/formsData';
 import type { SignupFormData, SignupFormErrors } from '../../types/Forms';
-import styles from './SignupPage.module.scss';
+import styles from './SignUpPage.module.scss';
+import { FormErrorInfo } from '../../components/FormErrorInfo';
 
-export const SignupPage = () => {
+export const SignUpPage = () => {
   const [formData, setFormData] = useState<SignupFormData>(emptySignUpForm);
   const [formErrors, setFormErrors] = useState<SignupFormErrors>({});
 
@@ -78,8 +78,8 @@ export const SignupPage = () => {
   );
 
   return (
-    <section className={styles.signupPage}>
-      <div className={styles.backButtonWrapper}>
+    <section className="authFormPage">
+      <div className="backButtonWrapper">
         <BackButton />
       </div>
 
@@ -89,12 +89,12 @@ export const SignupPage = () => {
         </div>
       )}
 
-      <h1 className={styles.signupPageTitle}>Sign Up</h1>
+      <h1 className="authFormPageTitle">Sign Up</h1>
 
-      <p className={styles.signupPageSubtitle}>Create your personal account</p>
+      <p className="authFormPageSubtitle">Create your personal account</p>
 
-      <form className={styles.signupForm} onSubmit={handleSubmit}>
-        <div className={styles.inputsWrapper}>
+      <form className="authForm" onSubmit={handleSubmit}>
+        <div className="authFormInputsWrapper">
           <LabeledInput
             autoComplete="given-name"
             label="First name"
@@ -115,7 +115,7 @@ export const SignupPage = () => {
             required
           />
 
-          <div className={styles.labelInputWrapper}>
+          <div className="authFormLabelInputWrapper">
             <LabeledInput
               autoComplete="email"
               label="Email"
@@ -127,17 +127,10 @@ export const SignupPage = () => {
               required
             />
 
-            {isEmailErrorExists && (
-              <div className={styles.inputErrorWrapper}>
-                <Icon name="error" size={14} />
-                <span className={styles.errorText}>
-                  An accoutn with this email already exists.
-                </span>
-              </div>
-            )}
+            {isEmailErrorExists && <FormErrorInfo errorText={submitError} />}
           </div>
 
-          <div className={styles.labelInputWrapper}>
+          <div className="authFormLabelInputWrapper">
             <LabeledInput
               autoComplete="new-password"
               label="Password"
@@ -150,10 +143,7 @@ export const SignupPage = () => {
             />
 
             {formErrors.password && (
-              <div className={styles.inputErrorWrapper}>
-                <Icon name="error" size={14} />
-                <span className={styles.errorText}>{formErrors.password}</span>
-              </div>
+              <FormErrorInfo errorText={formErrors.password} />
             )}
 
             <span className={styles.passwordCondition}>
@@ -182,7 +172,7 @@ export const SignupPage = () => {
           />
         </div>
 
-        <div className={styles.submitButton}>
+        <div className="authFormButton">
           <PrimaryButton
             title={isLoading ? 'Signing Up...' : 'Sign Up'}
             type="submit"

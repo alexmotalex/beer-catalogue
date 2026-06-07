@@ -6,3 +6,8 @@ export const emptySignUpForm = {
   age: false,
   terms: false,
 };
+
+export const emptySignInForm = {
+  email: '',
+  password: '',
+};
