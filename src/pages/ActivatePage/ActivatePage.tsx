@@ -3,6 +3,7 @@ import { useNavigate, useSearchParams } from 'react-router';
 
 import { useEffect } from 'react';
 import { client } from '../../utils/axiosClient';
+import { ROUTES } from '../../constants/routes';
 
 export const ActivatePage = () => {
   const [searchParams] = useSearchParams();
@@ -14,7 +15,7 @@ export const ActivatePage = () => {
       try {
         await client.post('/users/activate', { token });
 
-        navigate('/login');
+        navigate(ROUTES.signIn);
       } catch {
         console.error('Activation failed:');
       }

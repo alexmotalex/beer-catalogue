@@ -8,8 +8,6 @@ export type RegisterUserData = AuthCredentials & {
   last_name: string;
 };
 
-export type LoginUserData = AuthCredentials;
-
 export type User = {
   id: number;
   email: string;

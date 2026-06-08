@@ -1,4 +1,7 @@
-export const emptySignUpForm = {
+import type { SignupFormData } from '../types/Forms';
+import type { AuthCredentials } from '../types/User';
+
+export const emptySignUpForm: SignupFormData = {
   firstName: '',
   lastName: '',
   email: '',
@@ -7,7 +10,7 @@ export const emptySignUpForm = {
   terms: false,
 };
 
-export const emptySignInForm = {
+export const emptySignInForm: AuthCredentials = {
   email: '',
   password: '',
 };

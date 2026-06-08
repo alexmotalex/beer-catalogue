@@ -4,43 +4,40 @@ import { LabeledInput } from '../../components/LabeledInput';
 import { Checkbox } from '../../components/Checkbox';
 import { PrimaryButton } from '../../components/Buttons/PrimaryButton';
 import { SuccessMessage } from '../../components/SuccessMessage';
-import { AuthRedirect } from '../../components/AuthRedirect';
+import { RedirectText } from '../../components/RedirectText';
+import { FormErrorInfo } from '../../components/FormErrorInfo';
 import { useAuth } from '../../hooks/useAuth';
-import { validateForm } from '../../utils/validateForm';
+import { validateSignUpForm } from '../../utils/validateSignUpForm';
 import { mapToRegisterData } from '../../utils/mapToRegisterData';
-import { scrollToTop } from '../../utils/scrollToTop';
 import { ROUTES } from '../../constants/routes';
 import { emptySignUpForm } from '../../constants/formsData';
-import type { SignupFormData, SignupFormErrors } from '../../types/Forms';
+import type { SignupFormData } from '../../types/Forms';
 import styles from './SignUpPage.module.scss';
-import { FormErrorInfo } from '../../components/FormErrorInfo';
 
 export const SignUpPage = () => {
   const [formData, setFormData] = useState<SignupFormData>(emptySignUpForm);
-  const [formErrors, setFormErrors] = useState<SignupFormErrors>({});
 
   const {
     register,
     isLoading,
     isSuccess,
-    submitError,
-    setSubmitError,
+    serverErrors,
+    setServerErrors,
     setIsSuccess,
   } = useAuth();
 
-  const validationErrors = validateForm(formData);
+  const validationErrors = validateSignUpForm(formData);
   const isFormValid = Object.keys(validationErrors).length === 0;
-  const isEmailErrorExists =
-    submitError === 'User with this email already exists.';
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value, type, checked } = e.target;
 
     setIsSuccess(false);
 
-    if (name === 'email' && submitError) {
-      setSubmitError('');
-    }
+    setServerErrors({
+      ...serverErrors,
+      [name]: undefined,
+    });
 
     setFormData(prev => ({
       ...prev,
@@ -51,26 +48,17 @@ export const SignUpPage = () => {
   const handleSubmit = async (e: React.SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    if (!isFormValid) {
-      setFormErrors(validationErrors);
-
-      return;
-    }
-
-    setFormErrors({});
-
     const payload = mapToRegisterData(formData);
 
     const registrationSuccess = await register(payload);
 
     if (registrationSuccess) {
       setFormData(emptySignUpForm);
-      scrollToTop();
     }
   };
 
   const agreeLabel = (
-    <AuthRedirect
+    <RedirectText
       to={ROUTES.terms}
       text="I agree to"
       linkText="Terms & Conditions"
@@ -121,13 +109,16 @@ export const SignUpPage = () => {
               label="Email"
               name="email"
               type="email"
+              error={!!serverErrors.email}
               value={formData.email}
               onChange={handleChange}
               placeholder="john.doe@email.com"
               required
             />
 
-            {isEmailErrorExists && <FormErrorInfo errorText={submitError} />}
+            {serverErrors.email && (
+              <FormErrorInfo errorText={serverErrors.email} />
+            )}
           </div>
 
           <div className="authFormLabelInputWrapper">
@@ -136,14 +127,15 @@ export const SignUpPage = () => {
               label="Password"
               name="password"
               type="password"
+              error={!!serverErrors.password}
               value={formData.password}
               onChange={handleChange}
               placeholder="••••••••"
               required
             />
 
-            {formErrors.password && (
-              <FormErrorInfo errorText={formErrors.password} />
+            {serverErrors.password && (
+              <FormErrorInfo errorText={serverErrors.password} />
             )}
 
             <span className={styles.passwordCondition}>
@@ -180,7 +172,7 @@ export const SignUpPage = () => {
           />
         </div>
 
-        <AuthRedirect
+        <RedirectText
           to={ROUTES.signIn}
           text="Already registered?"
           linkText="Sign In"

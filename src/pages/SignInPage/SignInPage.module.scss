@@ -1,1 +1,13 @@
 @use '../../styles/variables' as var;
+@use '../../styles/mixins' as mixins;
+
+.forgotPassword {
+  margin-top: 2px;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 145%;
+  color: var.$brown-60-color;
+  text-decoration: none;
+
+  @include mixins.hover(color, var.$primary-100-color);
+}

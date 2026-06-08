@@ -5,10 +5,12 @@ import App from './App.tsx';
 import { AuthContextProvider } from './store/Authorization/AuthContextProvider.tsx';
 import { BeerContextProvider } from './store/Beer/BeerContextProvider.tsx';
 import { CartContextProvider } from './store/Cart/CartContextProvider.tsx';
+import { ScrollToTop } from './utils/scrollToTop.ts';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <Router>
+      <ScrollToTop />
       <AuthContextProvider>
         <BeerContextProvider>
           <CartContextProvider>

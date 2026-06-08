@@ -26,6 +26,10 @@
 
   transition: border-color var.$effectDuration ease;
 
+  &Error {
+    border-color: var.$error-color;
+  }
+
   &:hover {
     border-color: var.$brown-50-color;
   }

@@ -1,6 +1,6 @@
 import type React from 'react';
 
-import styles from './AuthRedirect.module.scss';
+import styles from './RedirectText.module.scss';
 import { Link } from 'react-router';
 
 type Props = {
@@ -9,7 +9,7 @@ type Props = {
   linkText: string;
 };
 
-export const AuthRedirect: React.FC<Props> = ({ text, linkText, to }) => {
+export const RedirectText: React.FC<Props> = ({ text, linkText, to }) => {
   return (
     <div className={styles.authRedirect}>
       {text}

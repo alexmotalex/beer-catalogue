@@ -2,7 +2,7 @@ import type { SignupFormData, SignupFormErrors } from '../types/Forms';
 
 export const PASSWORD_REGEX = /^(?=.*\d).{8,}$/;
 
-export const validateForm = (formData: SignupFormData) => {
+export const validateSignUpForm = (formData: SignupFormData) => {
   const newErrors: SignupFormErrors = {};
 
   if (!formData.firstName.trim()) {
@@ -21,8 +21,6 @@ export const validateForm = (formData: SignupFormData) => {
 
   if (!formData.password) {
     newErrors.password = 'Password is required.';
-  } else if (!PASSWORD_REGEX.test(formData.password)) {
-    newErrors.password = 'Password requirements not met.';
   }
 
   if (!formData.age) {

@@ -2,7 +2,9 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { instance } from '../../api/axiosInstance';
 import { AuthContext } from './AuthContext';
 import { client } from '../../utils/axiosClient';
-import type { LoginUserData, RegisterUserData, User } from '../../types/User';
+import type { AuthCredentials, RegisterUserData, User } from '../../types/User';
+import type { ServerErrors } from '../../types/Forms';
+import { mapServerErrors } from '../../utils/mapServerErrors';
 
 export type AuthContextType = {
   user: User | null;
@@ -10,10 +12,10 @@ export type AuthContextType = {
   isAuthenticated: boolean;
   isLoading: boolean;
   isSuccess: boolean;
-  submitError: string;
+  serverErrors: ServerErrors;
+  setServerErrors: (err: ServerErrors) => void;
   setIsSuccess: (arg: boolean) => void;
-  setSubmitError: (arg: string) => void;
-  login: (data: LoginUserData) => Promise<void>;
+  login: (data: AuthCredentials) => Promise<boolean>;
   register: (data: RegisterUserData) => Promise<boolean>;
   logout: () => Promise<void>;
 };
@@ -26,14 +28,14 @@ export const AuthContextProvider: React.FC<Props> = ({ children }) => {
   const [user] = useState<User | null>(null);
   const [accessToken, setAccessToken] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
-  const [submitError, setSubmitError] = useState('');
+  const [serverErrors, setServerErrors] = useState<ServerErrors>({});
   const [isSuccess, setIsSuccess] = useState(false);
 
   const isAuthenticated = Boolean(user && accessToken);
 
   const register = async (data: RegisterUserData) => {
     setIsLoading(true);
-    setSubmitError('');
+    setServerErrors({});
 
     try {
       await client.post('/users/register', data);
@@ -45,24 +47,18 @@ export const AuthContextProvider: React.FC<Props> = ({ children }) => {
       const axiosError = error as {
         response?: { data?: { detail?: unknown; message?: string } };
       };
-      // 1. Check for the FastAPI 'detail' array structure
       const details = axiosError.response?.data?.detail;
 
-      let finalMessage = 'An unexpected error occurred';
+      if (typeof details === 'string') {
+        setServerErrors({
+          email: details,
+        });
 
-      if (Array.isArray(details) && details.length > 0) {
-        // Take the message from the first error found
-        // e.g., "Field 'email' is invalid"
-        finalMessage = details[0].msg;
-      } else if (typeof details === 'string') {
-        // Sometimes 'detail' is just a string
-        finalMessage = details;
-      } else if (axiosError.response?.data?.message) {
-        // Fallback to original logic
-        finalMessage = axiosError.response.data.message;
+        return false;
       }
 
-      setSubmitError(finalMessage);
+      const serverErrors = mapServerErrors(details);
+      setServerErrors(serverErrors);
 
       return false;
     } finally {
@@ -70,10 +66,37 @@ export const AuthContextProvider: React.FC<Props> = ({ children }) => {
     }
   };
 
-  const login = async (data: LoginUserData) => {
-    const response = await instance.post('/login', data);
+  const login = async (data: AuthCredentials) => {
+    setIsLoading(true);
+    setServerErrors({});
 
-    setAccessToken(response.data.access_token);
+    try {
+      const response = await instance.post('/users/login', data);
+
+      setAccessToken(response.data.access_token);
+
+      return true;
+    } catch (error) {
+      const axiosError = error as {
+        response?: { data?: { detail?: unknown; message?: string } };
+      };
+      const details = axiosError.response?.data?.detail;
+
+      if (typeof details === 'string') {
+        setServerErrors({
+          email: details,
+        });
+
+        return false;
+      }
+
+      const serverErrors = mapServerErrors(details);
+      setServerErrors(serverErrors);
+
+      return false;
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const logout = async () => {
@@ -123,14 +146,14 @@ export const AuthContextProvider: React.FC<Props> = ({ children }) => {
       isAuthenticated,
       isLoading,
       isSuccess,
-      submitError,
+      serverErrors,
+      setServerErrors,
       setIsSuccess,
-      setSubmitError,
       register,
       login,
       logout,
     }),
-    [user, accessToken, isAuthenticated, isLoading, isSuccess, submitError],
+    [user, accessToken, isAuthenticated, isLoading, isSuccess, serverErrors],
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
