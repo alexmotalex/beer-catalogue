@@ -2,6 +2,7 @@ export const ROUTES = {
   home: '/',
   account: '/account',
   signIn: '/signin',
+  checkEmail: '/checkemail',
   signUp: '/signup',
   help: '/help',
   catalogue: '/beers',
@@ -21,4 +22,8 @@ export const ROUTES = {
   x: '/',
 } as const;
 
-export const HIDDEN_ROUTES = [ROUTES.signUp, ROUTES.signIn] as const;
+export const HIDDEN_ROUTES = [
+  ROUTES.signUp,
+  ROUTES.signIn,
+  ROUTES.checkEmail,
+] as const;

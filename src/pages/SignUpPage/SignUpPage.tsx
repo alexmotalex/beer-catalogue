@@ -3,7 +3,6 @@ import { BackButton } from '../../components/Buttons/BackButton';
 import { LabeledInput } from '../../components/LabeledInput';
 import { Checkbox } from '../../components/Checkbox';
 import { PrimaryButton } from '../../components/Buttons/PrimaryButton';
-import { SuccessMessage } from '../../components/SuccessMessage';
 import { RedirectText } from '../../components/RedirectText';
 import { FormErrorInfo } from '../../components/FormErrorInfo';
 import { useAuth } from '../../hooks/useAuth';
@@ -13,26 +12,19 @@ import { ROUTES } from '../../constants/routes';
 import { emptySignUpForm } from '../../constants/formsData';
 import type { SignupFormData } from '../../types/Forms';
 import styles from './SignUpPage.module.scss';
+import { useNavigate } from 'react-router';
 
 export const SignUpPage = () => {
   const [formData, setFormData] = useState<SignupFormData>(emptySignUpForm);
 
-  const {
-    register,
-    isLoading,
-    isSuccess,
-    serverErrors,
-    setServerErrors,
-    setIsSuccess,
-  } = useAuth();
+  const { register, isLoading, serverErrors, setServerErrors } = useAuth();
+  const navigate = useNavigate();
 
   const validationErrors = validateSignUpForm(formData);
   const isFormValid = Object.keys(validationErrors).length === 0;
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value, type, checked } = e.target;
-
-    setIsSuccess(false);
 
     setServerErrors({
       ...serverErrors,
@@ -54,6 +46,9 @@ export const SignUpPage = () => {
 
     if (registrationSuccess) {
       setFormData(emptySignUpForm);
+      navigate(ROUTES.checkEmail, {
+        state: { email: formData.email, formData },
+      });
     }
   };
 
@@ -66,20 +61,14 @@ export const SignUpPage = () => {
   );
 
   return (
-    <section className="authFormPage">
+    <section className="authPage">
       <div className="backButtonWrapper">
         <BackButton />
       </div>
 
-      {isSuccess && (
-        <div className={styles.successMessageWrapper}>
-          <SuccessMessage title="User created. Please check your email." />
-        </div>
-      )}
+      <h1 className="authPageTitle">Sign Up</h1>
 
-      <h1 className="authFormPageTitle">Sign Up</h1>
-
-      <p className="authFormPageSubtitle">Create your personal account</p>
+      <p className="authPageSubtitle">Create your personal account</p>
 
       <form className="authForm" onSubmit={handleSubmit}>
         <div className="authFormInputsWrapper">

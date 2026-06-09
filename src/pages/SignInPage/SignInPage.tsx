@@ -47,14 +47,14 @@ export const SigninPage = () => {
   };
 
   return (
-    <section className="authFormPage">
+    <section className="authPage">
       <div className="backButtonWrapper">
         <BackButton />
       </div>
 
-      <h1 className="authFormPageTitle">Sign In</h1>
+      <h1 className="authPageTitle">Sign In</h1>
 
-      <p className="authFormPageSubtitle">Continue to your personal account</p>
+      <p className="authPageSubtitle">Continue to your personal account</p>
 
       <form className="authForm" onSubmit={handleSubmit}>
         <div className="authFormInputsWrapper">

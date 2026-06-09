@@ -1,6 +1,6 @@
 @use './variables' as var;
 
-.authFormPage {
+.authPage {
   padding: 32px 108px 139px;
   height: 100%;
   display: flex;
@@ -13,7 +13,7 @@
   background-size: cover;
   background-position: center;
 
-  & &Title {
+  &Title {
     margin: 0;
     margin-bottom: 8px;
     font-size: 32px;
@@ -40,7 +40,6 @@
 }
 
 .authForm {
-  width: 100%;
   padding: 24px;
   max-width: 392px;
   display: flex;

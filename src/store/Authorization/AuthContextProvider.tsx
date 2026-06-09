@@ -11,10 +11,8 @@ export type AuthContextType = {
   accessToken: string | null;
   isAuthenticated: boolean;
   isLoading: boolean;
-  isSuccess: boolean;
   serverErrors: ServerErrors;
   setServerErrors: (err: ServerErrors) => void;
-  setIsSuccess: (arg: boolean) => void;
   login: (data: AuthCredentials) => Promise<boolean>;
   register: (data: RegisterUserData) => Promise<boolean>;
   logout: () => Promise<void>;
@@ -25,11 +23,10 @@ export type Props = {
 };
 
 export const AuthContextProvider: React.FC<Props> = ({ children }) => {
-  const [user] = useState<User | null>(null);
+  const [user, setUser] = useState<User | null>(null);
   const [accessToken, setAccessToken] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [serverErrors, setServerErrors] = useState<ServerErrors>({});
-  const [isSuccess, setIsSuccess] = useState(false);
 
   const isAuthenticated = Boolean(user && accessToken);
 
@@ -39,8 +36,6 @@ export const AuthContextProvider: React.FC<Props> = ({ children }) => {
 
     try {
       await client.post('/users/register', data);
-
-      setIsSuccess(true);
 
       return true;
     } catch (error: unknown) {
@@ -107,23 +102,23 @@ export const AuthContextProvider: React.FC<Props> = ({ children }) => {
     }
   };
 
-  // useEffect(() => {
-  //   const refreshSession = async () => {
-  //     try {
-  //       const response = await instance.post('/refresh');
+  useEffect(() => {
+    const refreshSession = async () => {
+      try {
+        const response = await instance.post('/refresh');
 
-  //       setUser(response.data.user);
-  //       setAccessToken(response.data.accessToken);
-  //     } catch {
-  //       setUser(null);
-  //       setAccessToken(null);
-  //     } finally {
-  //       setIsLoading(false);
-  //     }
-  //   };
+        setUser(response.data.user);
+        setAccessToken(response.data.accessToken);
+      } catch {
+        setUser(null);
+        setAccessToken(null);
+      } finally {
+        setIsLoading(false);
+      }
+    };
 
-  //   refreshSession();
-  // }, []);
+    refreshSession();
+  }, []);
 
   useEffect(() => {
     const interceptorId = instance.interceptors.request.use(config => {
@@ -145,15 +140,13 @@ export const AuthContextProvider: React.FC<Props> = ({ children }) => {
       accessToken,
       isAuthenticated,
       isLoading,
-      isSuccess,
       serverErrors,
       setServerErrors,
-      setIsSuccess,
       register,
       login,
       logout,
     }),
-    [user, accessToken, isAuthenticated, isLoading, isSuccess, serverErrors],
+    [user, accessToken, isAuthenticated, isLoading, serverErrors],
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

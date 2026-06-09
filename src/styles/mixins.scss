@@ -9,8 +9,6 @@
 }
 
 @mixin active-link {
-  color: var.$brown-100-color;
-
   &::after {
     content: '';
     position: absolute;
@@ -76,8 +74,23 @@
   color: var.$brown-60-color;
   text-decoration: none;
 
-  &:hover {
-    @include active-link;
-    @include hover(color, var.$brown-100-color);
+  &::after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 1px;
+    bottom: 0;
+    left: 0;
+    background-color: var.$primary-90-color;
+
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform var.$effectDuration;
   }
+
+  &:hover::after {
+    transform: scaleX(1);
+  }
+
+  @include hover(color, var.$brown-100-color);
 }
