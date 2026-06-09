@@ -1,10 +1,10 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { instance } from '../../api/axiosInstance';
 import { AuthContext } from './AuthContext';
 import { client } from '../../utils/axiosClient';
 import type { AuthCredentials, RegisterUserData, User } from '../../types/User';
 import type { ServerErrors } from '../../types/Forms';
 import { mapServerErrors } from '../../utils/mapServerErrors';
+import { instance } from '../../api/axiosInstance';
 
 export type AuthContextType = {
   user: User | null;
@@ -28,7 +28,7 @@ export const AuthContextProvider: React.FC<Props> = ({ children }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [serverErrors, setServerErrors] = useState<ServerErrors>({});
 
-  const isAuthenticated = Boolean(user && accessToken);
+  const isAuthenticated = Boolean(accessToken);
 
   const register = async (data: RegisterUserData) => {
     setIsLoading(true);
@@ -94,30 +94,45 @@ export const AuthContextProvider: React.FC<Props> = ({ children }) => {
     }
   };
 
+  const refreshSession = async () => {
+    try {
+      const response = await instance.post('/users/refresh', {});
+
+      setAccessToken(response.data.access_token);
+
+      return true;
+    } catch {
+      setAccessToken(null);
+      setUser(null);
+
+      return false;
+    }
+  };
+
   const logout = async () => {
     try {
-      await instance.post('/logout');
+      await client.post('/logout', {});
     } finally {
       setAccessToken(null);
+      setUser(null);
     }
   };
 
   useEffect(() => {
-    const refreshSession = async () => {
-      try {
-        const response = await instance.post('/refresh');
+    const initAuth = async () => {
+      setIsLoading(true);
 
-        setUser(response.data.user);
-        setAccessToken(response.data.accessToken);
-      } catch {
+      const success = await refreshSession();
+
+      if (!success) {
         setUser(null);
         setAccessToken(null);
-      } finally {
-        setIsLoading(false);
       }
+
+      setIsLoading(false);
     };
 
-    refreshSession();
+    initAuth();
   }, []);
 
   useEffect(() => {
@@ -128,6 +143,8 @@ export const AuthContextProvider: React.FC<Props> = ({ children }) => {
 
       return config;
     });
+
+    console.log(instance.interceptors);
 
     return () => {
       instance.interceptors.request.eject(interceptorId);

@@ -16,8 +16,8 @@ export const ActivatePage = () => {
         await client.post('/users/activate', { token });
 
         navigate(ROUTES.signIn);
-      } catch {
-        console.error('Activation failed:');
+      } catch (error) {
+        console.log(error);
       }
     };
 

@@ -8,6 +8,7 @@ import { ProductPage } from './pages/ProductPage';
 import { SigninPage } from './pages/SignInPage';
 import { CheckEmailPage } from './pages/CheckEmailPage';
 import './App.scss';
+import { ActivatePage } from './pages/ActivatePage';
 
 function App() {
   return (
@@ -16,7 +17,7 @@ function App() {
         <Route path="/" element={<MainLayout />}>
           <Route index element={<HomePage />} />
           <Route path="signup" element={<SignUpPage />} />
-          <Route path="signup" element={<SignUpPage />} />
+          <Route path="activate" element={<ActivatePage />} />
           <Route path="signin" element={<SigninPage />} />
           <Route path="checkemail" element={<CheckEmailPage />} />
           <Route path="beers" element={<Catalogue />} />

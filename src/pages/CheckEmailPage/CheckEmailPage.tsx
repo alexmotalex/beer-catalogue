@@ -63,9 +63,7 @@ export const CheckEmailPage = () => {
 
       <p className={styles.checkEmailSubtitle}>
         We've sent a verification link to{' '}
-        <strong className={styles.checkEmailSubtitleEmail}>
-          {'john.doe@email.com'}
-        </strong>
+        <strong className={styles.checkEmailSubtitleEmail}>{email}</strong>
       </p>
 
       <div className={styles.checkEmailContent}>
