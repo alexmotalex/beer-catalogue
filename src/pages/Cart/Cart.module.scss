@@ -4,4 +4,28 @@
   padding-inline: 108px;
   display: flex;
   gap: 128px;
+
+  &Main {
+    margin-top: 32px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+
+    &Text {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    &Title {
+      margin: 0;
+      font-size: 32px;
+      font-weight: 500;
+      line-height: 120%;
+      letter-spacing: -0.01em;
+      color: var.$brown-100-color;
+      text-transform: uppercase;
+    }
+  }
 }
