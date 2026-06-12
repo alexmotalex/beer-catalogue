@@ -30,12 +30,12 @@
     border-color: var.$error-color;
   }
 
-  &:hover {
+  &:hover:not(.inputError) {
     border-color: var.$brown-50-color;
   }
 
-  &:focus,
-  &:not(:placeholder-shown) {
+  &:not(.inputError):focus,
+  &:not(.inputError):not(:placeholder-shown) {
     border-color: var.$brown-50-color;
     outline: none;
   }

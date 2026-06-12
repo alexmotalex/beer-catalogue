@@ -35,7 +35,7 @@ export const AuthContextProvider: React.FC<Props> = ({ children }) => {
     setServerErrors({});
 
     try {
-      await client.post('/users/register', data);
+      await client.post('/users/register/', data);
 
       return true;
     } catch (error: unknown) {
@@ -66,7 +66,7 @@ export const AuthContextProvider: React.FC<Props> = ({ children }) => {
     setServerErrors({});
 
     try {
-      const response = await instance.post('/users/login', data);
+      const response = await instance.post('/users/login/', data);
 
       setAccessToken(response.data.access_token);
 
@@ -96,7 +96,7 @@ export const AuthContextProvider: React.FC<Props> = ({ children }) => {
 
   const refreshSession = async () => {
     try {
-      const response = await instance.post('/users/refresh', {});
+      const response = await instance.post('/users/refresh/', {});
 
       setAccessToken(response.data.access_token);
 
@@ -111,7 +111,7 @@ export const AuthContextProvider: React.FC<Props> = ({ children }) => {
 
   const logout = async () => {
     try {
-      await client.post('/logout', {});
+      await client.post('/logout/', {});
     } finally {
       setAccessToken(null);
       setUser(null);
@@ -143,8 +143,6 @@ export const AuthContextProvider: React.FC<Props> = ({ children }) => {
 
       return config;
     });
-
-    console.log(instance.interceptors);
 
     return () => {
       instance.interceptors.request.eject(interceptorId);

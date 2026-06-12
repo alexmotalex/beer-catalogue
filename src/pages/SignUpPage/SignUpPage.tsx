@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { BackButton } from '../../components/Buttons/BackButton';
 import { LabeledInput } from '../../components/LabeledInput';
 import { Checkbox } from '../../components/Checkbox';
@@ -60,6 +60,10 @@ export const SignUpPage = () => {
     />
   );
 
+  useEffect(() => {
+    setServerErrors({});
+  }, [setServerErrors]);
+
   return (
     <section className="authPage">
       <div className="backButtonWrapper">
@@ -98,7 +102,7 @@ export const SignUpPage = () => {
               label="Email"
               name="email"
               type="email"
-              error={!!serverErrors.email}
+              error={Boolean(serverErrors.email)}
               value={formData.email}
               onChange={handleChange}
               placeholder="john.doe@email.com"
@@ -116,7 +120,7 @@ export const SignUpPage = () => {
               label="Password"
               name="password"
               type="password"
-              error={!!serverErrors.password}
+              error={Boolean(serverErrors.password)}
               value={formData.password}
               onChange={handleChange}
               placeholder="••••••••"
@@ -127,9 +131,9 @@ export const SignUpPage = () => {
               <FormErrorInfo errorText={serverErrors.password} />
             )}
 
-            <span className={styles.passwordCondition}>
+            {/* <span className={styles.passwordCondition}>
               At least 8 characters, including numbers
-            </span>
+            </span> */}
           </div>
         </div>
 

@@ -1,12 +1,12 @@
 import { Navigate, useLocation } from 'react-router';
+import { useEffect, useState } from 'react';
 import { BackButton } from '../../components/Buttons/BackButton';
 import { SuccessMessage } from '../../components/SuccessMessage';
 
-import styles from './CheckEmailPage.module.scss';
 import { PrimaryButton } from '../../components/Buttons/PrimaryButton';
-import { useEffect, useState } from 'react';
-import { ROUTES } from '../../constants/routes';
 import { useAuth } from '../../hooks/useAuth';
+import { ROUTES } from '../../constants/routes';
+import styles from './CheckEmailPage.module.scss';
 
 const RESEND_TIMEOUT_SECONDS = 60;
 
@@ -17,7 +17,6 @@ export const CheckEmailPage = () => {
   const email = location.state?.email ?? '';
   const formData = location.state?.formData ?? {};
 
-  console.log(location);
   const canResend = secondsLeft === 0;
   const resendInfo = canResend
     ? 'Resend available'

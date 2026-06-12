@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { BackButton } from '../../components/Buttons/BackButton';
 import { LabeledInput } from '../../components/LabeledInput';
 import { FormErrorInfo } from '../../components/FormErrorInfo';
@@ -45,6 +45,10 @@ export const SigninPage = () => {
       navigate(ROUTES.home);
     }
   };
+
+  useEffect(() => {
+    setServerErrors({});
+  }, [setServerErrors]);
 
   return (
     <section className="authPage">
