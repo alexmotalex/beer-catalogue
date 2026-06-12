@@ -9,7 +9,9 @@ type Props = {
 export const FormErrorInfo: React.FC<Props> = ({ errorText }) => {
   return (
     <div className={styles.inputError}>
-      <Icon name="error" size={14} />
+      <div className={styles.inputErrorIconWrapper}>
+        <Icon name="error" />
+      </div>
       <span className={styles.inputErrorText}>{errorText}</span>
     </div>
   );

@@ -130,10 +130,6 @@ export const SignUpPage = () => {
             {serverErrors.password && (
               <FormErrorInfo errorText={serverErrors.password} />
             )}
-
-            {/* <span className={styles.passwordCondition}>
-              At least 8 characters, including numbers
-            </span> */}
           </div>
         </div>
 

@@ -13,7 +13,7 @@ export const InfoHeaderLink: React.FC<Props> = ({ path, title, icon }) => {
   return (
     <Link to={path} className={styles.infoHeader}>
       <span className={styles.infoHeaderTitle}>{title}</span>
-      <div className={styles.infoHeaderIcon}>
+      <div className={styles.infoHeaderIconWrapper}>
         <Icon name={icon} />
       </div>
     </Link>

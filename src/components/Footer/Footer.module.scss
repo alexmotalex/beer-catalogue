@@ -110,5 +110,10 @@
   border-radius: 2px;
   background-color: var.$brown-10-color;
 
-  @include mixins.hover(opacity, 0.8);
+  @include mixins.hover(color, var.$brown-60-color);
+
+  &IconWrapper {
+    width: 24px;
+    height: 24px;
+  }
 }

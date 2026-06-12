@@ -38,7 +38,9 @@ export const Header = () => {
               className={getActionLinkClassName}
               aria-label={item.label}
             >
-              <Icon name={item.name} />
+              <div className={styles.actionLinkIconWrapper}>
+                <Icon name={item.name} />
+              </div>
             </NavLink>
           ))}
         </div>

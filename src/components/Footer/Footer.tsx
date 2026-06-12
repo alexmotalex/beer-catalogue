@@ -84,7 +84,9 @@ export const Footer = () => {
                   className={styles.socialLink}
                   aria-label={item.label}
                 >
-                  <Icon name={item.name} />
+                  <div className={styles.socialLinkIconWrapper}>
+                    <Icon name={item.name} />
+                  </div>
                 </a>
               </li>
             ))}

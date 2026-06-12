@@ -11,7 +11,9 @@ export const BackButton = () => {
 
   return (
     <button type="button" onClick={handleGoBack} className={styles.backButton}>
-      <Icon name="back-arrow" size={18} />
+      <div className={styles.backButtonIconWrapper}>
+        <Icon name="back-arrow" />
+      </div>
       Back
     </button>
   );

@@ -10,10 +10,14 @@
   border-radius: 4px;
 
   &Tick {
-    padding: 4px;
     color: var.$brown-10-color;
     background: var.$primary-90-color;
     border-radius: 2px;
+
+    &IconWrapper {
+      width: 24px;
+      height: 24px;
+    }
   }
 
   &Title {

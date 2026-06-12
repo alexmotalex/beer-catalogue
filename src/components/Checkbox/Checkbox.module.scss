@@ -61,5 +61,10 @@
     transition:
       opacity var.$effectDuration,
       transform var.$effectDuration;
+
+    &Wrapper {
+      width: 20px;
+      height: 20px;
+    }
   }
 }

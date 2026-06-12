@@ -47,9 +47,13 @@ export const LabeledInput: React.FC<Props> = ({
             aria-label={isPasswordVisible ? 'Hide password' : 'Show password'}
           >
             {isPasswordVisible ? (
-              <Icon name="visible" size={20} />
+              <div className={styles.visibilityButtonIconWrapper}>
+                <Icon name="visible" />
+              </div>
             ) : (
-              <Icon name="invisible" size={20} />
+              <div className={styles.visibilityButtonIconWrapper}>
+                <Icon name="invisible" />
+              </div>
             )}
           </button>
         )}

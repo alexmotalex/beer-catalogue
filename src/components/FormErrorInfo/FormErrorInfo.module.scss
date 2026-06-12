@@ -6,10 +6,14 @@
   gap: 4px;
   color: var.$error-color;
 
+  &IconWrapper {
+    width: 14px;
+    height: 14px;
+  }
+
   &Text {
     font-size: 12px;
     font-weight: 400;
     line-height: 140%;
-    color: var.$error-color;
   }
 }

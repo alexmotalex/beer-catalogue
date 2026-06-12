@@ -30,7 +30,9 @@ export const Checkbox: React.FC<Props> = ({
 
       <span className={styles.checkboxControl}>
         <span className={styles.checkboxIcon}>
-          <Icon name="tick" size={20} />
+          <div className={styles.checkboxIconWrapper}>
+            <Icon name="tick" />
+          </div>
         </span>
       </span>
 

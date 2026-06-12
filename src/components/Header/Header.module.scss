@@ -75,9 +75,18 @@
   align-items: center;
   justify-content: center;
 
+  &:hover {
+    @include mixins.hover(color, var.$brown-100-color);
+  }
+
   &IsActive {
     color: var.$brown-100-color;
 
     @include mixins.active-link;
+  }
+
+  &IconWrapper {
+    width: 24px;
+    height: 24px;
   }
 }

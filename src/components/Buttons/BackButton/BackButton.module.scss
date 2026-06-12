@@ -16,4 +16,9 @@
   cursor: pointer;
 
   @include mixins.hover(color, var.$brown-100-color);
+
+  &IconWrapper {
+    width: 18px;
+    height: 18px;
+  }
 }
