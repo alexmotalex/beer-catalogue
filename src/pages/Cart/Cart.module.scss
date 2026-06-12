@@ -1,1 +1,7 @@
 @use '../../styles/variables' as var;
+
+.cart {
+  padding-inline: 108px;
+  display: flex;
+  gap: 128px;
+}

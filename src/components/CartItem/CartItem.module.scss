@@ -1,0 +1,13 @@
+@use '../../styles/variables' as var;
+@use '../../styles/mixins' as mixins;
+
+.cartItem {
+  padding: 16px;
+  width: 100%;
+  display: flex;
+  gap: 16px;
+
+  border: 1px solid var.$brown-20-color;
+  border-radius: 4px;
+  background-color: transparent;
+}
