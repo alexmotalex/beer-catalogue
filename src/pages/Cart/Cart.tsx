@@ -24,6 +24,9 @@ export const Cart = () => {
   const cartList: CartEntry[] = [
     { id: 1, qty: 2, product: beer },
     { id: 1, qty: 1, product: beer },
+    { id: 1, qty: 1, product: beer },
+    { id: 1, qty: 1, product: beer },
+    { id: 1, qty: 1, product: beer },
   ];
   const hasCartItems = cartList.length > 0;
 
@@ -56,7 +59,7 @@ export const Cart = () => {
 
         <ul className={styles.mainProductList}>
           {cartList.map(item => (
-            <li key={item.id}>
+            <li key={item.id} className={styles.mainProductItem}>
               <CartItem cartItem={item} />
             </li>
           ))}
