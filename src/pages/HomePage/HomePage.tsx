@@ -1,13 +1,13 @@
 import React from 'react';
+import { useNavigate } from 'react-router';
 import { PrimaryButton } from '../../components/Buttons/PrimaryButton';
+import { SecondaryButton } from '../../components/Buttons/SecondaryButton';
+import { ProductCard } from '../../components/ProductCard';
+import { useBeers } from '../../hooks/useBeers';
 import { beerDescriptions } from '../../constants/beerDescriptions';
 import { storyParagraphs } from '../../constants/storyParagraphs';
-import { SecondaryButton } from '../../components/Buttons/SecondaryButton';
-import { useBeers } from '../../hooks/useBeers';
-import { ProductCard } from '../../components/ProductCard';
-import styles from './HomePage.module.scss';
-import { useNavigate } from 'react-router';
 import { ROUTES } from '../../constants/routes';
+import styles from './HomePage.module.scss';
 
 export const HomePage = () => {
   const { beers } = useBeers();
@@ -31,7 +31,11 @@ export const HomePage = () => {
           </div>
 
           <div className={styles.brewButtonWrapper}>
-            <PrimaryButton title="Browse beers" onClick={() => {}} />
+            <PrimaryButton
+              type="button"
+              title="Browse beers"
+              onClick={() => {}}
+            />
           </div>
         </div>
       </section>
@@ -74,15 +78,16 @@ export const HomePage = () => {
         <h2 className={styles.picksTitle}>Our Picks</h2>
 
         <div className={styles.picksCartsContainer}>
-          {beers.slice(0, 3).map(b => (
-            <div key={b.id} className={styles.picksCarts}>
-              <ProductCard product={b} />
+          {beers.slice(0, 3).map(beer => (
+            <div key={beer.id} className={styles.picksCarts}>
+              <ProductCard product={beer} />
             </div>
           ))}
         </div>
 
         <div className={styles.picksButton}>
           <SecondaryButton
+            type="button"
             title="View all"
             onClick={() => navigate(ROUTES.catalogue)}
           />

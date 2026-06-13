@@ -156,7 +156,6 @@ export const SignUpPage = () => {
         <div className="authFormButton">
           <PrimaryButton
             title={isLoading ? 'Signing Up...' : 'Sign Up'}
-            type="submit"
             disabled={!isFormValid || isLoading}
           />
         </div>

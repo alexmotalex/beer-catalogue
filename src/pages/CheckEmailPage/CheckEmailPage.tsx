@@ -72,6 +72,7 @@ export const CheckEmailPage = () => {
 
         <div className={styles.checkEmailContentButton}>
           <PrimaryButton
+            type="button"
             title="Resend link"
             onClick={handleResend}
             disabled={!canResend}

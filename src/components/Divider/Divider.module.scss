@@ -1,0 +1,7 @@
+@use '../../styles/variables.scss' as var;
+
+.divider {
+  width: 100%;
+  border: 1px solid var.$brown-20-color;
+  margin: 0;
+}

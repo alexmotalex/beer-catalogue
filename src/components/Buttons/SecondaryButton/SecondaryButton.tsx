@@ -1,23 +1,12 @@
 import style from './SecondaryButton.module.scss';
 
-type Props = {
+type Props = React.ButtonHTMLAttributes<HTMLButtonElement> & {
   title: string;
-  onClick: () => void;
-  disabled?: boolean;
 };
 
-export const SecondaryButton: React.FC<Props> = ({
-  title,
-  onClick,
-  disabled = false,
-}) => {
+export const SecondaryButton: React.FC<Props> = ({ title, ...rest }) => {
   return (
-    <button
-      type="button"
-      className={style.secondaryButton}
-      onClick={onClick}
-      disabled={disabled}
-    >
+    <button className={style.secondaryButton} {...rest}>
       {title}
     </button>
   );

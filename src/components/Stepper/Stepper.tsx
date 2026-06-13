@@ -34,26 +34,21 @@ export const Stepper: React.FC<Props> = ({
       <button
         type="button"
         disabled={isDisabled}
-        className={styles.stepperButton}
+        className={styles.button}
         onClick={handleLeftButtonClick}
         aria-label={isDisabled ? 'Remove item' : 'Decrease quantity'}
       >
         <Icon name={leftButtonIcon} />
       </button>
 
-      <div
-        className={clsx(
-          styles.stepperValue,
-          isDisabled && styles.stepperValueDisabled,
-        )}
-      >
+      <div className={clsx(styles.value, isDisabled && styles.valueDisabled)}>
         {value}
       </div>
 
       <button
         type="button"
         disabled={value < 1}
-        className={styles.stepperButton}
+        className={styles.button}
         onClick={onIncrease}
         aria-label="Increase quantity"
       >

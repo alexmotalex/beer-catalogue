@@ -122,6 +122,7 @@ export const ProductPage = () => {
 
             <div className={styles.productButtonsAddToBasket}>
               <PrimaryButton
+                type="button"
                 title={buttonTitle}
                 onClick={() => {}}
                 disabled={!is_available}

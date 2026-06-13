@@ -104,11 +104,7 @@ export const SigninPage = () => {
         </div>
 
         <div className="authFormButton">
-          <PrimaryButton
-            title="Sign In"
-            type="submit"
-            disabled={!isFormValid || isLoading}
-          />
+          <PrimaryButton title="Sign In" disabled={!isFormValid || isLoading} />
         </div>
 
         <RedirectText

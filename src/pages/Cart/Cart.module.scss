@@ -1,31 +1,127 @@
 @use '../../styles/variables' as var;
+@use '../../styles/mixins.scss' as mixins;
 
 .cart {
   padding-inline: 108px;
   display: flex;
+  flex: 1;
   gap: 128px;
+}
 
-  &Main {
-    margin-top: 32px;
-    width: 100%;
+.main {
+  margin-top: 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  flex: 2;
+
+  &Header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  &Title {
+    margin: 0;
+    font-size: 32px;
+    font-weight: 500;
+    line-height: 120%;
+    letter-spacing: -0.01em;
+    color: var.$brown-100-color;
+    text-transform: uppercase;
+  }
+
+  &ClearButton {
+    height: 100%;
+    padding: 0;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    border: none;
+    background-color: transparent;
+    font-size: 16px;
+    font-weight: 500;
+    color: var.$brown-60-color;
+    text-decoration: underline;
+    cursor: pointer;
+
+    @include mixins.hover(color, var.$brown-100-color);
+  }
+
+  &ProductList {
+    height: 70%;
+    margin: 0;
+    padding: 0;
+    list-style: none;
     display: flex;
     flex-direction: column;
-    gap: 32px;
+    gap: 16px;
+    overflow-y: auto;
+  }
+}
 
-    &Text {
+.summary {
+  padding: 32px;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  justify-content: space-between;
+  border-radius: 4px;
+  background-color: var.$brown-10-color;
+
+  &Wrapper {
+    display: flex;
+    flex-direction: column;
+  }
+
+  &Title {
+    margin: 0;
+    margin-bottom: 32px;
+    font-size: 24px;
+    font-weight: 500;
+    line-height: 135%;
+    color: var.$brown-100-color;
+  }
+
+  &Info {
+    display: flex;
+    flex-direction: column;
+
+    &Item {
+      padding-block: 20px;
       display: flex;
       align-items: center;
       justify-content: space-between;
     }
+  }
 
-    &Title {
-      margin: 0;
-      font-size: 32px;
-      font-weight: 500;
-      line-height: 120%;
-      letter-spacing: -0.01em;
-      color: var.$brown-100-color;
-      text-transform: uppercase;
+  &TotalTitle,
+  &TotalPrice {
+    margin: 0;
+    font-family: var.$font-heading;
+    font-size: 24px;
+    font-weight: 500;
+    line-height: 135%;
+    color: var.$brown-100-color;
+  }
+
+  &Subtitle,
+  &Price {
+    margin: 0;
+    font-family: var.$font-heading;
+    font-size: 18px;
+    font-weight: 400;
+    line-height: 135%;
+    color: var.$brown-90-color;
+  }
+
+  &Buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+
+    & > * {
+      height: 48px;
     }
   }
 }

@@ -1,7 +1,7 @@
 import type { Beer } from './Beer';
 
 export type CartEntry = {
-  id: string;
+  id: number;
   qty: number;
   product: Beer;
 };
