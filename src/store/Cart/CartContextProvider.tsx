@@ -1,16 +1,29 @@
 import type React from 'react';
-import type { Beer } from '../../types/Beer';
-import { useMemo, useState } from 'react';
+import type { Cart, CartEntry } from '../../types/Cart';
+import { useCallback, useEffect, useMemo, useState } from 'react';
+import { instance } from '../../api/axiosInstance';
 import { CartContext } from './CartContext';
-import type { CartEntry } from '../../types/CartEntry';
+import { useAuth } from '../../hooks/useAuth';
+
+const emptyCart: Cart = {
+  id: 0,
+  cart_items: [],
+  subtotal: '0',
+  total: '0',
+};
 
 export type CartContextType = {
-  CartList: CartEntry[];
-  totalCartEntrys: number;
-  addToCart: (product: Beer) => void;
-  deleteFromCart: (id: number) => void;
-  clearCart: () => void;
-  totalCartAmount: number;
+  cart: Cart;
+  cartItems: CartEntry[];
+  subtotal: string;
+  total: string;
+  isLoading: boolean;
+  error: string | null;
+  fetchCart: () => Promise<void>;
+  addToCart: (beerId: number) => Promise<void>;
+  deleteFromCart: (itemId: number) => Promise<void>;
+  clearCart: () => Promise<void>;
+  isInCart: (beerId: number) => boolean;
 };
 
 type Props = {
@@ -18,53 +31,99 @@ type Props = {
 };
 
 export const CartContextProvider: React.FC<Props> = ({ children }) => {
-  const [CartList, setCartList] = useState<CartEntry[]>([]);
+  const [cart, setCart] = useState<Cart>(emptyCart);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-  const addToCart = (beer: Beer) => {
-    setCartList(prev => {
-      const isAlreadyInCart = prev.some(p => p.id === beer.id);
+  const { isAuthenticated } = useAuth();
 
-      if (isAlreadyInCart) {
-        return prev;
+  const fetchCart = useCallback(async () => {
+    setIsLoading(true);
+
+    try {
+      const response = await instance.get('/cart/');
+      setCart(response.data);
+    } catch {
+      setError('Failed to load cart');
+    } finally {
+      setIsLoading(false);
+    }
+  }, []);
+
+  const addToCart = useCallback(
+    async (beerId: number) => {
+      try {
+        await instance.post(`/cart/${beerId}/`);
+        await fetchCart();
+      } catch {
+        setError('Failed to add item');
       }
-
-      return [...prev, { id: beer.id, qty: 1, product: beer }];
-    });
-  };
-
-  const deleteFromCart = (id: number) => {
-    setCartList(prev => prev.filter(p => p.id !== id));
-  };
-
-  const clearCart = () => {
-    setCartList([]);
-  };
-
-  const totalCartEntrys = useMemo(
-    () => CartList.reduce((total, item) => total + item.qty, 0),
-    [CartList],
+    },
+    [fetchCart],
   );
 
-  const totalCartAmount = useMemo(
-    () =>
-      CartList.reduce((totalAmount, item) => {
-        const productTotalAmount = Number(item.product.price) * item.qty;
-
-        return totalAmount + productTotalAmount;
-      }, 0),
-    [CartList],
+  const deleteFromCart = useCallback(
+    async (itemId: number) => {
+      try {
+        await instance.delete(`/cart/${itemId}/`);
+        await fetchCart();
+      } catch {
+        setError('Failed to remove item');
+      }
+    },
+    [fetchCart],
   );
 
-  const value: CartContextType = useMemo(
+  const clearCart = useCallback(async () => {
+    try {
+      await instance.delete('/cart/clear/');
+      setCart(emptyCart);
+    } catch {
+      setError('Failed to clear cart');
+    }
+  }, []);
+
+  const isInCart = useCallback(
+    (beerId: number) => cart.cart_items.some(item => item.id === beerId),
+    [cart.cart_items],
+  );
+
+  useEffect(() => {
+    if (!isAuthenticated) {
+      return;
+    }
+
+    const loadCart = async () => {
+      await fetchCart();
+    };
+
+    void loadCart();
+  }, [isAuthenticated, fetchCart]);
+
+  const value = useMemo(
     () => ({
-      CartList,
-      totalCartEntrys,
+      cart,
+      cartItems: cart.cart_items,
+      subtotal: cart.subtotal,
+      total: cart.total,
+      isLoading,
+      error,
+      fetchCart,
       addToCart,
       deleteFromCart,
       clearCart,
-      totalCartAmount,
+      isInCart,
     }),
-    [CartList, totalCartEntrys, totalCartAmount],
+    [
+      cart,
+      addToCart,
+      clearCart,
+      deleteFromCart,
+      error,
+      isLoading,
+      isInCart,
+      fetchCart,
+    ],
   );
 
   return <CartContext.Provider value={value}>{children}</CartContext.Provider>;

@@ -7,12 +7,14 @@ import { Stepper } from '../../components/Stepper';
 import { useBeerById } from '../../hooks/useBeerById';
 import clsx from 'clsx';
 import styles from './ProductPage.module.scss';
+import { useCart } from '../../hooks/useCart';
 
 export const ProductPage = () => {
   const { productId } = useParams();
   const beerId = Number(productId);
 
   const { beer, isLoading, isError } = useBeerById(beerId);
+  const { addToCart, isInCart } = useCart();
 
   if (isLoading) {
     return <h2>Loading</h2>;
@@ -38,9 +40,15 @@ export const ProductPage = () => {
     is_available,
   } = beer;
 
+  const inCart = isInCart(beerId);
+
   const handleIncrease = () => {};
   const handleDecrease = () => {};
   const handleDelete = () => {};
+
+  const handleAddToCart = () => {
+    addToCart(beerId);
+  };
 
   const specifications = [
     {
@@ -61,9 +69,11 @@ export const ProductPage = () => {
     },
   ];
 
-  const buttonTitle = is_available
-    ? `Add to basket | $${price}`
-    : 'Out of stock';
+  const buttonTitle = !is_available
+    ? 'Out of stock'
+    : inCart
+      ? 'Added to cart'
+      : `Add to basket | $${price}`;
 
   return (
     <section className={styles.product}>
@@ -124,8 +134,8 @@ export const ProductPage = () => {
               <PrimaryButton
                 type="button"
                 title={buttonTitle}
-                onClick={() => {}}
-                disabled={!is_available}
+                onClick={handleAddToCart}
+                disabled={!is_available || inCart}
               />
             </div>
           </div>

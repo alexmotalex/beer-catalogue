@@ -5,6 +5,7 @@ import { PrimaryButton } from '../Buttons/PrimaryButton';
 import { capitalizeFirstLetter } from '../../utils/capitalizeFirstLetter';
 import styles from './ProductCard.module.scss';
 import { buildProductPath } from '../../utils/buildProductPath ';
+import { useCart } from '../../hooks/useCart';
 
 type Props = {
   product: Omit<Beer, 'description'>;
@@ -12,6 +13,7 @@ type Props = {
 
 export const ProductCard: React.FC<Props> = ({ product }) => {
   const {
+    id,
     name,
     price,
     image_url,
@@ -19,9 +21,18 @@ export const ProductCard: React.FC<Props> = ({ product }) => {
     beer_type,
     volume,
     is_filtered,
+    is_available,
   } = product;
 
-  const productPath = buildProductPath(1);
+  const { addToCart, isInCart } = useCart();
+
+  const productPath = buildProductPath(id);
+
+  const handleAddToCart = () => {
+    addToCart(id);
+  };
+
+  const inCart = isInCart(id);
 
   const productCharacteristics = [
     {
@@ -41,6 +52,12 @@ export const ProductCard: React.FC<Props> = ({ product }) => {
       spec: volume,
     },
   ];
+
+  const buttonTitle = !is_available
+    ? 'Out of stock'
+    : inCart
+      ? 'Added to cart'
+      : `Add to basket | $${price}`;
 
   return (
     <article className={styles.productCard}>
@@ -69,7 +86,12 @@ export const ProductCard: React.FC<Props> = ({ product }) => {
       </div>
 
       <div className={styles.productCardButton}>
-        <PrimaryButton type="button" title="Add to cart" />
+        <PrimaryButton
+          type="button"
+          title={buttonTitle}
+          onClick={handleAddToCart}
+          disabled={!is_available || inCart}
+        />
       </div>
     </article>
   );

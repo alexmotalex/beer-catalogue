@@ -9,6 +9,7 @@ import { SigninPage } from './pages/SignInPage';
 import { CheckEmailPage } from './pages/CheckEmailPage';
 import './App.scss';
 import { ActivatePage } from './pages/ActivatePage';
+import { UserPage } from './pages/UserPage';
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
           <Route path="beers" element={<Catalogue />} />
           <Route path="product/:productId" element={<ProductPage />} />
           <Route path="cart" element={<Cart />} />
+          <Route path="account" element={<UserPage />} />
           <Route path="*" element={<h1>Not Found</h1>} />
         </Route>
       </Routes>
