@@ -9,6 +9,7 @@ import {
 } from '../../constants/navLinks';
 import { HIDDEN_ROUTES, ROUTES } from '../../constants/routes';
 import styles from './Header.module.scss';
+import { useCart } from '../../hooks/useCart';
 
 const getNavLinkClassName = createNavLinkClass(styles, 'navigationLink');
 const getActionLinkClassName = createNavLinkClass(styles, 'actionLink');
@@ -16,6 +17,7 @@ const getActionLinkClassName = createNavLinkClass(styles, 'actionLink');
 export const Header = () => {
   const { pathname } = useLocation();
   const { isAuthenticated } = useAuth();
+  const { quantity } = useCart();
 
   const shouldHideMainNavigation = HIDDEN_ROUTES.some(
     route => route === pathname,
@@ -40,6 +42,9 @@ export const Header = () => {
             >
               <div className={styles.actionLinkIconWrapper}>
                 <Icon name={item.name} />
+                {item.name === 'cart' && quantity > 0 && (
+                  <p className={styles.quantity}>{quantity}</p>
+                )}
               </div>
             </NavLink>
           ))}

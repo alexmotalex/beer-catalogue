@@ -15,6 +15,7 @@ const emptyCart: Cart = {
 export type CartContextType = {
   cart: Cart;
   cartItems: CartEntry[];
+  quantity: number;
   subtotal: string;
   total: string;
   isLoading: boolean;
@@ -88,6 +89,10 @@ export const CartContextProvider: React.FC<Props> = ({ children }) => {
     [cart.cart_items],
   );
 
+  const totalCartItems = useMemo(
+    () => cart.cart_items.reduce((total, item) => total + item.quantity, 0),
+    [cart.cart_items],
+  );
   useEffect(() => {
     if (!isAuthenticated) {
       return;
@@ -106,8 +111,9 @@ export const CartContextProvider: React.FC<Props> = ({ children }) => {
       cartItems: cart.cart_items,
       subtotal: cart.subtotal,
       total: cart.total,
-      isLoading,
+      quantity: totalCartItems,
       error,
+      isLoading,
       fetchCart,
       addToCart,
       deleteFromCart,
@@ -119,6 +125,7 @@ export const CartContextProvider: React.FC<Props> = ({ children }) => {
       addToCart,
       clearCart,
       deleteFromCart,
+      totalCartItems,
       error,
       isLoading,
       isInCart,

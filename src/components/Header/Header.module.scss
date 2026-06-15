@@ -90,3 +90,22 @@
     height: 24px;
   }
 }
+
+.quantity {
+  margin: 0;
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  top: 0;
+  right: -3px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-size: 8px;
+  font-weight: 400;
+  color: var.$brown-10-color;
+
+  background-color: var.$brown-60-color;
+  border-radius: 1px;
+}
