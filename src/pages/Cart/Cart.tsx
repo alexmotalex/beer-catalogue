@@ -1,17 +1,38 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { PrimaryButton } from '../../components/Buttons/PrimaryButton';
 import { SecondaryButton } from '../../components/Buttons/SecondaryButton';
 import { Divider } from '../../components/Divider';
 import styles from './Cart.module.scss';
 import { useCart } from '../../hooks/useCart';
 import { CartItem } from '../../components/CartItem';
+import { Modal } from '../../components/Modal';
+import { useNavigate } from 'react-router';
+import { ROUTES } from '../../constants/routes';
 
 export const Cart = () => {
   const { cartItems, subtotal, total, isLoading, error, clearCart } = useCart();
+  const [modalIsOpen, setModalIsOpen] = useState(false);
+  const navigate = useNavigate();
 
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>{error}</div>;
   if (cartItems.length === 0) return <div>Cart is empty</div>;
+
+  const handleConfirm = () => {
+    void clearCart();
+    setModalIsOpen(false);
+  };
+
+  const handleMoreItem = () => {
+    navigate(ROUTES.catalogue);
+  };
+
+  const handleClearCart = () => {
+    void clearCart();
+  };
+
+  const openModal = () => setModalIsOpen(true);
+  const closeModal = () => setModalIsOpen(false);
 
   const summaryItems = [
     { title: 'Subtotal', value: `$${subtotal}` },
@@ -19,12 +40,14 @@ export const Cart = () => {
     { title: 'Discounts', value: '$0' },
   ];
 
-  const handleClearCart = () => {
-    clearCart();
-  };
-
   return (
     <div className={styles.cart}>
+      <Modal
+        isOpen={modalIsOpen}
+        cancelFn={closeModal}
+        primaryFn={handleConfirm}
+      />
+
       <section className={styles.main}>
         <div className={styles.mainHeader}>
           <h1 className={styles.mainTitle}>Cart</h1>
@@ -72,9 +95,13 @@ export const Cart = () => {
         </div>
 
         <div className={styles.summaryButtons}>
-          <SecondaryButton type="button" title="Add more item" />
+          <SecondaryButton
+            type="button"
+            title="Add more item"
+            onClick={handleMoreItem}
+          />
 
-          <PrimaryButton type="button" title="Checkout" />
+          <PrimaryButton type="button" title="Checkout" onClick={openModal} />
         </div>
       </section>
     </div>

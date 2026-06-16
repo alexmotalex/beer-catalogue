@@ -7,12 +7,17 @@ import { useBeers } from '../../hooks/useBeers';
 import { beerDescriptions } from '../../constants/beerDescriptions';
 import { storyParagraphs } from '../../constants/storyParagraphs';
 import { ROUTES } from '../../constants/routes';
+import { getThreeUniqueRandoms } from '../../utils/getThreeUniqueRandoms';
 import styles from './HomePage.module.scss';
 
 export const HomePage = () => {
   const { beers } = useBeers();
   const navigate = useNavigate();
-  // const picksBeers = getThreeUniqueRandoms(beers);
+  const picksBeers = getThreeUniqueRandoms(beers);
+
+  const handleOpenCatalogue = () => {
+    navigate(ROUTES.catalogue);
+  };
 
   return (
     <div className={styles.homePage}>
@@ -34,7 +39,7 @@ export const HomePage = () => {
             <PrimaryButton
               type="button"
               title="Browse beers"
-              onClick={() => {}}
+              onClick={handleOpenCatalogue}
             />
           </div>
         </div>
@@ -78,7 +83,7 @@ export const HomePage = () => {
         <h2 className={styles.picksTitle}>Our Picks</h2>
 
         <div className={styles.picksCartsContainer}>
-          {beers.slice(0, 3).map(beer => (
+          {picksBeers.map(beer => (
             <div key={beer.id} className={styles.picksCarts}>
               <ProductCard product={beer} />
             </div>
@@ -89,7 +94,7 @@ export const HomePage = () => {
           <SecondaryButton
             type="button"
             title="View all"
-            onClick={() => navigate(ROUTES.catalogue)}
+            onClick={handleOpenCatalogue}
           />
         </div>
       </section>

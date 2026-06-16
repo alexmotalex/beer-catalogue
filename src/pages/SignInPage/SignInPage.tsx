@@ -1,16 +1,16 @@
 import { useEffect, useState } from 'react';
+import { Link, useNavigate } from 'react-router';
 import { BackButton } from '../../components/Buttons/BackButton';
 import { LabeledInput } from '../../components/LabeledInput';
-import { FormErrorInfo } from '../../components/FormErrorInfo';
+import { ErrorInfo } from '../../components/ErrorInfo';
 import { PrimaryButton } from '../../components/Buttons/PrimaryButton';
 import { RedirectText } from '../../components/RedirectText';
+import { useAuth } from '../../hooks/useAuth';
+import { validateSignInForm } from '../../utils/validateSignInForm';
 import { emptySignInForm } from '../../constants/formsData';
 import { ROUTES } from '../../constants/routes';
 import type { AuthCredentials } from '../../types/User';
-import { Link, useNavigate } from 'react-router';
 import styles from './SignInPage.module.scss';
-import { useAuth } from '../../hooks/useAuth';
-import { validateSignInForm } from '../../utils/validateSignInForm';
 
 export const SigninPage = () => {
   const [formData, setFormData] = useState<AuthCredentials>(emptySignInForm);
@@ -75,9 +75,7 @@ export const SigninPage = () => {
               required
             />
 
-            {serverErrors.email && (
-              <FormErrorInfo errorText={serverErrors.email} />
-            )}
+            {serverErrors.email && <ErrorInfo errorText={serverErrors.email} />}
           </div>
 
           <div className="authFormLabelInputWrapper">
@@ -94,7 +92,7 @@ export const SigninPage = () => {
             />
 
             {serverErrors.password && (
-              <FormErrorInfo errorText={serverErrors.password} />
+              <ErrorInfo errorText={serverErrors.password} />
             )}
 
             <Link to="./" className={styles.forgotPassword}>

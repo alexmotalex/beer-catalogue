@@ -25,7 +25,7 @@ export type Props = {
 export const AuthContextProvider: React.FC<Props> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
   const [accessToken, setAccessToken] = useState<string | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [serverErrors, setServerErrors] = useState<ServerErrors>({});
 
   const isAuthenticated = Boolean(accessToken);
@@ -97,8 +97,11 @@ export const AuthContextProvider: React.FC<Props> = ({ children }) => {
   const refreshSession = async () => {
     try {
       const response = await instance.post('/users/refresh/', {});
+      const token = response.data.access_token;
 
-      setAccessToken(response.data.access_token);
+      instance.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+
+      setAccessToken(token);
 
       return true;
     } catch {
@@ -113,6 +116,7 @@ export const AuthContextProvider: React.FC<Props> = ({ children }) => {
     try {
       await client.post('/logout/', {});
     } finally {
+      delete instance.defaults.headers.common['Authorization'];
       setAccessToken(null);
       setUser(null);
     }

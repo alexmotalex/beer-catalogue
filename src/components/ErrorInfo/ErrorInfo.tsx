@@ -1,12 +1,12 @@
 import type React from 'react';
 import { Icon } from '../Icon';
-import styles from './FormErrorInfo.module.scss';
+import styles from './ErrorInfo.module.scss';
 
 type Props = {
   errorText: string;
 };
 
-export const FormErrorInfo: React.FC<Props> = ({ errorText }) => {
+export const ErrorInfo: React.FC<Props> = ({ errorText }) => {
   return (
     <div className={styles.inputError}>
       <div className={styles.inputErrorIconWrapper}>

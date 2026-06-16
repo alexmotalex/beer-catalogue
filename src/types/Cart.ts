@@ -1,5 +1,6 @@
 export type CartEntry = {
   id: number;
+  beer_id: number;
   name: string;
   quantity: number;
   price: string;

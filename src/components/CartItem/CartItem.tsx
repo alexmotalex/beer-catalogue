@@ -2,22 +2,30 @@ import { Link } from 'react-router';
 import { buildProductPath } from '../../utils/buildProductPath ';
 import { Stepper } from '../Stepper';
 import type { CartEntry } from '../../types/Cart';
+import { useCart } from '../../hooks/useCart';
+import { ErrorInfo } from '../ErrorInfo';
 import styles from './CartItem.module.scss';
 
 type Props = {
   cartItem: CartEntry;
-  onDelete?: (id: string) => void;
-  updateQty?: (id: string, qtyChange: number) => void;
 };
 
 export const CartItem: React.FC<Props> = ({ cartItem }) => {
-  const { id, quantity, name, price, image_url } = cartItem;
+  const { addToCart, deleteFromCart, itemErrors } = useCart();
+  const { id, beer_id, quantity, name, price, image_url } = cartItem;
+  const error = itemErrors.get(beer_id);
 
-  const handleIncrease = () => {};
-  const handleDecrease = () => {};
-  const handleDelete = () => {};
+  const handleIncrease = () => {
+    addToCart(beer_id);
+  };
+  const handleDecrease = () => {
+    deleteFromCart(id, beer_id);
+  };
+  const handleDelete = () => {
+    deleteFromCart(id, beer_id);
+  };
 
-  const productPath = buildProductPath(id);
+  const productPath = buildProductPath(beer_id);
 
   return (
     <article className={styles.cartItem}>
@@ -38,11 +46,14 @@ export const CartItem: React.FC<Props> = ({ cartItem }) => {
             <p className={styles.price}>${price}</p>
           </div>
 
-          <span className={styles.volume}>{500}ml</span>
+          <span className={styles.volume}>500ml</span>
         </div>
+
+        {error && <ErrorInfo errorText={error} />}
 
         <Stepper
           value={quantity}
+          error={Boolean(error)}
           onDecrease={handleDecrease}
           onIncrease={handleIncrease}
           onDelete={handleDelete}

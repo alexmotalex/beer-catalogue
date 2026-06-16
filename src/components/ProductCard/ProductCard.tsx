@@ -56,7 +56,7 @@ export const ProductCard: React.FC<Props> = ({ product }) => {
   const buttonTitle = !is_available
     ? 'Out of stock'
     : inCart
-      ? 'Added to cart'
+      ? 'Added to basket'
       : `Add to basket | $${price}`;
 
   return (

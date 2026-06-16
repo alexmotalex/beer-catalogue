@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router';
 import { BackButton } from '../../components/Buttons/BackButton';
 import { LabeledInput } from '../../components/LabeledInput';
 import { Checkbox } from '../../components/Checkbox';
 import { PrimaryButton } from '../../components/Buttons/PrimaryButton';
 import { RedirectText } from '../../components/RedirectText';
-import { FormErrorInfo } from '../../components/FormErrorInfo';
+import { ErrorInfo } from '../../components/ErrorInfo';
 import { useAuth } from '../../hooks/useAuth';
 import { validateSignUpForm } from '../../utils/validateSignUpForm';
 import { mapToRegisterData } from '../../utils/mapToRegisterData';
@@ -12,7 +13,6 @@ import { ROUTES } from '../../constants/routes';
 import { emptySignUpForm } from '../../constants/formsData';
 import type { SignupFormData } from '../../types/Forms';
 import styles from './SignUpPage.module.scss';
-import { useNavigate } from 'react-router';
 
 export const SignUpPage = () => {
   const [formData, setFormData] = useState<SignupFormData>(emptySignUpForm);
@@ -109,9 +109,7 @@ export const SignUpPage = () => {
               required
             />
 
-            {serverErrors.email && (
-              <FormErrorInfo errorText={serverErrors.email} />
-            )}
+            {serverErrors.email && <ErrorInfo errorText={serverErrors.email} />}
           </div>
 
           <div className="authFormLabelInputWrapper">
@@ -128,7 +126,7 @@ export const SignUpPage = () => {
             />
 
             {serverErrors.password && (
-              <FormErrorInfo errorText={serverErrors.password} />
+              <ErrorInfo errorText={serverErrors.password} />
             )}
           </div>
         </div>

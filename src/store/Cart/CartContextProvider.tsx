@@ -20,11 +20,12 @@ export type CartContextType = {
   total: string;
   isLoading: boolean;
   error: string | null;
+  itemErrors: Map<number, string>;
   fetchCart: () => Promise<void>;
   addToCart: (beerId: number) => Promise<void>;
-  deleteFromCart: (itemId: number) => Promise<void>;
+  deleteFromCart: (itemId: number, beerId: number) => Promise<void>;
   clearCart: () => Promise<void>;
-  isInCart: (beerId: number) => boolean;
+  isInCart: (beerName: number) => boolean;
 };
 
 type Props = {
@@ -33,10 +34,11 @@ type Props = {
 
 export const CartContextProvider: React.FC<Props> = ({ children }) => {
   const [cart, setCart] = useState<Cart>(emptyCart);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [itemErrors, setItemErrors] = useState<Map<number, string>>(new Map());
 
-  const { isAuthenticated } = useAuth();
+  const { isLoading: isAuthLoading } = useAuth();
 
   const fetchCart = useCallback(async () => {
     setIsLoading(true);
@@ -53,19 +55,43 @@ export const CartContextProvider: React.FC<Props> = ({ children }) => {
 
   const addToCart = useCallback(
     async (beerId: number) => {
+      setItemErrors(prev => {
+        const next = new Map(prev);
+        next.delete(beerId);
+
+        return next;
+      });
+
       try {
         await instance.post(`/cart/${beerId}/`);
         await fetchCart();
-      } catch {
-        setError('Failed to add item');
+      } catch (err: unknown) {
+        const axiosError = err as {
+          response?: { data?: { detail?: { beer_id?: string } } };
+        };
+        const msg = axiosError.response?.data?.detail?.beer_id;
+
+        setItemErrors(prev => {
+          const next = new Map(prev);
+          next.set(beerId, msg ?? 'Failed to add item');
+
+          return next;
+        });
       }
     },
     [fetchCart],
   );
 
   const deleteFromCart = useCallback(
-    async (itemId: number) => {
+    async (itemId: number, beerId: number) => {
       try {
+        setItemErrors(prev => {
+          const next = new Map(prev);
+          next.delete(beerId);
+
+          return next;
+        });
+
         await instance.delete(`/cart/${itemId}/`);
         await fetchCart();
       } catch {
@@ -77,6 +103,8 @@ export const CartContextProvider: React.FC<Props> = ({ children }) => {
 
   const clearCart = useCallback(async () => {
     try {
+      setItemErrors(new Map());
+
       await instance.delete('/cart/clear/');
       setCart(emptyCart);
     } catch {
@@ -85,7 +113,7 @@ export const CartContextProvider: React.FC<Props> = ({ children }) => {
   }, []);
 
   const isInCart = useCallback(
-    (beerId: number) => cart.cart_items.some(item => item.id === beerId),
+    (beerId: number) => cart.cart_items.some(item => item.beer_id === beerId),
     [cart.cart_items],
   );
 
@@ -93,8 +121,9 @@ export const CartContextProvider: React.FC<Props> = ({ children }) => {
     () => cart.cart_items.reduce((total, item) => total + item.quantity, 0),
     [cart.cart_items],
   );
+
   useEffect(() => {
-    if (!isAuthenticated) {
+    if (isAuthLoading) {
       return;
     }
 
@@ -103,7 +132,7 @@ export const CartContextProvider: React.FC<Props> = ({ children }) => {
     };
 
     void loadCart();
-  }, [isAuthenticated, fetchCart]);
+  }, [isAuthLoading, fetchCart]);
 
   const value = useMemo(
     () => ({
@@ -113,6 +142,7 @@ export const CartContextProvider: React.FC<Props> = ({ children }) => {
       total: cart.total,
       quantity: totalCartItems,
       error,
+      itemErrors,
       isLoading,
       fetchCart,
       addToCart,
@@ -127,6 +157,7 @@ export const CartContextProvider: React.FC<Props> = ({ children }) => {
       deleteFromCart,
       totalCartItems,
       error,
+      itemErrors,
       isLoading,
       isInCart,
       fetchCart,
