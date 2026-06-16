@@ -8,15 +8,24 @@ import { CartItem } from '../../components/CartItem';
 import { Modal } from '../../components/Modal';
 import { useNavigate } from 'react-router';
 import { ROUTES } from '../../constants/routes';
+import { NotFound } from '../../components/NotFound';
 
 export const Cart = () => {
   const { cartItems, subtotal, total, isLoading, error, clearCart } = useCart();
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const navigate = useNavigate();
 
+  const isCartEmpty = cartItems.length === 0;
+
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>{error}</div>;
-  if (cartItems.length === 0) return <div>Cart is empty</div>;
+
+  if (isCartEmpty)
+    return (
+      <div className={styles.cartNotFound}>
+        <NotFound />
+      </div>
+    );
 
   const handleConfirm = () => {
     void clearCart();

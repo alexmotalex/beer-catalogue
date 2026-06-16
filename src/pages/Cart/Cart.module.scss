@@ -6,6 +6,13 @@
   display: flex;
   flex: 1;
   gap: 128px;
+
+  &NotFound {
+    display: flex;
+    flex: 1;
+    align-items: center;
+    justify-content: center;
+  }
 }
 
 .main {
