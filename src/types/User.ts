@@ -13,3 +13,8 @@ export type User = {
   first_name: string;
   last_name: string;
 };
+
+export type EditUserData = {
+  first_name: string;
+  last_name: string;
+};

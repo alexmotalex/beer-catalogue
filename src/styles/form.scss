@@ -67,3 +67,11 @@
     width: 100%;
   }
 }
+
+.successMessageWrapper {
+  z-index: 11;
+  position: absolute;
+  top: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+}

@@ -8,7 +8,7 @@ import { RedirectText } from '../../components/RedirectText';
 import { ErrorInfo } from '../../components/ErrorInfo';
 import { useAuth } from '../../hooks/useAuth';
 import { validateSignUpForm } from '../../utils/validateSignUpForm';
-import { mapToRegisterData } from '../../utils/mapToRegisterData';
+import { mapToRegisterData } from '../../utils/formMappers';
 import { ROUTES } from '../../constants/routes';
 import { emptySignUpForm } from '../../constants/formsData';
 import type { SignupFormData } from '../../types/Forms';

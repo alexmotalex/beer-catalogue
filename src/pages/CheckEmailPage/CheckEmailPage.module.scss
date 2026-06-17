@@ -1,14 +1,6 @@
 @use '../../styles/variables' as var;
 @use '../../styles/mixins' as mixins;
 
-.successMessageWrapper {
-  z-index: 11;
-  position: absolute;
-  top: 24px;
-  left: 50%;
-  transform: translateX(-50%);
-}
-
 .checkEmail {
   padding: 32px 108px 139px;
   height: 100%;
@@ -16,15 +8,6 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-
-  &Title {
-    margin: 0;
-    margin-bottom: 6px;
-    font-size: 24px;
-    font-weight: 400;
-    line-height: 135%;
-    color: var.$brown-100-color;
-  }
 
   &Subtitle {
     margin: 0;

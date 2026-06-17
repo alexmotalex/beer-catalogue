@@ -17,5 +17,13 @@ export type ServerErrors = {
   general?: string;
 };
 
+export type EditUserFormData = {
+  firstName: string;
+  lastName: string;
+};
+
 export type SignupFormErrors = Partial<Record<keyof SignupFormData, string>>;
 export type SignInFormErrors = Partial<Record<keyof AuthCredentials, string>>;
+export type EditUserFormErrors = Partial<
+  Record<keyof EditUserFormData, string>
+>;

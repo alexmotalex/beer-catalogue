@@ -7,9 +7,9 @@ import { Catalogue } from './pages/Catalogue';
 import { ProductPage } from './pages/ProductPage';
 import { SigninPage } from './pages/SignInPage';
 import { CheckEmailPage } from './pages/CheckEmailPage';
-import './App.scss';
 import { ActivatePage } from './pages/ActivatePage';
-import { UserPage } from './pages/UserPage';
+import { EditUserPage } from './pages/EditUserPage';
+import './App.scss';
 
 function App() {
   return (
@@ -20,11 +20,11 @@ function App() {
           <Route path="signup" element={<SignUpPage />} />
           <Route path="activate" element={<ActivatePage />} />
           <Route path="signin" element={<SigninPage />} />
+          <Route path="edit-user" element={<EditUserPage />} />
           <Route path="checkemail" element={<CheckEmailPage />} />
           <Route path="beers" element={<Catalogue />} />
           <Route path="product/:productId" element={<ProductPage />} />
           <Route path="cart" element={<Cart />} />
-          <Route path="account" element={<UserPage />} />
           <Route path="*" element={<h1>Not Found</h1>} />
         </Route>
       </Routes>

@@ -4,7 +4,12 @@ import { client } from '../../utils/axiosClient';
 import { mapServerErrors } from '../../utils/mapServerErrors';
 import { instance } from '../../api/axiosInstance';
 import type { ServerErrors } from '../../types/Forms';
-import type { AuthCredentials, RegisterUserData, User } from '../../types/User';
+import type {
+  AuthCredentials,
+  EditUserData,
+  RegisterUserData,
+  User,
+} from '../../types/User';
 
 export type AuthContextType = {
   user: User | null;
@@ -13,8 +18,9 @@ export type AuthContextType = {
   isLoading: boolean;
   serverErrors: ServerErrors;
   setServerErrors: (err: ServerErrors) => void;
-  login: (data: AuthCredentials) => Promise<boolean>;
   register: (data: RegisterUserData) => Promise<boolean>;
+  login: (data: AuthCredentials) => Promise<boolean>;
+  editUser: (data: EditUserData) => Promise<boolean>;
   logout: () => Promise<void>;
 };
 
@@ -108,6 +114,38 @@ export const AuthContextProvider: React.FC<Props> = ({ children }) => {
     }
   }, []);
 
+  const editUser = useCallback(async (data: EditUserData) => {
+    setIsLoading(true);
+    setServerErrors({});
+
+    try {
+      await instance.patch('/users/me/', data);
+
+      return true;
+    } catch (error) {
+      const axiosError = error as {
+        response?: { data?: { detail?: unknown; message?: string } };
+      };
+      const details = axiosError.response?.data?.detail;
+
+      if (typeof details === 'string') {
+        setServerErrors({
+          general: details,
+        });
+
+        return false;
+      }
+
+      const serverErrors = mapServerErrors(details);
+
+      setServerErrors(serverErrors);
+
+      return false;
+    } finally {
+      setIsLoading(false);
+    }
+  }, []);
+
   const logout = useCallback(async () => {
     try {
       await client.post('/logout/', {});
@@ -178,12 +216,14 @@ export const AuthContextProvider: React.FC<Props> = ({ children }) => {
       setServerErrors,
       register,
       login,
+      editUser,
       logout,
     }),
     [
       login,
       logout,
       register,
+      editUser,
       user,
       accessToken,
       isAuthenticated,

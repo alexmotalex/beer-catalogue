@@ -2,7 +2,7 @@ export const ROUTES = {
   home: '/',
   account: '/account',
   signIn: '/signin',
-  personalInfo: '/personal-information',
+  editUser: '/edit-user',
   changePassword: '/change-password',
   checkEmail: '/checkemail',
   signUp: '/signup',
@@ -28,4 +28,5 @@ export const HIDDEN_ROUTES = [
   ROUTES.signUp,
   ROUTES.signIn,
   ROUTES.checkEmail,
+  ROUTES.editUser,
 ] as const;

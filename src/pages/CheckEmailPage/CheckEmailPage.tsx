@@ -50,7 +50,7 @@ export const CheckEmailPage = () => {
 
   return (
     <section className={styles.checkEmail}>
-      <div className={styles.successMessageWrapper}>
+      <div className="successMessageWrapper">
         <SuccessMessage title="Verification link sent" />
       </div>
 

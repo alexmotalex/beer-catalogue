@@ -24,7 +24,7 @@ export const AccountModal: React.FC<Props> = ({ closeFn }) => {
 
   const handleEdit = () => {
     closeFn();
-    navigate(ROUTES.personalInfo);
+    navigate(ROUTES.editUser);
   };
 
   const handleChangePassword = () => {
