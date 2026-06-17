@@ -11,12 +11,13 @@
 }
 
 .content {
-  width: 100%;
+  min-width: 0;
   display: flex;
   gap: 136px;
 }
 
 .column {
+  min-width: 0;
   display: flex;
   flex-direction: column;
   gap: 24px;

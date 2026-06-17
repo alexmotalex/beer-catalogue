@@ -77,9 +77,9 @@ export const ProductCard: React.FC<Props> = ({ product }) => {
         </div>
 
         <div className={styles.specifications}>
-          {specifications.map(c => (
-            <span key={c.id} className={styles.specificationsItem}>
-              {c.spec}
+          {specifications.map(item => (
+            <span key={item.id} className={styles.specificationsItem}>
+              {item.spec}
             </span>
           ))}
         </div>

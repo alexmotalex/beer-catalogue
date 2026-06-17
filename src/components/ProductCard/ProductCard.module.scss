@@ -16,6 +16,7 @@
   align-self: center;
   max-width: 345px;
   aspect-ratio: 1;
+  flex: 1;
 }
 
 .productImage {
@@ -48,10 +49,12 @@
 .specifications {
   display: flex;
   gap: 8px;
+  flex-wrap: wrap;
 
   &Item {
     height: 40px;
-    width: 100%;
+    flex: 1;
+    min-width: 0;
     padding: 8px 20px;
     display: flex;
     justify-content: center;

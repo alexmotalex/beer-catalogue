@@ -82,13 +82,13 @@ export const HomePage = () => {
       <section className={styles.picks}>
         <h2 className={styles.picksTitle}>Our Picks</h2>
 
-        <div className={styles.picksCartsContainer}>
+        <ul className={styles.picksList}>
           {picksBeers.map(beer => (
-            <div key={beer.id} className={styles.picksCarts}>
+            <li key={beer.id} className={styles.picksItem}>
               <ProductCard product={beer} />
-            </div>
+            </li>
           ))}
-        </div>
+        </ul>
 
         <div className={styles.picksButton}>
           <SecondaryButton
