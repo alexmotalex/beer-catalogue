@@ -21,9 +21,6 @@ export const CartItem: React.FC<Props> = ({ cartItem }) => {
   const handleDecrease = () => {
     deleteFromCart(id, beer_id);
   };
-  const handleDelete = () => {
-    deleteFromCart(id, beer_id);
-  };
 
   const productPath = buildProductPath(beer_id);
 
@@ -54,9 +51,9 @@ export const CartItem: React.FC<Props> = ({ cartItem }) => {
         <Stepper
           value={quantity}
           error={Boolean(error)}
-          onDecrease={handleDecrease}
           onIncrease={handleIncrease}
-          onDelete={handleDelete}
+          onDecrease={handleDecrease}
+          onDelete={handleDecrease}
         />
       </div>
     </article>

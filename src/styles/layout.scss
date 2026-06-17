@@ -30,6 +30,10 @@ h5 {
 
 .main {
   display: flex;
-  width: 100%;
   flex: 1;
+
+  > section,
+  > div {
+    width: 100%;
+  }
 }

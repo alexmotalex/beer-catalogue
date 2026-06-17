@@ -34,7 +34,7 @@ export const ProductCard: React.FC<Props> = ({ product }) => {
 
   const inCart = isInCart(id);
 
-  const productCharacteristics = [
+  const specifications = [
     {
       id: 1,
       spec: capitalizeFirstLetter(beer_type),
@@ -76,16 +76,16 @@ export const ProductCard: React.FC<Props> = ({ product }) => {
           <p className={styles.price}>{`$${price}`}</p>
         </div>
 
-        <div className={styles.characteristics}>
-          {productCharacteristics.map(c => (
-            <span key={c.id} className={styles.characteristicsItem}>
+        <div className={styles.specifications}>
+          {specifications.map(c => (
+            <span key={c.id} className={styles.specificationsItem}>
               {c.spec}
             </span>
           ))}
         </div>
       </div>
 
-      <div className={styles.productCardButton}>
+      <div className={styles.button}>
         <PrimaryButton
           type="button"
           title={buttonTitle}

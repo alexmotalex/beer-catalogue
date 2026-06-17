@@ -8,13 +8,15 @@ import { useBeerById } from '../../hooks/useBeerById';
 import clsx from 'clsx';
 import styles from './ProductPage.module.scss';
 import { useCart } from '../../hooks/useCart';
+import { ErrorInfo } from '../../components/ErrorInfo';
 
 export const ProductPage = () => {
   const { productId } = useParams();
   const beerId = Number(productId);
 
   const { beer, isLoading, isError } = useBeerById(beerId);
-  const { addToCart, isInCart } = useCart();
+  const { addToCart, isInCart, itemErrors, cartItems, deleteFromCart } =
+    useCart();
 
   if (isLoading) {
     return <h2>Loading</h2>;
@@ -41,10 +43,20 @@ export const ProductPage = () => {
   } = beer;
 
   const inCart = isInCart(beerId);
+  const cartItem = cartItems.find(item => item.beer_id === beerId);
+  const error = itemErrors.get(beerId);
 
-  const handleIncrease = () => {};
-  const handleDecrease = () => {};
-  const handleDelete = () => {};
+  const handleIncrease = () => {
+    addToCart(beerId);
+  };
+
+  const handleDecrease = () => {
+    if (!cartItem) {
+      return;
+    }
+
+    deleteFromCart(cartItem.id, beerId);
+  };
 
   const handleAddToCart = () => {
     addToCart(beerId);
@@ -79,41 +91,39 @@ export const ProductPage = () => {
     <section className={styles.product}>
       <BackButton />
 
-      <div className={styles.productOverall}>
+      <div className={styles.overall}>
         <div
           className={clsx(
-            styles.productImageContent,
-            !is_available && styles.productImageContentSoldOut,
+            styles.imageContent,
+            !is_available && styles.imageContentSoldOut,
           )}
         >
           <img src={image_url} alt={name} className={styles.productImage} />
         </div>
 
-        <section className={styles.productAbout}>
-          <div className={styles.productDescription}>
-            <div className={styles.productInfo}>
-              <span className={styles.productBarrel}>Old Barrel</span>
-              <h1 className={styles.productTitle}>{name}</h1>
-              <p className={styles.productPrice}>Price ${price}</p>
+        <section className={styles.about}>
+          <div className={styles.description}>
+            <div className={styles.info}>
+              <span className={styles.barrel}>Old Barrel</span>
+              <h1 className={styles.title}>{name}</h1>
+              <p className={styles.price}>Price ${price}</p>
             </div>
 
-            <p className={styles.productDetail}>{description}</p>
+            <p className={styles.detail}>{description}</p>
 
-            <div className={styles.productSpecifications}>
-              <h2 className={styles.productSpecificationsTitle}>
-                Specifications
-              </h2>
+            <div className={styles.specifications}>
+              <h2 className={styles.specificationsTitle}>Specifications</h2>
 
-              <div className={styles.productSpecificationsList}>
+              <div className={styles.specificationsList}>
                 {specifications.map(specification => (
                   <div
                     key={specification.label}
-                    className={styles.productSpecificationsItem}
+                    className={styles.specificationsItem}
                   >
-                    <span className={styles.productSpecificationsLabel}>
+                    <span className={styles.specificationsLabel}>
                       {specification.label}
                     </span>
-                    <span className={styles.productSpecificationsValue}>
+                    <span className={styles.specificationsValue}>
                       {specification.value}
                     </span>
                   </div>
@@ -122,15 +132,22 @@ export const ProductPage = () => {
             </div>
           </div>
 
-          <div className={styles.productButtons}>
+          <div className={styles.buttons}>
+            {error && (
+              <div className={styles.error}>
+                <ErrorInfo errorText={error} />
+              </div>
+            )}
+
             <Stepper
-              value={1}
-              onDecrease={handleDecrease}
+              value={cartItem?.quantity || 0}
+              error={Boolean(error)}
               onIncrease={handleIncrease}
-              onDelete={handleDelete}
+              onDecrease={handleDecrease}
+              onDelete={handleIncrease}
             />
 
-            <div className={styles.productButtonsAddToBasket}>
+            <div className={styles.addToBasket}>
               <PrimaryButton
                 type="button"
                 title={buttonTitle}
