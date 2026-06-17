@@ -148,7 +148,7 @@ export const AuthContextProvider: React.FC<Props> = ({ children }) => {
 
   const logout = useCallback(async () => {
     try {
-      await client.post('/logout/', {});
+      await client.post('/users/logout/', {});
     } finally {
       delete instance.defaults.headers.common['Authorization'];
       setAccessToken(null);
