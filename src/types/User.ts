@@ -9,8 +9,7 @@ export type RegisterUserData = AuthCredentials & {
 };
 
 export type User = {
-  id: number;
   email: string;
-  is_active: boolean;
-  activation_token: 'string';
+  first_name: string;
+  last_name: string;
 };

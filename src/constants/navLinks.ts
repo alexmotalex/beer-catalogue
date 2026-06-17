@@ -6,11 +6,6 @@ export const HEADER_MAIN_LINKS = [
   { to: ROUTES.about, label: 'About Us' },
 ] as const;
 
-export const HEADER_ACTIONS_LINKS = [
-  { to: ROUTES.cart, label: 'Open cart', name: 'cart' },
-  { to: ROUTES.account, label: 'Open login page', name: 'acc' },
-] as const;
-
 export const FOOTER_SUPPORTS_LINKS = [
   { to: ROUTES.faq, label: 'FAQ' },
   { to: ROUTES.contact, label: 'Contact' },

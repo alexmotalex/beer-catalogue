@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import { PrimaryButton } from '../Buttons/PrimaryButton';
 import { SecondaryButton } from '../Buttons/SecondaryButton';
-import styles from './Modal.module.scss';
+import styles from './BasketModal.module.scss';
 
 interface Props {
   isOpen: boolean;
@@ -9,7 +9,11 @@ interface Props {
   cancelFn: () => void;
 }
 
-export const Modal: React.FC<Props> = ({ isOpen, cancelFn, primaryFn }) => {
+export const BasketModal: React.FC<Props> = ({
+  isOpen,
+  cancelFn,
+  primaryFn,
+}) => {
   const dialogRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {

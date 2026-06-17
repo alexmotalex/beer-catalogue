@@ -12,7 +12,7 @@ export const BackButton = () => {
   return (
     <button type="button" onClick={handleGoBack} className={styles.backButton}>
       <div className={styles.backButtonIconWrapper}>
-        <Icon name="back-arrow" />
+        <Icon name="left-arrow" />
       </div>
       Back
     </button>

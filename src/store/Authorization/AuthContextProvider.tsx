@@ -1,10 +1,10 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { AuthContext } from './AuthContext';
 import { client } from '../../utils/axiosClient';
-import type { AuthCredentials, RegisterUserData, User } from '../../types/User';
-import type { ServerErrors } from '../../types/Forms';
 import { mapServerErrors } from '../../utils/mapServerErrors';
 import { instance } from '../../api/axiosInstance';
+import type { ServerErrors } from '../../types/Forms';
+import type { AuthCredentials, RegisterUserData, User } from '../../types/User';
 
 export type AuthContextType = {
   user: User | null;
@@ -30,7 +30,7 @@ export const AuthContextProvider: React.FC<Props> = ({ children }) => {
 
   const isAuthenticated = Boolean(accessToken);
 
-  const register = async (data: RegisterUserData) => {
+  const register = useCallback(async (data: RegisterUserData) => {
     setIsLoading(true);
     setServerErrors({});
 
@@ -59,16 +59,29 @@ export const AuthContextProvider: React.FC<Props> = ({ children }) => {
     } finally {
       setIsLoading(false);
     }
+  }, []);
+
+  const fetchUser = async () => {
+    try {
+      const response = await instance.get('/users/me/');
+      setUser(response.data);
+    } catch {
+      setUser(null);
+    }
   };
 
-  const login = async (data: AuthCredentials) => {
+  const login = useCallback(async (data: AuthCredentials) => {
     setIsLoading(true);
     setServerErrors({});
 
     try {
       const response = await instance.post('/users/login/', data);
+      const token = response.data.access_token;
 
-      setAccessToken(response.data.access_token);
+      setAccessToken(token);
+
+      instance.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+      await fetchUser();
 
       return true;
     } catch (error) {
@@ -86,33 +99,16 @@ export const AuthContextProvider: React.FC<Props> = ({ children }) => {
       }
 
       const serverErrors = mapServerErrors(details);
+
       setServerErrors(serverErrors);
 
       return false;
     } finally {
       setIsLoading(false);
     }
-  };
+  }, []);
 
-  const refreshSession = async () => {
-    try {
-      const response = await instance.post('/users/refresh/', {});
-      const token = response.data.access_token;
-
-      instance.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-
-      setAccessToken(token);
-
-      return true;
-    } catch {
-      setAccessToken(null);
-      setUser(null);
-
-      return false;
-    }
-  };
-
-  const logout = async () => {
+  const logout = useCallback(async () => {
     try {
       await client.post('/logout/', {});
     } finally {
@@ -120,9 +116,28 @@ export const AuthContextProvider: React.FC<Props> = ({ children }) => {
       setAccessToken(null);
       setUser(null);
     }
-  };
+  }, []);
 
   useEffect(() => {
+    const refreshSession = async () => {
+      try {
+        const response = await instance.post('/users/refresh/', {});
+        const token = response.data.access_token;
+
+        instance.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+
+        setAccessToken(token);
+        await fetchUser();
+
+        return true;
+      } catch {
+        setAccessToken(null);
+        setUser(null);
+
+        return false;
+      }
+    };
+
     const initAuth = async () => {
       setIsLoading(true);
 
@@ -165,7 +180,16 @@ export const AuthContextProvider: React.FC<Props> = ({ children }) => {
       login,
       logout,
     }),
-    [user, accessToken, isAuthenticated, isLoading, serverErrors],
+    [
+      login,
+      logout,
+      register,
+      user,
+      accessToken,
+      isAuthenticated,
+      isLoading,
+      serverErrors,
+    ],
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

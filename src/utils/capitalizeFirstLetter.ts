@@ -1,4 +1,4 @@
-export const capitalizeFirstLetter = (str: string) => {
+export const capitalizeFirstLetter = (str: string = '') => {
   if (!str) {
     return '';
   }

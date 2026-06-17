@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router';
 import { PrimaryButton } from '../../components/Buttons/PrimaryButton';
 import { SecondaryButton } from '../../components/Buttons/SecondaryButton';
-import { Divider } from '../../components/Divider';
-import styles from './Cart.module.scss';
-import { useCart } from '../../hooks/useCart';
 import { CartItem } from '../../components/CartItem';
-import { Modal } from '../../components/Modal';
-import { useNavigate } from 'react-router';
-import { ROUTES } from '../../constants/routes';
+import { BasketModal } from '../../components/BasketModal';
 import { NotFound } from '../../components/NotFound';
+import { Divider } from '../../components/Divider';
+import { useCart } from '../../hooks/useCart';
+import { ROUTES } from '../../constants/routes';
+import styles from './Cart.module.scss';
 
 export const Cart = () => {
   const { cartItems, subtotal, total, isLoading, error, clearCart } = useCart();
@@ -51,7 +51,7 @@ export const Cart = () => {
 
   return (
     <div className={styles.cart}>
-      <Modal
+      <BasketModal
         isOpen={modalIsOpen}
         cancelFn={closeModal}
         primaryFn={handleConfirm}

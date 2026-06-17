@@ -1,23 +1,29 @@
 import { Link, NavLink, useLocation } from 'react-router';
 import { Icon } from '../Icon';
+import { useState } from 'react';
+import { AccountModal } from '../AccountModal';
 import { InfoHeaderLink } from '../InfoHeaderLink';
 import { useAuth } from '../../hooks/useAuth';
+import { useCart } from '../../hooks/useCart';
 import { createNavLinkClass } from '../../utils/createNavLinkClass';
-import {
-  HEADER_ACTIONS_LINKS,
-  HEADER_MAIN_LINKS,
-} from '../../constants/navLinks';
+import { HEADER_MAIN_LINKS } from '../../constants/navLinks';
 import { HIDDEN_ROUTES, ROUTES } from '../../constants/routes';
 import styles from './Header.module.scss';
-import { useCart } from '../../hooks/useCart';
 
 const getNavLinkClassName = createNavLinkClass(styles, 'navigationLink');
 const getActionLinkClassName = createNavLinkClass(styles, 'actionLink');
 
 export const Header = () => {
+  const [modalIsOpen, setModalIsOpen] = useState(false);
+
   const { pathname } = useLocation();
   const { isAuthenticated } = useAuth();
   const { quantity } = useCart();
+
+  const openModal = () => setModalIsOpen(true);
+  const closeModal = () => {
+    setModalIsOpen(false);
+  };
 
   const shouldHideMainNavigation = HIDDEN_ROUTES.some(
     route => route === pathname,
@@ -33,21 +39,28 @@ export const Header = () => {
     if (isAuthenticated) {
       return (
         <div className={styles.actions}>
-          {HEADER_ACTIONS_LINKS.map(item => (
-            <NavLink
-              key={item.label}
-              to={item.to}
-              className={getActionLinkClassName}
-              aria-label={item.label}
-            >
-              <div className={styles.actionLinkIconWrapper}>
-                <Icon name={item.name} />
-                {item.name === 'cart' && quantity > 0 && (
-                  <p className={styles.quantity}>{quantity}</p>
-                )}
-              </div>
-            </NavLink>
-          ))}
+          <NavLink
+            to={ROUTES.cart}
+            className={getActionLinkClassName}
+            aria-label="Open cart"
+          >
+            <div className={styles.actionLinkIconWrapper}>
+              <Icon name="cart" />
+              {quantity > 0 && <p className={styles.quantity}>{quantity}</p>}
+            </div>
+          </NavLink>
+
+          <div className={styles.actionLink} onClick={openModal}>
+            <div className={styles.actionLinkIconWrapper}>
+              <Icon name="acc" />
+            </div>
+          </div>
+
+          {modalIsOpen && (
+            <div className={styles.modalWrapper} onClick={closeModal}>
+              <AccountModal closeFn={closeModal} />
+            </div>
+          )}
         </div>
       );
     }
