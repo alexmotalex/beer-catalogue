@@ -47,7 +47,7 @@ export const SignUpPage = () => {
     if (registrationSuccess) {
       setFormData(emptySignUpForm);
       navigate(ROUTES.checkEmail, {
-        state: { email: formData.email, formData },
+        state: { email: formData.email, formData, type: 'register' },
       });
     }
   };
@@ -72,7 +72,7 @@ export const SignUpPage = () => {
 
       <h1 className="authPageTitle">Sign Up</h1>
 
-      <p className="authPageSubtitle">Create your personal account</p>
+      <p className="subtitle">Create your personal account</p>
 
       <form className="authForm" onSubmit={handleSubmit}>
         <div className="authFormInputsWrapper">

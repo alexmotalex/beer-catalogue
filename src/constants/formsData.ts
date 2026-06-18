@@ -1,5 +1,10 @@
-import type { EditUserFormData, SignupFormData } from '../types/Forms';
-import type { AuthCredentials } from '../types/User';
+import type {
+  AuthCredentials,
+  EditUserFormData,
+  ForgotPasswordFormData,
+  NewPasswordFormData,
+  SignupFormData,
+} from '../types/Forms';
 
 export const emptySignUpForm: SignupFormData = {
   firstName: '',
@@ -18,4 +23,14 @@ export const emptySignInForm: AuthCredentials = {
 export const emptyEditUserForm: EditUserFormData = {
   firstName: '',
   lastName: '',
+};
+
+export const emptyForgotPasswordForm: ForgotPasswordFormData = {
+  email: '',
+};
+
+export const emptyNewPasswordForm: NewPasswordFormData = {
+  password: '',
+  confirmPassword: '',
+  isSame: '',
 };

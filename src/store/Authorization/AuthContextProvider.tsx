@@ -3,13 +3,13 @@ import { AuthContext } from './AuthContext';
 import { client } from '../../utils/axiosClient';
 import { mapServerErrors } from '../../utils/mapServerErrors';
 import { instance } from '../../api/axiosInstance';
-import type { ServerErrors } from '../../types/Forms';
 import type {
   AuthCredentials,
-  EditUserData,
-  RegisterUserData,
-  User,
-} from '../../types/User';
+  ForgotPasswordFormData,
+  NewPasswordServerData,
+  ServerErrors,
+} from '../../types/Forms';
+import type { EditUserData, RegisterUserData, User } from '../../types/User';
 
 export type AuthContextType = {
   user: User | null;
@@ -20,7 +20,9 @@ export type AuthContextType = {
   setServerErrors: (err: ServerErrors) => void;
   register: (data: RegisterUserData) => Promise<boolean>;
   login: (data: AuthCredentials) => Promise<boolean>;
+  setNewPassword: (data: NewPasswordServerData) => Promise<boolean>;
   editUser: (data: EditUserData) => Promise<boolean>;
+  passwordReset: (data: ForgotPasswordFormData) => Promise<boolean>;
   logout: () => Promise<void>;
 };
 
@@ -67,14 +69,80 @@ export const AuthContextProvider: React.FC<Props> = ({ children }) => {
     }
   }, []);
 
+  const passwordReset = useCallback(async (data: ForgotPasswordFormData) => {
+    setIsLoading(true);
+    setServerErrors({});
+
+    try {
+      await client.post('/users/password-reset-request/', data);
+
+      return true;
+    } catch (error: unknown) {
+      const axiosError = error as {
+        response?: { data?: { detail?: unknown; message?: string } };
+      };
+      const details = axiosError.response?.data?.detail;
+
+      if (typeof details === 'string') {
+        setServerErrors({
+          email: details,
+        });
+
+        return false;
+      }
+
+      const serverErrors = mapServerErrors(details);
+      setServerErrors(serverErrors);
+
+      return false;
+    } finally {
+      setIsLoading(false);
+    }
+  }, []);
+
   const fetchUser = async () => {
+    setIsLoading(true);
     try {
       const response = await instance.get('/users/me/');
       setUser(response.data);
     } catch {
       setUser(null);
+    } finally {
+      setIsLoading(false);
     }
   };
+
+  const setNewPassword = useCallback(async (data: NewPasswordServerData) => {
+    setIsLoading(true);
+    setServerErrors({});
+
+    try {
+      await instance.post('/users/password-reset-complete/', data);
+
+      return true;
+    } catch (error) {
+      const axiosError = error as {
+        response?: { data?: { detail?: unknown; message?: string } };
+      };
+      const details = axiosError.response?.data?.detail;
+
+      if (typeof details === 'string') {
+        setServerErrors({
+          email: details,
+        });
+
+        return false;
+      }
+
+      const serverErrors = mapServerErrors(details);
+
+      setServerErrors(serverErrors);
+
+      return false;
+    } finally {
+      setIsLoading(false);
+    }
+  }, []);
 
   const login = useCallback(async (data: AuthCredentials) => {
     setIsLoading(true);
@@ -216,14 +284,18 @@ export const AuthContextProvider: React.FC<Props> = ({ children }) => {
       setServerErrors,
       register,
       login,
+      setNewPassword,
       editUser,
+      passwordReset,
       logout,
     }),
     [
       login,
+      setNewPassword,
       logout,
       register,
       editUser,
+      passwordReset,
       user,
       accessToken,
       isAuthenticated,

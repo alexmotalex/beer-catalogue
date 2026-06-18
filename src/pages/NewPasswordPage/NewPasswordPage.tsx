@@ -1,25 +1,26 @@
 import { useEffect, useState } from 'react';
-import { Link, useNavigate } from 'react-router';
+import { useNavigate, useSearchParams } from 'react-router';
 import { BackButton } from '../../components/Buttons/BackButton';
 import { LabeledInput } from '../../components/LabeledInput';
 import { ErrorInfo } from '../../components/ErrorInfo';
 import { PrimaryButton } from '../../components/Buttons/PrimaryButton';
-import { RedirectText } from '../../components/RedirectText';
 import { useAuth } from '../../hooks/useAuth';
-import { validateSignInForm } from '../../utils/validateSignInForm';
-import { emptySignInForm } from '../../constants/formsData';
+import { validateNewPasswordForm } from '../../utils/validateNewPasswordForm';
+import { emptyNewPasswordForm } from '../../constants/formsData';
 import { ROUTES } from '../../constants/routes';
-import type { AuthCredentials } from '../../types/Forms';
-import styles from './SignInPage.module.scss';
+import type { NewPasswordFormData } from '../../types/Forms';
+// import styles from './NewPasswordPage.module.scss';
 
-export const SigninPage = () => {
-  const [formData, setFormData] = useState<AuthCredentials>(emptySignInForm);
-
+export const NewPasswordPage = () => {
+  const [formData, setFormData] =
+    useState<NewPasswordFormData>(emptyNewPasswordForm);
+  const [searchParams] = useSearchParams();
   const navigate = useNavigate();
+  const { isLoading, serverErrors, setServerErrors, setNewPassword } =
+    useAuth();
 
-  const { login, isLoading, serverErrors, setServerErrors } = useAuth();
-
-  const validationErrors = validateSignInForm(formData);
+  const token = searchParams.get('token') || '';
+  const validationErrors = validateNewPasswordForm(formData);
   const isFormValid = Object.keys(validationErrors).length === 0;
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -39,10 +40,12 @@ export const SigninPage = () => {
   const handleSubmit = async (e: React.SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    const loginSuccess = await login(formData);
+    const { password } = formData;
+
+    const loginSuccess = await setNewPassword({ password, token });
 
     if (loginSuccess) {
-      navigate(ROUTES.home);
+      navigate(ROUTES.signIn);
     }
   };
 
@@ -51,36 +54,20 @@ export const SigninPage = () => {
   }, [setServerErrors]);
 
   return (
-    <section className="authPage">
+    <section className="checkAuthPage">
       <div className="backButtonWrapper">
         <BackButton />
       </div>
 
-      <h1 className="authPageTitle">Sign In</h1>
+      <h1 className="title">Create new password</h1>
 
-      <p className="subtitle">Continue to your personal account</p>
+      <p className="subtitle">Create a new password for your account</p>
 
       <form className="authForm" onSubmit={handleSubmit}>
         <div className="authFormInputsWrapper">
           <div className="authFormLabelInputWrapper">
             <LabeledInput
-              autoComplete="email"
-              label="Email"
-              name="email"
-              type="email"
-              error={Boolean(serverErrors.email)}
-              value={formData.email}
-              onChange={handleChange}
-              placeholder="john.doe@email.com"
-              required
-            />
-
-            {serverErrors.email && <ErrorInfo errorText={serverErrors.email} />}
-          </div>
-
-          <div className="authFormLabelInputWrapper">
-            <LabeledInput
-              autoComplete="current-password"
+              autoComplete="new-password"
               label="Password"
               name="password"
               type="password"
@@ -94,22 +81,30 @@ export const SigninPage = () => {
             {serverErrors.password && (
               <ErrorInfo errorText={serverErrors.password} />
             )}
+          </div>
 
-            <Link to={ROUTES.forgotPassword} className={styles.forgotPassword}>
-              Forgot password?
-            </Link>
+          <div className="authFormLabelInputWrapper">
+            <LabeledInput
+              autoComplete="confirm-password"
+              label="Password"
+              name="confirmPassword"
+              type="password"
+              error={Boolean(validationErrors.isSame)}
+              value={formData.confirmPassword}
+              onChange={handleChange}
+              placeholder="••••••••"
+              required
+            />
+
+            {validationErrors.isSame && (
+              <ErrorInfo errorText={validationErrors.isSame} />
+            )}
           </div>
         </div>
 
         <div className="authFormButton">
           <PrimaryButton title="Sign In" disabled={!isFormValid || isLoading} />
         </div>
-
-        <RedirectText
-          to={ROUTES.signUp}
-          text="Don’t have an account?"
-          linkText="Sign up"
-        />
       </form>
     </section>
   );

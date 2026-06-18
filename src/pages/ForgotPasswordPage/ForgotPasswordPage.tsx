@@ -1,25 +1,26 @@
 import { useEffect, useState } from 'react';
-import { Link, useNavigate } from 'react-router';
+import { useNavigate } from 'react-router';
 import { BackButton } from '../../components/Buttons/BackButton';
 import { LabeledInput } from '../../components/LabeledInput';
 import { ErrorInfo } from '../../components/ErrorInfo';
 import { PrimaryButton } from '../../components/Buttons/PrimaryButton';
 import { RedirectText } from '../../components/RedirectText';
 import { useAuth } from '../../hooks/useAuth';
-import { validateSignInForm } from '../../utils/validateSignInForm';
-import { emptySignInForm } from '../../constants/formsData';
+import { emptyForgotPasswordForm } from '../../constants/formsData';
 import { ROUTES } from '../../constants/routes';
-import type { AuthCredentials } from '../../types/Forms';
-import styles from './SignInPage.module.scss';
+import { validateForgotPasswordForm } from '../../utils/validateForgotPasswordForm';
+import type { ForgotPasswordFormData } from '../../types/Forms';
 
-export const SigninPage = () => {
-  const [formData, setFormData] = useState<AuthCredentials>(emptySignInForm);
+export const ForgotPasswordPage = () => {
+  const [formData, setFormData] = useState<ForgotPasswordFormData>(
+    emptyForgotPasswordForm,
+  );
 
   const navigate = useNavigate();
 
-  const { login, isLoading, serverErrors, setServerErrors } = useAuth();
+  const { isLoading, serverErrors, passwordReset, setServerErrors } = useAuth();
 
-  const validationErrors = validateSignInForm(formData);
+  const validationErrors = validateForgotPasswordForm(formData);
   const isFormValid = Object.keys(validationErrors).length === 0;
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -39,10 +40,17 @@ export const SigninPage = () => {
   const handleSubmit = async (e: React.SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    const loginSuccess = await login(formData);
+    const registrationSuccess = await passwordReset(formData);
 
-    if (loginSuccess) {
-      navigate(ROUTES.home);
+    if (registrationSuccess) {
+      setFormData(emptyForgotPasswordForm);
+      navigate(ROUTES.checkEmail, {
+        state: {
+          email: formData.email,
+          formData,
+          type: 'reset-password',
+        },
+      });
     }
   };
 
@@ -51,14 +59,14 @@ export const SigninPage = () => {
   }, [setServerErrors]);
 
   return (
-    <section className="authPage">
+    <section className="checkAuthPage">
       <div className="backButtonWrapper">
         <BackButton />
       </div>
 
-      <h1 className="authPageTitle">Sign In</h1>
+      <h1 className="title">Forgot Password?</h1>
 
-      <p className="subtitle">Continue to your personal account</p>
+      <p className="subtitle">Receive a code to reset your password</p>
 
       <form className="authForm" onSubmit={handleSubmit}>
         <div className="authFormInputsWrapper">
@@ -77,38 +85,19 @@ export const SigninPage = () => {
 
             {serverErrors.email && <ErrorInfo errorText={serverErrors.email} />}
           </div>
-
-          <div className="authFormLabelInputWrapper">
-            <LabeledInput
-              autoComplete="current-password"
-              label="Password"
-              name="password"
-              type="password"
-              error={Boolean(serverErrors.password)}
-              value={formData.password}
-              onChange={handleChange}
-              placeholder="••••••••"
-              required
-            />
-
-            {serverErrors.password && (
-              <ErrorInfo errorText={serverErrors.password} />
-            )}
-
-            <Link to={ROUTES.forgotPassword} className={styles.forgotPassword}>
-              Forgot password?
-            </Link>
-          </div>
         </div>
 
         <div className="authFormButton">
-          <PrimaryButton title="Sign In" disabled={!isFormValid || isLoading} />
+          <PrimaryButton
+            title="Send сode"
+            disabled={!isFormValid || isLoading}
+          />
         </div>
 
         <RedirectText
-          to={ROUTES.signUp}
-          text="Don’t have an account?"
-          linkText="Sign up"
+          to={ROUTES.signIn}
+          text="Remember password?"
+          linkText="Back to Sign In"
         />
       </form>
     </section>

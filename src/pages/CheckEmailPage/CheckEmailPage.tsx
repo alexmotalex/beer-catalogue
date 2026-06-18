@@ -1,10 +1,9 @@
 import { Navigate, useLocation } from 'react-router';
 import { useEffect, useState } from 'react';
+import { useAuth } from '../../hooks/useAuth';
 import { BackButton } from '../../components/Buttons/BackButton';
 import { SuccessMessage } from '../../components/SuccessMessage';
-
 import { PrimaryButton } from '../../components/Buttons/PrimaryButton';
-import { useAuth } from '../../hooks/useAuth';
 import { ROUTES } from '../../constants/routes';
 import styles from './CheckEmailPage.module.scss';
 
@@ -12,10 +11,16 @@ const RESEND_TIMEOUT_SECONDS = 60;
 
 export const CheckEmailPage = () => {
   const [secondsLeft, setSecondsLeft] = useState(RESEND_TIMEOUT_SECONDS);
+  const [showResendToast, setShowResendToast] = useState(false);
+
+  const { register, passwordReset } = useAuth();
   const location = useLocation();
-  const { register } = useAuth();
+
   const email = location.state?.email ?? '';
-  const formData = location.state?.formData ?? {};
+  const formData = location.state?.formData || {};
+  const type = location.state?.type || '';
+
+  const resendFn = type === 'reset-password' ? passwordReset : register;
 
   const canResend = secondsLeft === 0;
   const resendInfo = canResend
@@ -27,9 +32,10 @@ export const CheckEmailPage = () => {
       return;
     }
 
-    await register(formData);
+    await resendFn(formData);
 
     setSecondsLeft(RESEND_TIMEOUT_SECONDS);
+    setShowResendToast(true);
   };
 
   useEffect(() => {
@@ -44,33 +50,47 @@ export const CheckEmailPage = () => {
     return () => clearTimeout(timerId);
   }, [secondsLeft]);
 
+  useEffect(() => {
+    if (!showResendToast) {
+      return;
+    }
+
+    const toastTimerId = setTimeout(() => {
+      setShowResendToast(false);
+    }, 5000);
+
+    return () => clearTimeout(toastTimerId);
+  }, [showResendToast]);
+
   if (!email) {
     return <Navigate to={ROUTES.signUp} replace />;
   }
 
   return (
-    <section className={styles.checkEmail}>
-      <div className="successMessageWrapper">
-        <SuccessMessage title="Verification link sent" />
-      </div>
+    <section className="checkAuthPage">
+      {showResendToast && (
+        <div className="successMessageWrapper">
+          <SuccessMessage title="Verification link sent" />
+        </div>
+      )}
 
       <div className="backButtonWrapper">
         <BackButton />
       </div>
 
-      <h1 className={styles.checkEmailTitle}>Check your email</h1>
+      <h1 className="title">Check your email</h1>
 
-      <p className={styles.checkEmailSubtitle}>
+      <p className="subtitle">
         We've sent a verification link to{' '}
-        <strong className={styles.checkEmailSubtitleEmail}>{email}</strong>
+        <strong className="subtitleEmail">{email}</strong>
       </p>
 
-      <div className={styles.checkEmailContent}>
-        <h2 className={styles.checkEmailContentTitle}>
+      <div className={styles.content}>
+        <h2 className={styles.contentTitle}>
           Open your inbox and click the verification link.
         </h2>
 
-        <div className={styles.checkEmailContentButton}>
+        <div className={styles.contentButton}>
           <PrimaryButton
             type="button"
             title="Resend link"
@@ -79,13 +99,11 @@ export const CheckEmailPage = () => {
           />
         </div>
 
-        <div className={styles.checkEmailContentFooter}>
-          <span className={styles.checkEmailContentFooterText}>
+        <div className={styles.contentFooter}>
+          <span className={styles.contentFooterText}>
             Didn't receive the email?
           </span>
-          <span className={styles.checkEmailContentFooterInfo}>
-            {resendInfo}
-          </span>
+          <span className={styles.contentFooterInfo}>{resendInfo}</span>
         </div>
       </div>
     </section>

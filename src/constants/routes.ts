@@ -3,9 +3,12 @@ export const ROUTES = {
   account: '/account',
   signIn: '/signin',
   editUser: '/edit-user',
+  forgotPassword: '/forgot-password',
   changePassword: '/change-password',
+  setNewPassword: '/password-reset-complete',
   checkEmail: '/checkemail',
   signUp: '/signup',
+  activate: '/activate',
   help: '/help',
   catalogue: '/beers',
   cart: '/cart',
@@ -29,4 +32,5 @@ export const HIDDEN_ROUTES = [
   ROUTES.signIn,
   ROUTES.checkEmail,
   ROUTES.editUser,
+  ROUTES.forgotPassword,
 ] as const;

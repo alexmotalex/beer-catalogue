@@ -1,7 +1,4 @@
-export type AuthCredentials = {
-  email: string;
-  password: string;
-};
+import type { AuthCredentials } from './Forms';
 
 export type RegisterUserData = AuthCredentials & {
   first_name: string;

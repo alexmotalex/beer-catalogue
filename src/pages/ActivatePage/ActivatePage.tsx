@@ -7,8 +7,8 @@ import { ROUTES } from '../../constants/routes';
 
 export const ActivatePage = () => {
   const [searchParams] = useSearchParams();
-  const token = searchParams.get('token');
   const navigate = useNavigate();
+  const token = searchParams.get('token') || '';
 
   useEffect(() => {
     const activateAccount = async (token: string) => {

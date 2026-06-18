@@ -1,14 +1,14 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router';
 import { BackButton } from '../../components/Buttons/BackButton';
 import { LabeledInput } from '../../components/LabeledInput';
-import { emptyEditUserForm } from '../../constants/formsData';
+import { PrimaryButton } from '../../components/Buttons/PrimaryButton';
 import { useAuth } from '../../hooks/useAuth';
 import { mapToEditUserData } from '../../utils/formMappers';
-import { PrimaryButton } from '../../components/Buttons/PrimaryButton';
-import { validateEditUserForm } from '../../utils/validateEditUserForm copy';
+import { validateEditUserForm } from '../../utils/validateEditUserForm';
+import { emptyEditUserForm } from '../../constants/formsData';
 import type { EditUserFormData } from '../../types/Forms';
 import { SuccessMessage } from '../../components/SuccessMessage';
-import { useNavigate } from 'react-router';
 import { ROUTES } from '../../constants/routes';
 import styles from './EditUserPage.module.scss';
 
@@ -55,7 +55,7 @@ export const EditUserPage = () => {
   };
 
   return (
-    <section className="authPage">
+    <section className="checkAuthPage">
       {isSuccess && (
         <div className="successMessageWrapper">
           <SuccessMessage title="Success" />

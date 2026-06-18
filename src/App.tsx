@@ -9,22 +9,30 @@ import { SigninPage } from './pages/SignInPage';
 import { CheckEmailPage } from './pages/CheckEmailPage';
 import { ActivatePage } from './pages/ActivatePage';
 import { EditUserPage } from './pages/EditUserPage';
+import { NewPasswordPage } from './pages/NewPasswordPage';
+import { ForgotPasswordPage } from './pages/ForgotPasswordPage';
+import { ROUTES } from './constants/routes';
 import './App.scss';
 
 function App() {
   return (
     <div className="App">
       <Routes>
-        <Route path="/" element={<MainLayout />}>
+        <Route path={ROUTES.home} element={<MainLayout />}>
           <Route index element={<HomePage />} />
-          <Route path="signup" element={<SignUpPage />} />
-          <Route path="activate" element={<ActivatePage />} />
-          <Route path="signin" element={<SigninPage />} />
-          <Route path="edit-user" element={<EditUserPage />} />
-          <Route path="checkemail" element={<CheckEmailPage />} />
-          <Route path="beers" element={<Catalogue />} />
+          <Route path={ROUTES.signUp} element={<SignUpPage />} />
+          <Route path={ROUTES.activate} element={<ActivatePage />} />
+          <Route path={ROUTES.signIn} element={<SigninPage />} />
+          <Route path={ROUTES.editUser} element={<EditUserPage />} />
+          <Route
+            path={ROUTES.forgotPassword}
+            element={<ForgotPasswordPage />}
+          />
+          <Route path={ROUTES.setNewPassword} element={<NewPasswordPage />} />
+          <Route path={ROUTES.checkEmail} element={<CheckEmailPage />} />
+          <Route path={ROUTES.catalogue} element={<Catalogue />} />
           <Route path="product/:productId" element={<ProductPage />} />
-          <Route path="cart" element={<Cart />} />
+          <Route path={ROUTES.cart} element={<Cart />} />
           <Route path="*" element={<h1>Not Found</h1>} />
         </Route>
       </Routes>
