@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useNavigate, useSearchParams } from 'react-router';
+import { Navigate, useNavigate, useSearchParams } from 'react-router';
 import { BackButton } from '../../components/Buttons/BackButton';
 import { LabeledInput } from '../../components/LabeledInput';
 import { ErrorInfo } from '../../components/ErrorInfo';
@@ -40,11 +40,15 @@ export const NewPasswordPage = () => {
   const handleSubmit = async (e: React.SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
 
+    if (!token) {
+      return <Navigate to={ROUTES.signIn} replace />;
+    }
+
     const { password } = formData;
 
-    const loginSuccess = await setNewPassword({ password, token });
+    const success = await setNewPassword({ password, token });
 
-    if (loginSuccess) {
+    if (success) {
       navigate(ROUTES.signIn);
     }
   };
@@ -103,7 +107,11 @@ export const NewPasswordPage = () => {
         </div>
 
         <div className="authFormButton">
-          <PrimaryButton title="Sign In" disabled={!isFormValid || isLoading} />
+          <PrimaryButton
+            title="Reset password"
+            type="submit"
+            disabled={!isFormValid || isLoading}
+          />
         </div>
       </form>
     </section>
