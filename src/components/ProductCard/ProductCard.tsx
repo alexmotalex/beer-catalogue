@@ -33,7 +33,7 @@ export const ProductCard: React.FC<Props> = ({ product }) => {
 
   const handleAddToCart = () => {
     if (!user) {
-      navigate(ROUTES.signUp);
+      navigate(ROUTES.signIn);
 
       return;
     }
