@@ -6,7 +6,7 @@ import { ErrorInfo } from '../../components/ErrorInfo';
 import { PrimaryButton } from '../../components/Buttons/PrimaryButton';
 import { RedirectText } from '../../components/RedirectText';
 import { useAuth } from '../../hooks/useAuth';
-import { validateSignInForm } from '../../utils/validateSignInForm';
+import { validateSignInForm } from '../../utils/formValidate/validateSignInForm';
 import { emptySignInForm } from '../../constants/formsData';
 import { ROUTES } from '../../constants/routes';
 import type { AuthCredentials } from '../../types/Forms';

@@ -7,7 +7,7 @@ import { PrimaryButton } from '../../components/Buttons/PrimaryButton';
 import { RedirectText } from '../../components/RedirectText';
 import { ErrorInfo } from '../../components/ErrorInfo';
 import { useAuth } from '../../hooks/useAuth';
-import { validateSignUpForm } from '../../utils/validateSignUpForm';
+import { validateSignUpForm } from '../../utils/formValidate/validateSignUpForm';
 import { mapToRegisterData } from '../../utils/formMappers';
 import { ROUTES } from '../../constants/routes';
 import { emptySignUpForm } from '../../constants/formsData';

@@ -1,4 +1,4 @@
-import type { EditUserFormData, EditUserFormErrors } from '../types/Forms';
+import type { EditUserFormData, EditUserFormErrors } from '../../types/Forms';
 
 export const validateEditUserForm = (formData: EditUserFormData) => {
   const newErrors: EditUserFormErrors = {};

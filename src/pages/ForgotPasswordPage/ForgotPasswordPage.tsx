@@ -8,7 +8,7 @@ import { RedirectText } from '../../components/RedirectText';
 import { useAuth } from '../../hooks/useAuth';
 import { emptyForgotPasswordForm } from '../../constants/formsData';
 import { ROUTES } from '../../constants/routes';
-import { validateForgotPasswordForm } from '../../utils/validateForgotPasswordForm';
+import { validateForgotPasswordForm } from '../../utils/formValidate/validateForgotPasswordForm';
 import type { ForgotPasswordFormData } from '../../types/Forms';
 
 export const ForgotPasswordPage = () => {

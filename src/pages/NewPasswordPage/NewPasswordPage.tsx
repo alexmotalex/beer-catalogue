@@ -5,7 +5,7 @@ import { LabeledInput } from '../../components/LabeledInput';
 import { ErrorInfo } from '../../components/ErrorInfo';
 import { PrimaryButton } from '../../components/Buttons/PrimaryButton';
 import { useAuth } from '../../hooks/useAuth';
-import { validateNewPasswordForm } from '../../utils/validateNewPasswordForm';
+import { validateNewPasswordForm } from '../../utils/formValidate/validateNewPasswordForm';
 import { emptyNewPasswordForm } from '../../constants/formsData';
 import { ROUTES } from '../../constants/routes';
 import type { NewPasswordFormData } from '../../types/Forms';

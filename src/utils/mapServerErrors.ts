@@ -25,8 +25,6 @@ export const mapServerErrors = (details: unknown): ServerErrors => {
 
       if (mappedField) {
         errors[mappedField] = capitalizeFirstLetter(message);
-
-        console.log(message);
       }
     });
 

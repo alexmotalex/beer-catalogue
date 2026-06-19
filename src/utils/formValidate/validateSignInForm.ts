@@ -1,4 +1,4 @@
-import type { AuthCredentials, SignInFormErrors } from '../types/Forms';
+import type { AuthCredentials, SignInFormErrors } from '../../types/Forms';
 
 export const validateSignInForm = (formData: AuthCredentials) => {
   const newErrors: SignInFormErrors = {};

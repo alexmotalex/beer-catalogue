@@ -1,4 +1,4 @@
-import type { SignupFormData, SignupFormErrors } from '../types/Forms';
+import type { SignupFormData, SignupFormErrors } from '../../types/Forms';
 
 export const PASSWORD_REGEX = /^(?=.*\d).{8,}$/;
 

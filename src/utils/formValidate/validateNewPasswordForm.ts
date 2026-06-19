@@ -1,7 +1,7 @@
 import type {
   NewPasswordFormData,
   NewPasswordFormErrors,
-} from '../types/Forms';
+} from '../../types/Forms';
 
 export const validateNewPasswordForm = (formData: NewPasswordFormData) => {
   const newErrors: NewPasswordFormErrors = {};

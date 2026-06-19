@@ -1,7 +1,7 @@
 import type {
   ForgotPasswordFormData,
   ForgotPasswordFormErrors,
-} from '../types/Forms';
+} from '../../types/Forms';
 
 export const validateForgotPasswordForm = (
   formData: ForgotPasswordFormData,

@@ -1,8 +1,8 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { AuthContext } from './AuthContext';
 import { client } from '../../utils/axiosClient';
-import { mapServerErrors } from '../../utils/mapServerErrors';
 import { instance } from '../../api/axiosInstance';
+import { extractServerErrors } from '../../utils/extractServerErrors';
 import type {
   AuthCredentials,
   ForgotPasswordFormData,
@@ -47,21 +47,7 @@ export const AuthContextProvider: React.FC<Props> = ({ children }) => {
 
       return true;
     } catch (error: unknown) {
-      const axiosError = error as {
-        response?: { data?: { detail?: unknown; message?: string } };
-      };
-      const details = axiosError.response?.data?.detail;
-
-      if (typeof details === 'string') {
-        setServerErrors({
-          email: details,
-        });
-
-        return false;
-      }
-
-      const serverErrors = mapServerErrors(details);
-      setServerErrors(serverErrors);
+      setServerErrors(extractServerErrors(error));
 
       return false;
     } finally {
@@ -78,21 +64,7 @@ export const AuthContextProvider: React.FC<Props> = ({ children }) => {
 
       return true;
     } catch (error: unknown) {
-      const axiosError = error as {
-        response?: { data?: { detail?: unknown; message?: string } };
-      };
-      const details = axiosError.response?.data?.detail;
-
-      if (typeof details === 'string') {
-        setServerErrors({
-          email: details,
-        });
-
-        return false;
-      }
-
-      const serverErrors = mapServerErrors(details);
-      setServerErrors(serverErrors);
+      setServerErrors(extractServerErrors(error));
 
       return false;
     } finally {
@@ -100,8 +72,9 @@ export const AuthContextProvider: React.FC<Props> = ({ children }) => {
     }
   }, []);
 
-  const fetchUser = async () => {
+  const fetchUser = useCallback(async () => {
     setIsLoading(true);
+
     try {
       const response = await instance.get('/users/me/');
       setUser(response.data);
@@ -110,7 +83,7 @@ export const AuthContextProvider: React.FC<Props> = ({ children }) => {
     } finally {
       setIsLoading(false);
     }
-  };
+  }, []);
 
   const setNewPassword = useCallback(async (data: NewPasswordServerData) => {
     setIsLoading(true);
@@ -121,22 +94,7 @@ export const AuthContextProvider: React.FC<Props> = ({ children }) => {
 
       return true;
     } catch (error) {
-      const axiosError = error as {
-        response?: { data?: { detail?: unknown; message?: string } };
-      };
-      const details = axiosError.response?.data?.detail;
-
-      if (typeof details === 'string') {
-        setServerErrors({
-          email: details,
-        });
-
-        return false;
-      }
-
-      const serverErrors = mapServerErrors(details);
-
-      setServerErrors(serverErrors);
+      setServerErrors(extractServerErrors(error));
 
       return false;
     } finally {
@@ -144,43 +102,31 @@ export const AuthContextProvider: React.FC<Props> = ({ children }) => {
     }
   }, []);
 
-  const login = useCallback(async (data: AuthCredentials) => {
-    setIsLoading(true);
-    setServerErrors({});
+  const login = useCallback(
+    async (data: AuthCredentials) => {
+      setIsLoading(true);
+      setServerErrors({});
 
-    try {
-      const response = await instance.post('/users/login/', data);
-      const token = response.data.access_token;
+      try {
+        const response = await instance.post('/users/login/', data);
+        const token = response.data.access_token;
 
-      setAccessToken(token);
+        setAccessToken(token);
 
-      instance.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-      await fetchUser();
+        instance.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+        await fetchUser();
 
-      return true;
-    } catch (error) {
-      const axiosError = error as {
-        response?: { data?: { detail?: unknown; message?: string } };
-      };
-      const details = axiosError.response?.data?.detail;
-
-      if (typeof details === 'string') {
-        setServerErrors({
-          email: details,
-        });
+        return true;
+      } catch (error) {
+        setServerErrors(extractServerErrors(error));
 
         return false;
+      } finally {
+        setIsLoading(false);
       }
-
-      const serverErrors = mapServerErrors(details);
-
-      setServerErrors(serverErrors);
-
-      return false;
-    } finally {
-      setIsLoading(false);
-    }
-  }, []);
+    },
+    [fetchUser],
+  );
 
   const editUser = useCallback(async (data: EditUserData) => {
     setIsLoading(true);
@@ -191,22 +137,7 @@ export const AuthContextProvider: React.FC<Props> = ({ children }) => {
 
       return true;
     } catch (error) {
-      const axiosError = error as {
-        response?: { data?: { detail?: unknown; message?: string } };
-      };
-      const details = axiosError.response?.data?.detail;
-
-      if (typeof details === 'string') {
-        setServerErrors({
-          general: details,
-        });
-
-        return false;
-      }
-
-      const serverErrors = mapServerErrors(details);
-
-      setServerErrors(serverErrors);
+      setServerErrors(extractServerErrors(error, 'general'));
 
       return false;
     } finally {
@@ -258,7 +189,7 @@ export const AuthContextProvider: React.FC<Props> = ({ children }) => {
     };
 
     initAuth();
-  }, []);
+  }, [fetchUser]);
 
   useEffect(() => {
     const interceptorId = instance.interceptors.request.use(config => {

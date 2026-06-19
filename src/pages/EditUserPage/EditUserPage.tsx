@@ -5,7 +5,7 @@ import { LabeledInput } from '../../components/LabeledInput';
 import { PrimaryButton } from '../../components/Buttons/PrimaryButton';
 import { useAuth } from '../../hooks/useAuth';
 import { mapToEditUserData } from '../../utils/formMappers';
-import { validateEditUserForm } from '../../utils/validateEditUserForm';
+import { validateEditUserForm } from '../../utils/formValidate/validateEditUserForm';
 import { emptyEditUserForm } from '../../constants/formsData';
 import type { EditUserFormData } from '../../types/Forms';
 import { SuccessMessage } from '../../components/SuccessMessage';
