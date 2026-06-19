@@ -85,7 +85,7 @@ export const ProductPage = () => {
     ? 'Out of stock'
     : inCart
       ? 'Added to cart'
-      : `Add to basket | $${price}`;
+      : `Add to cart$ | ${price}`;
 
   return (
     <section className={styles.product}>

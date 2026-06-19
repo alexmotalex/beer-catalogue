@@ -25,7 +25,7 @@ export type CartContextType = {
   addToCart: (beerId: number) => Promise<void>;
   deleteFromCart: (itemId: number, beerId: number) => Promise<void>;
   clearCart: () => Promise<void>;
-  isInCart: (beerName: number) => boolean;
+  isInCart: (beerId: number) => boolean;
 };
 
 type Props = {
@@ -38,9 +38,13 @@ export const CartContextProvider: React.FC<Props> = ({ children }) => {
   const [error, setError] = useState<string | null>(null);
   const [itemErrors, setItemErrors] = useState<Map<number, string>>(new Map());
 
-  const { isLoading: isAuthLoading } = useAuth();
+  const { user, isLoading: isAuthLoading } = useAuth();
 
   const fetchCart = useCallback(async () => {
+    if (!user) {
+      return;
+    }
+
     setIsLoading(true);
 
     try {
@@ -51,10 +55,16 @@ export const CartContextProvider: React.FC<Props> = ({ children }) => {
     } finally {
       setIsLoading(false);
     }
-  }, []);
+  }, [user]);
 
   const addToCart = useCallback(
     async (beerId: number) => {
+      if (!user) {
+        return;
+      }
+
+      setIsLoading(true);
+
       setItemErrors(prev => {
         const next = new Map(prev);
         next.delete(beerId);
@@ -77,9 +87,11 @@ export const CartContextProvider: React.FC<Props> = ({ children }) => {
 
           return next;
         });
+      } finally {
+        setIsLoading(false);
       }
     },
-    [fetchCart],
+    [user, fetchCart],
   );
 
   const deleteFromCart = useCallback(

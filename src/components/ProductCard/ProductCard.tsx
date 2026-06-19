@@ -1,11 +1,13 @@
 import type React from 'react';
-import type { Beer } from '../../types/Beer';
-import { Link } from 'react-router';
+import { Link, useNavigate } from 'react-router';
 import { PrimaryButton } from '../Buttons/PrimaryButton';
 import { capitalizeFirstLetter } from '../../utils/capitalizeFirstLetter';
-import styles from './ProductCard.module.scss';
-import { buildProductPath } from '../../utils/buildProductPath ';
 import { useCart } from '../../hooks/useCart';
+import { useAuth } from '../../hooks/useAuth';
+import { ROUTES } from '../../constants/routes';
+import { buildProductPath } from '../../utils/buildProductPath ';
+import type { Beer } from '../../types/Beer';
+import styles from './ProductCard.module.scss';
 
 type Props = {
   product: Omit<Beer, 'description'>;
@@ -24,11 +26,17 @@ export const ProductCard: React.FC<Props> = ({ product }) => {
     is_available,
   } = product;
 
+  const { user } = useAuth();
   const { addToCart, isInCart } = useCart();
-
+  const navigate = useNavigate();
   const productPath = buildProductPath(id);
 
   const handleAddToCart = () => {
+    if (!user) {
+      navigate(ROUTES.signUp);
+
+      return;
+    }
     addToCart(id);
   };
 
@@ -56,8 +64,8 @@ export const ProductCard: React.FC<Props> = ({ product }) => {
   const buttonTitle = !is_available
     ? 'Out of stock'
     : inCart
-      ? 'Added to basket'
-      : `Add to basket | $${price}`;
+      ? 'Added to cart'
+      : `Add to cart | $${price}`;
 
   return (
     <article className={styles.productCard}>
