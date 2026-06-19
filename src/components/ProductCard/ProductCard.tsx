@@ -37,6 +37,7 @@ export const ProductCard: React.FC<Props> = ({ product }) => {
 
       return;
     }
+
     addToCart(id);
   };
 

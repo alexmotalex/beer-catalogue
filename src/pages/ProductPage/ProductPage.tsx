@@ -1,22 +1,26 @@
 // import styles from './Catalogue.module.scss';
 
-import { useParams } from 'react-router';
+import { useNavigate, useParams } from 'react-router';
 import { BackButton } from '../../components/Buttons/BackButton';
 import { PrimaryButton } from '../../components/Buttons/PrimaryButton';
 import { Stepper } from '../../components/Stepper';
+import { ErrorInfo } from '../../components/ErrorInfo';
 import { useBeerById } from '../../hooks/useBeerById';
+import { useAuth } from '../../hooks/useAuth';
+import { useCart } from '../../hooks/useCart';
+import { ROUTES } from '../../constants/routes';
 import clsx from 'clsx';
 import styles from './ProductPage.module.scss';
-import { useCart } from '../../hooks/useCart';
-import { ErrorInfo } from '../../components/ErrorInfo';
 
 export const ProductPage = () => {
   const { productId } = useParams();
-  const beerId = Number(productId);
-
-  const { beer, isLoading, isError } = useBeerById(beerId);
+  const { user } = useAuth();
   const { addToCart, isInCart, itemErrors, cartItems, deleteFromCart } =
     useCart();
+  const navigate = useNavigate();
+
+  const beerId = Number(productId);
+  const { beer, isLoading, isError } = useBeerById(beerId);
 
   if (isLoading) {
     return <h2>Loading</h2>;
@@ -47,6 +51,12 @@ export const ProductPage = () => {
   const error = itemErrors.get(beerId);
 
   const handleIncrease = () => {
+    if (!user) {
+      navigate(ROUTES.signIn);
+
+      return;
+    }
+
     addToCart(beerId);
   };
 
@@ -56,10 +66,6 @@ export const ProductPage = () => {
     }
 
     deleteFromCart(cartItem.id, beerId);
-  };
-
-  const handleAddToCart = () => {
-    addToCart(beerId);
   };
 
   const specifications = [
@@ -144,14 +150,14 @@ export const ProductPage = () => {
               error={Boolean(error)}
               onIncrease={handleIncrease}
               onDecrease={handleDecrease}
-              onDelete={handleIncrease}
+              onDelete={handleDecrease}
             />
 
             <div className={styles.addToBasket}>
               <PrimaryButton
                 type="button"
                 title={buttonTitle}
-                onClick={handleAddToCart}
+                onClick={handleIncrease}
                 disabled={!is_available || inCart}
               />
             </div>
