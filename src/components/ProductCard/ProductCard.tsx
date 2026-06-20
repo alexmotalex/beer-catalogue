@@ -5,9 +5,9 @@ import { capitalizeFirstLetter } from '../../utils/capitalizeFirstLetter';
 import { useCart } from '../../hooks/useCart';
 import { useAuth } from '../../hooks/useAuth';
 import { ROUTES } from '../../constants/routes';
-import { buildProductPath } from '../../utils/buildProductPath ';
 import type { Beer } from '../../types/Beer';
 import styles from './ProductCard.module.scss';
+import { buildProductPath } from '../../utils/buildProductPath';
 
 type Props = {
   product: Omit<Beer, 'description'>;

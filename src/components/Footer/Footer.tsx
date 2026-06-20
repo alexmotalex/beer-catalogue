@@ -1,13 +1,14 @@
 import { Link } from 'react-router';
 import { Icon } from '../Icon';
-import clsx from 'clsx';
-import styles from './Footer.module.scss';
 import {
   FOOTER_LEGAL_LINKS,
   FOOTER_SOCIAL_LINKS,
   FOOTER_SUPPORTS_LINKS,
 } from '../../constants/navLinks';
 import { ROUTES } from '../../constants/routes';
+import clsx from 'clsx';
+import styles from './Footer.module.scss';
+import beerLogoLight from '../../assets/images/beer-logo-light.png';
 
 export const Footer = () => {
   return (
@@ -69,8 +70,8 @@ export const Footer = () => {
         >
           <img
             className={styles.logoImage}
-            src="./img/beer-logo-light.png"
-            alt="Craft Beer"
+            src={beerLogoLight}
+            alt="Beer Logo"
           />
         </Link>
 

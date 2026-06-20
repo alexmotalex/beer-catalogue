@@ -9,6 +9,7 @@ import { createNavLinkClass } from '../../utils/createNavLinkClass';
 import { HEADER_MAIN_LINKS } from '../../constants/navLinks';
 import { HIDDEN_ROUTES, ROUTES } from '../../constants/routes';
 import styles from './Header.module.scss';
+import beerLogoDark from '../../assets/images/beer-logo-dark.png';
 
 const getNavLinkClassName = createNavLinkClass(styles, 'navigationLink');
 const getActionLinkClassName = createNavLinkClass(styles, 'actionLink');
@@ -75,11 +76,7 @@ export const Header = () => {
         className={styles.logoLink}
         aria-label="Craft Beer home page"
       >
-        <img
-          className={styles.logoImage}
-          src="./img/beer-logo-dark.png"
-          alt="Craft Beer"
-        />
+        <img className={styles.logoImage} src={beerLogoDark} alt="Beer Logo" />
       </Link>
 
       {!shouldHideMainNavigation && (

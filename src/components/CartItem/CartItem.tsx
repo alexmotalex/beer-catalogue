@@ -1,5 +1,5 @@
 import { Link } from 'react-router';
-import { buildProductPath } from '../../utils/buildProductPath ';
+import { buildProductPath } from '../../utils/buildProductPath';
 import { Stepper } from '../Stepper';
 import type { CartEntry } from '../../types/Cart';
 import { useCart } from '../../hooks/useCart';

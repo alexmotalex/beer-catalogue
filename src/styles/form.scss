@@ -7,8 +7,10 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
+
   background-image:
-    linear-gradient(rgba(255, 255, 255, 0.6)), url('/img/bg-sign.webp');
+    linear-gradient(rgba(255, 255, 255, 0.6)),
+    url('../assets/images/bg-sign.webp');
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;

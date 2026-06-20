@@ -2,6 +2,7 @@ import { useNavigate } from 'react-router';
 import { PrimaryButton } from '../Buttons/PrimaryButton';
 import styles from './NotFound.module.scss';
 import { ROUTES } from '../../constants/routes';
+import emptyCartLogo from '../../assets/images/empty-cart.png';
 
 export const NotFound = () => {
   const navigate = useNavigate();
@@ -15,8 +16,8 @@ export const NotFound = () => {
       <div className={styles.notFoundImageContent}>
         <img
           className={styles.notFoundImage}
-          src="./img/empty-basket.png"
-          alt="page not found"
+          src={emptyCartLogo}
+          alt="Not found"
         />
       </div>
 

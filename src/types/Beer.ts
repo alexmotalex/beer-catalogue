@@ -8,6 +8,7 @@ export type Beer = {
   beer_type: string;
   volume: number;
   is_available: boolean;
+  event_type: string[];
   description: string;
 };
 
