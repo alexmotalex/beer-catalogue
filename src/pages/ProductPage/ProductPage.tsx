@@ -11,6 +11,7 @@ import { useCart } from '../../hooks/useCart';
 import { ROUTES } from '../../constants/routes';
 import clsx from 'clsx';
 import styles from './ProductPage.module.scss';
+import placeholderBeer from '../../assets/images/beer-placeholder.webp';
 
 export const ProductPage = () => {
   const { productId } = useParams();
@@ -35,7 +36,6 @@ export const ProductPage = () => {
   }
 
   const {
-    image_url,
     name,
     price,
     description,
@@ -104,7 +104,11 @@ export const ProductPage = () => {
             !is_available && styles.imageContentSoldOut,
           )}
         >
-          <img src={image_url} alt={name} className={styles.productImage} />
+          <img
+            src={placeholderBeer}
+            alt={name}
+            className={styles.productImage}
+          />
         </div>
 
         <section className={styles.about}>

@@ -4,10 +4,11 @@ import { PrimaryButton } from '../Buttons/PrimaryButton';
 import { capitalizeFirstLetter } from '../../utils/capitalizeFirstLetter';
 import { useCart } from '../../hooks/useCart';
 import { useAuth } from '../../hooks/useAuth';
+import { buildProductPath } from '../../utils/buildProductPath';
 import { ROUTES } from '../../constants/routes';
 import type { Beer } from '../../types/Beer';
 import styles from './ProductCard.module.scss';
-import { buildProductPath } from '../../utils/buildProductPath';
+import placeholderBeer from '../../assets/images/beer-placeholder.webp';
 
 type Props = {
   product: Omit<Beer, 'description'>;
@@ -18,7 +19,6 @@ export const ProductCard: React.FC<Props> = ({ product }) => {
     id,
     name,
     price,
-    image_url,
     alcohol_percentage,
     beer_type,
     volume,
@@ -72,7 +72,7 @@ export const ProductCard: React.FC<Props> = ({ product }) => {
     <article className={styles.productCard}>
       <Link to={productPath} className={styles.imageContent}>
         <img
-          src={image_url}
+          src={placeholderBeer}
           alt={name}
           className={styles.productImage}
           loading="lazy"

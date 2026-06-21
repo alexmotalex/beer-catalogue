@@ -15,9 +15,9 @@
 
 .imageLink {
   align-self: center;
-  width: 184px;
+  max-width: 184px;
+  height: 164px;
   flex-shrink: 0;
-  aspect-ratio: 1;
 }
 
 .productImage {

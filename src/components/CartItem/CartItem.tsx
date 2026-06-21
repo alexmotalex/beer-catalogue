@@ -5,6 +5,7 @@ import type { CartEntry } from '../../types/Cart';
 import { useCart } from '../../hooks/useCart';
 import { ErrorInfo } from '../ErrorInfo';
 import styles from './CartItem.module.scss';
+import placeholderBeer from '../../assets/images/beer-placeholder.webp';
 
 type Props = {
   cartItem: CartEntry;
@@ -12,7 +13,7 @@ type Props = {
 
 export const CartItem: React.FC<Props> = ({ cartItem }) => {
   const { addToCart, deleteFromCart, itemErrors } = useCart();
-  const { id, beer_id, quantity, name, price, image_url } = cartItem;
+  const { id, beer_id, quantity, name, price } = cartItem;
   const error = itemErrors.get(beer_id);
 
   const handleIncrease = () => {
@@ -28,7 +29,7 @@ export const CartItem: React.FC<Props> = ({ cartItem }) => {
     <article className={styles.cartItem}>
       <Link to={productPath} className={styles.imageLink}>
         <img
-          src={image_url}
+          src={placeholderBeer}
           className={styles.productImage}
           alt={name}
           loading="lazy"
