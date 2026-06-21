@@ -14,9 +14,11 @@
 
 .imageContent {
   align-self: center;
+  width: 100%;
   max-width: 345px;
   aspect-ratio: 1;
-  flex: 1;
+  min-height: 0;
+  flex-shrink: 1;
 }
 
 .productImage {
@@ -26,10 +28,15 @@
   object-fit: cover;
 }
 
+.unavailable {
+  filter: grayscale(100%);
+}
+
 .productInfo {
   display: flex;
   flex-direction: column;
   gap: 8px;
+  flex-shrink: 0;
 }
 
 .mainInfo {
@@ -70,4 +77,5 @@
 .button {
   height: 48px;
   width: 100%;
+  flex-shrink: 0;
 }

@@ -59,7 +59,7 @@ export const ForgotPasswordPage = () => {
   }, [setServerErrors]);
 
   return (
-    <section className="checkAuthPage">
+    <section className="pageContent">
       <div className="backButtonWrapper">
         <BackButton />
       </div>

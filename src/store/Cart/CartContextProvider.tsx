@@ -41,11 +41,7 @@ export const CartContextProvider: React.FC<Props> = ({ children }) => {
   const { user, isLoading: isAuthLoading } = useAuth();
 
   const fetchCart = useCallback(async () => {
-    if (!user) {
-      setCart(emptyCart);
-      return;
-    }
-
+    setCart(emptyCart);
     setIsLoading(true);
 
     try {
@@ -56,7 +52,7 @@ export const CartContextProvider: React.FC<Props> = ({ children }) => {
     } finally {
       setIsLoading(false);
     }
-  }, [user]);
+  }, []);
 
   const addToCart = useCallback(
     async (beerId: number) => {
@@ -140,12 +136,25 @@ export const CartContextProvider: React.FC<Props> = ({ children }) => {
       return;
     }
 
+    if (!user) {
+      const timeoutId = window.setTimeout(() => {
+        setCart(emptyCart);
+        setItemErrors(new Map());
+        setError(null);
+        setIsLoading(false);
+      }, 0);
+
+      return () => {
+        window.clearTimeout(timeoutId);
+      };
+    }
+
     const loadCart = async () => {
       await fetchCart();
     };
 
     void loadCart();
-  }, [isAuthLoading, fetchCart]);
+  }, [user, isAuthLoading, fetchCart]);
 
   const value = useMemo(
     () => ({

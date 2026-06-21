@@ -67,7 +67,7 @@ export const CheckEmailPage = () => {
   }
 
   return (
-    <section className="checkAuthPage">
+    <section className="pageContent">
       {showResendToast && (
         <div className="successMessageWrapper">
           <SuccessMessage title="Verification link sent" />

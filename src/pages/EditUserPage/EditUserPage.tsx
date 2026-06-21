@@ -55,7 +55,7 @@ export const EditUserPage = () => {
   };
 
   return (
-    <section className="checkAuthPage">
+    <section className="pageContent">
       {isSuccess && (
         <div className="successMessageWrapper">
           <SuccessMessage title="Success" />

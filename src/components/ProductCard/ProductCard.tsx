@@ -9,6 +9,7 @@ import { ROUTES } from '../../constants/routes';
 import type { Beer } from '../../types/Beer';
 import styles from './ProductCard.module.scss';
 import placeholderBeer from '../../assets/images/beer-placeholder.webp';
+import clsx from 'clsx';
 
 type Props = {
   product: Omit<Beer, 'description'>;
@@ -74,7 +75,10 @@ export const ProductCard: React.FC<Props> = ({ product }) => {
         <img
           src={placeholderBeer}
           alt={name}
-          className={styles.productImage}
+          className={clsx(
+            styles.productImage,
+            !is_available && styles.unavailable,
+          )}
           loading="lazy"
         />
       </Link>

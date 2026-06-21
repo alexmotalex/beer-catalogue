@@ -11,6 +11,8 @@ import type {
 } from '../../types/Forms';
 import type { EditUserData, RegisterUserData, User } from '../../types/User';
 
+const HAS_SESSION_KEY = 'hasSession';
+
 export type AuthContextType = {
   user: User | null;
   accessToken: string | null;
@@ -112,6 +114,7 @@ export const AuthContextProvider: React.FC<Props> = ({ children }) => {
         const token = response.data.access_token;
 
         setAccessToken(token);
+        localStorage.setItem(HAS_SESSION_KEY, 'true');
 
         instance.defaults.headers.common['Authorization'] = `Bearer ${token}`;
         await fetchUser();
@@ -150,6 +153,7 @@ export const AuthContextProvider: React.FC<Props> = ({ children }) => {
       await client.post('/users/logout/', {});
     } finally {
       delete instance.defaults.headers.common['Authorization'];
+      localStorage.removeItem(HAS_SESSION_KEY);
       setAccessToken(null);
       setUser(null);
     }
@@ -168,6 +172,7 @@ export const AuthContextProvider: React.FC<Props> = ({ children }) => {
 
         return true;
       } catch {
+        localStorage.removeItem(HAS_SESSION_KEY);
         setAccessToken(null);
         setUser(null);
 
@@ -176,6 +181,14 @@ export const AuthContextProvider: React.FC<Props> = ({ children }) => {
     };
 
     const initAuth = async () => {
+      const hasSession = localStorage.getItem(HAS_SESSION_KEY) === 'true';
+
+      if (!hasSession) {
+        setIsLoading(false);
+
+        return;
+      }
+
       setIsLoading(true);
 
       const success = await refreshSession();
