@@ -42,6 +42,7 @@ export const CartContextProvider: React.FC<Props> = ({ children }) => {
 
   const fetchCart = useCallback(async () => {
     if (!user) {
+      setCart(emptyCart);
       return;
     }
 

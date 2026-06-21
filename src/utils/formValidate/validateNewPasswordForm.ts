@@ -6,15 +6,18 @@ import type {
 export const validateNewPasswordForm = (formData: NewPasswordFormData) => {
   const newErrors: NewPasswordFormErrors = {};
 
-  if (!formData.password) {
+  if (!formData.password.trim()) {
     newErrors.password = 'New password is required.';
   }
 
-  if (!formData.confirmPassword) {
+  if (!formData.confirmPassword.trim()) {
     newErrors.confirmPassword = 'Confirm password is required.';
   }
 
-  if (formData.password !== formData.confirmPassword) {
+  if (
+    formData.confirmPassword.trim() &&
+    formData.password.trim() !== formData.confirmPassword.trim()
+  ) {
     newErrors.isSame = 'Passwords are not equal';
   }
 

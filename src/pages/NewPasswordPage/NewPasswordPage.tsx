@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Navigate, useNavigate, useSearchParams } from 'react-router';
+import { Slide, toast } from 'react-toastify';
 import { BackButton } from '../../components/Buttons/BackButton';
 import { LabeledInput } from '../../components/LabeledInput';
 import { ErrorInfo } from '../../components/ErrorInfo';
@@ -22,7 +23,14 @@ export const NewPasswordPage = () => {
   const token = searchParams.get('token') || '';
   const validationErrors = validateNewPasswordForm(formData);
   const isFormValid = Object.keys(validationErrors).length === 0;
+  const notify = () =>
+    toast.error(serverErrors.resetToken || 'Something went wrong', {
+      position: 'top-right',
+      theme: 'colored',
+      transition: Slide,
+    });
 
+  console.log(validationErrors);
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
 
@@ -50,6 +58,10 @@ export const NewPasswordPage = () => {
 
     if (success) {
       navigate(ROUTES.signIn);
+    } else {
+      {
+        notify();
+      }
     }
   };
 

@@ -6,6 +6,7 @@ const fieldMap: Record<string, keyof ServerErrors> = {
   password: 'password',
   first_name: 'firstName',
   last_name: 'lastName',
+  reset_token: 'resetToken',
 };
 
 export const mapServerErrors = (details: unknown): ServerErrors => {

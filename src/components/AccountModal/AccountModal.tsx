@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router';
 import { Divider } from '../Divider';
 import { useAuth } from '../../hooks/useAuth';
 import { capitalizeFirstLetter } from '../../utils/capitalizeFirstLetter';
+import { useCart } from '../../hooks/useCart';
 
 interface Props {
   closeFn: () => void;
@@ -13,6 +14,7 @@ interface Props {
 
 export const AccountModal: React.FC<Props> = ({ closeFn }) => {
   const { logout, user } = useAuth();
+  const { fetchCart } = useCart();
 
   const dialogRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
@@ -38,6 +40,7 @@ export const AccountModal: React.FC<Props> = ({ closeFn }) => {
   };
 
   const handleLogOut = () => {
+    fetchCart();
     closeFn();
     logout();
   };

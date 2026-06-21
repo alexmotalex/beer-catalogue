@@ -19,7 +19,7 @@ export const validateSignUpForm = (formData: SignupFormData) => {
     newErrors.email = 'Please enter a valid email address.';
   }
 
-  if (!formData.password) {
+  if (!formData.password.trim()) {
     newErrors.password = 'Password is required.';
   }
 

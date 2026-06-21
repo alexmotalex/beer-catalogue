@@ -38,6 +38,7 @@ export type ServerErrors = {
   firstName?: string;
   lastName?: string;
   general?: string;
+  resetToken?: string;
 };
 
 export type SignupFormErrors = Partial<Record<keyof SignupFormData, string>>;
