@@ -3,6 +3,8 @@ import { ProductCard } from '../../components/ProductCard';
 import { useBeers } from '../../hooks/useBeers';
 import styles from './Catalogue.module.scss';
 import { SecondaryButton } from '../../components/Buttons/SecondaryButton';
+import { FilterSelector } from '../../components/FilterSelector';
+import { selectOptions } from '../../constants/selectOptions';
 
 export const Catalogue = () => {
   const { beers, nextOffset, loadBeers } = useBeers();
@@ -17,6 +19,11 @@ export const Catalogue = () => {
 
   return (
     <section className={clsx('pageContent', styles.catalogue)}>
+      <div className={styles.selectContent}>
+        {selectOptions.map(option => (
+          <FilterSelector option={option} />
+        ))}
+      </div>
       <ul className={styles.productList}>
         {beers.map(beer => (
           <li key={beer.id} className={styles.productItem}>
