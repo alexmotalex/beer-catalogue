@@ -5,6 +5,7 @@ import styles from './Stepper.module.scss';
 type Props = {
   value: number;
   error: boolean;
+  isLoading: boolean;
   onIncrease: () => void;
   onDecrease: () => void;
   onDelete: () => void;
@@ -13,6 +14,7 @@ type Props = {
 export const Stepper: React.FC<Props> = ({
   value,
   error,
+  isLoading,
   onIncrease,
   onDecrease,
   onDelete,
@@ -35,7 +37,7 @@ export const Stepper: React.FC<Props> = ({
     <div className={styles.stepper}>
       <button
         type="button"
-        disabled={isDisabled}
+        disabled={isDisabled || Boolean(isLoading)}
         className={styles.button}
         onClick={handleLeftButtonClick}
         aria-label={isDisabled ? 'Remove item' : 'Decrease quantity'}
@@ -49,7 +51,7 @@ export const Stepper: React.FC<Props> = ({
 
       <button
         type="button"
-        disabled={error}
+        disabled={error || Boolean(isLoading)}
         className={styles.button}
         onClick={onIncrease}
         aria-label="Increase quantity"

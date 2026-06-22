@@ -12,7 +12,7 @@ type Props = {
 };
 
 export const CartItem: React.FC<Props> = ({ cartItem }) => {
-  const { addToCart, deleteFromCart, itemErrors } = useCart();
+  const { addToCart, deleteFromCart, itemErrors, isLoading } = useCart();
   const { id, beer_id, quantity, name, price } = cartItem;
   const error = itemErrors.get(beer_id);
 
@@ -52,6 +52,7 @@ export const CartItem: React.FC<Props> = ({ cartItem }) => {
         <Stepper
           value={quantity}
           error={Boolean(error)}
+          isLoading={Boolean(isLoading)}
           onIncrease={handleIncrease}
           onDecrease={handleDecrease}
           onDelete={handleDecrease}

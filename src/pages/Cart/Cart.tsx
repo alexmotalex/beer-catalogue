@@ -4,28 +4,22 @@ import { PrimaryButton } from '../../components/Buttons/PrimaryButton';
 import { SecondaryButton } from '../../components/Buttons/SecondaryButton';
 import { CartItem } from '../../components/CartItem';
 import { BasketModal } from '../../components/BasketModal';
-import { NotFound } from '../../components/NotFound';
 import { Divider } from '../../components/Divider';
 import { useCart } from '../../hooks/useCart';
 import { ROUTES } from '../../constants/routes';
 import styles from './Cart.module.scss';
+import { NotFound } from '../../components/NotFound';
 
 export const Cart = () => {
-  const { cartItems, subtotal, total, isLoading, error, clearCart } = useCart();
+  const { cartItems, subtotal, total, error, clearCart } = useCart();
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const navigate = useNavigate();
 
   const isCartEmpty = cartItems.length === 0;
 
-  if (isLoading) return <div>Loading...</div>;
-  if (error) return <div>{error}</div>;
-
-  if (isCartEmpty)
-    return (
-      <div className={styles.cartNotFound}>
-        <NotFound />
-      </div>
-    );
+  if (error) {
+    return <div>{error}</div>;
+  }
 
   const handleConfirm = () => {
     void clearCart();
@@ -34,10 +28,6 @@ export const Cart = () => {
 
   const handleMoreItem = () => {
     navigate(ROUTES.catalogue);
-  };
-
-  const handleClearCart = () => {
-    void clearCart();
   };
 
   const openModal = () => setModalIsOpen(true);
@@ -60,18 +50,26 @@ export const Cart = () => {
       <section className={styles.main}>
         <div className={styles.mainHeader}>
           <h1 className={styles.mainTitle}>Cart</h1>
-          <button className={styles.mainClearButton} onClick={handleClearCart}>
-            Clear cart
-          </button>
+          {!isCartEmpty && (
+            <button className={styles.mainClearButton} onClick={openModal}>
+              Clear cart
+            </button>
+          )}
         </div>
 
-        <ul className={styles.mainProductList}>
-          {cartItems.map(item => (
-            <li key={item.id} className={styles.mainProductItem}>
-              <CartItem cartItem={item} />
-            </li>
-          ))}
-        </ul>
+        {isCartEmpty ? (
+          <div className={styles.cartNotFound}>
+            <NotFound />
+          </div>
+        ) : (
+          <ul className={styles.mainProductList}>
+            {cartItems.map(item => (
+              <li key={item.id} className={styles.mainProductItem}>
+                <CartItem cartItem={item} />
+              </li>
+            ))}
+          </ul>
+        )}
       </section>
 
       <section className={styles.summary}>
@@ -110,7 +108,12 @@ export const Cart = () => {
             onClick={handleMoreItem}
           />
 
-          <PrimaryButton type="button" title="Checkout" onClick={openModal} />
+          <PrimaryButton
+            type="button"
+            disabled={isCartEmpty}
+            title="Checkout"
+            onClick={openModal}
+          />
         </div>
       </section>
     </div>

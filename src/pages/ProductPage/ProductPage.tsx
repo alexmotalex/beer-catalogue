@@ -16,12 +16,18 @@ import placeholderBeer from '../../assets/images/beer-placeholder.webp';
 export const ProductPage = () => {
   const { productId } = useParams();
   const { user } = useAuth();
-  const { addToCart, isInCart, itemErrors, cartItems, deleteFromCart } =
-    useCart();
+  const {
+    addToCart,
+    isInCart,
+    itemErrors,
+    cartItems,
+    isLoading,
+    deleteFromCart,
+  } = useCart();
   const navigate = useNavigate();
 
   const beerId = Number(productId);
-  const { beer, isLoading, isError } = useBeerById(beerId);
+  const { beer, isError } = useBeerById(beerId);
 
   if (isLoading) {
     return <h2>Loading</h2>;
@@ -152,6 +158,7 @@ export const ProductPage = () => {
             <Stepper
               value={cartItem?.quantity || 0}
               error={Boolean(error)}
+              isLoading={Boolean(isLoading)}
               onIncrease={handleIncrease}
               onDecrease={handleDecrease}
               onDelete={handleDecrease}

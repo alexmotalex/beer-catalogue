@@ -1,10 +1,10 @@
 import clsx from 'clsx';
 import { ProductCard } from '../../components/ProductCard';
 import { useBeers } from '../../hooks/useBeers';
-import styles from './Catalogue.module.scss';
 import { SecondaryButton } from '../../components/Buttons/SecondaryButton';
 import { FilterSelector } from '../../components/FilterSelector';
 import { selectOptions } from '../../constants/selectOptions';
+import styles from './Catalogue.module.scss';
 
 export const Catalogue = () => {
   const { beers, nextOffset, loadBeers } = useBeers();
@@ -21,7 +21,7 @@ export const Catalogue = () => {
     <section className={clsx('pageContent', styles.catalogue)}>
       <div className={styles.selectContent}>
         {selectOptions.map(option => (
-          <FilterSelector option={option} />
+          <FilterSelector key={option.searchParamKey} option={option} />
         ))}
       </div>
       <ul className={styles.productList}>
