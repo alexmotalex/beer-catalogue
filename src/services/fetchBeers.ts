@@ -1,12 +1,12 @@
 import type { BeerResponse } from '../types/Beer';
 import { client } from '../utils/axiosClient';
 
-export function fetchBeers(offset?: number) {
-  const searchParams = new URLSearchParams();
+export function fetchBeers(searchParams: URLSearchParams, offset?: number) {
+  const params = new URLSearchParams(searchParams);
 
   if (offset !== undefined) {
-    searchParams.set('offset', String(offset));
+    params.set('offset', String(offset));
   }
 
-  return client.get<BeerResponse>(`beers/?${searchParams.toString()}`);
+  return client.get<BeerResponse>(`beers/?${params.toString()}`);
 }

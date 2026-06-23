@@ -1,4 +1,5 @@
 @use '../../styles/variables.scss' as var;
+@use '../../styles/mixins.scss' as mixins;
 
 .dropdownContainer {
   width: 100%;
@@ -15,8 +16,8 @@
 }
 
 .dropdownTrigger {
-  width: 100%;
-  border-radius: 8px;
+  max-width: 160px;
+  border-radius: 4px;
   padding: 14px 16px;
   border: none;
   color: var.$brown-80-color;
@@ -24,14 +25,31 @@
   font-weight: 500;
   font-size: 16px;
   display: flex;
+  gap: 8px;
   justify-content: space-between;
   align-items: center;
   cursor: pointer;
+
+  @include mixins.hover(color, var.$brown-100-color);
+
+  &Title {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    min-width: 0;
+    flex: 1;
+  }
+
+  &Icon {
+    width: 20px;
+    height: 20px;
+    color: var.$brown-80-color;
+  }
 }
 
 .dropdown {
   margin: 0;
-  padding: 0;
+  padding: 0 16px;
   position: absolute;
   top: calc(100% + 4px);
   width: 100%;
@@ -48,7 +66,6 @@
   pointer-events: none;
 
   &Open {
-    padding: 8px 1px;
     max-height: 100vh;
     opacity: 1;
     transform: translateY(0);
@@ -68,14 +85,6 @@
     font-weight: 400;
     line-height: 145%;
     cursor: pointer;
-
-    transition:
-      background-color 0.3s,
-      color 0.3s;
-
-    &:hover {
-      color: var.$brown-100-color;
-      background-color: var.$brown-30-color;
-    }
+    @include mixins.hover(color, var.$brown-100-color);
   }
 }

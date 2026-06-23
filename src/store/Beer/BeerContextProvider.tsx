@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import type { Beer } from '../../types/Beer';
 import { BeerContext } from './BeerContext';
 import { fetchBeers } from '../../services/fetchBeers';
+import { useSearchParams } from 'react-router';
 
 export type BeerContextType = {
   beers: Omit<Beer, 'description'>[];
@@ -20,25 +21,29 @@ export const BeerContextProvider: React.FC<Props> = ({ children }) => {
   const [nextOffset, setNextOffset] = useState<number | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isError, setIsError] = useState(false);
+  const [searchParams] = useSearchParams();
 
-  const loadBeers = useCallback(async (offset: number | null) => {
-    setIsLoading(true);
-    setIsError(false);
+  const loadBeers = useCallback(
+    async (offset: number | null) => {
+      setIsLoading(true);
+      setIsError(false);
 
-    try {
-      const data = await fetchBeers(offset ?? undefined);
+      try {
+        const data = await fetchBeers(searchParams, offset ?? undefined);
 
-      setBeers(currentBeers =>
-        offset === null ? data.beers : [...currentBeers, ...data.beers],
-      );
+        setBeers(currentBeers =>
+          offset === null ? data.beers : [...currentBeers, ...data.beers],
+        );
 
-      setNextOffset(data.next_offset);
-    } catch {
-      setIsError(true);
-    } finally {
-      setIsLoading(false);
-    }
-  }, []);
+        setNextOffset(data.next_offset);
+      } catch {
+        setIsError(true);
+      } finally {
+        setIsLoading(false);
+      }
+    },
+    [searchParams],
+  );
 
   useEffect(() => {
     const initializeBeers = async () => {

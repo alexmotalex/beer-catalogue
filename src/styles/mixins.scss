@@ -60,13 +60,6 @@
   }
 }
 
-@mixin icon-style {
-  display: block;
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-position: center;
-}
-
 @mixin form-link {
   position: relative;
   font-size: 16px;

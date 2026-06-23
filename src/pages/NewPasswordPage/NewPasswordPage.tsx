@@ -84,7 +84,7 @@ export const NewPasswordPage = () => {
           <div className="authFormLabelInputWrapper">
             <LabeledInput
               autoComplete="new-password"
-              label="Password"
+              label="New password"
               name="password"
               type="password"
               error={Boolean(serverErrors.password)}
@@ -102,7 +102,7 @@ export const NewPasswordPage = () => {
           <div className="authFormLabelInputWrapper">
             <LabeledInput
               autoComplete="confirm-password"
-              label="Password"
+              label="Confirm password"
               name="confirmPassword"
               type="password"
               error={Boolean(validationErrors.isSame)}
