@@ -5,13 +5,10 @@ import { SecondaryButton } from '../../components/Buttons/SecondaryButton';
 import { FilterSelector } from '../../components/FilterSelector';
 import { selectOptions } from '../../constants/selectOptions';
 import styles from './Catalogue.module.scss';
+import { BeerSearch } from '../../components/BeerSearch';
 
 export const Catalogue = () => {
   const { beers, nextOffset, loadBeers } = useBeers();
-
-  if (!beers) {
-    return <div>There is no beer</div>;
-  }
 
   const handleViewAll = async () => {
     loadBeers(nextOffset);
@@ -19,18 +16,27 @@ export const Catalogue = () => {
 
   return (
     <section className={clsx('pageContent', styles.catalogue)}>
-      <div className={styles.selectContent}>
-        {selectOptions.map(option => (
-          <FilterSelector key={option.searchParamKey} option={option} />
-        ))}
+      <div className={styles.filterToolbar}>
+        <BeerSearch />
+
+        <div className={styles.selectContent}>
+          {selectOptions.map(option => (
+            <FilterSelector key={option.searchParamKey} option={option} />
+          ))}
+        </div>
       </div>
-      <ul className={styles.productList}>
-        {beers.map(beer => (
-          <li key={beer.id} className={styles.productItem}>
-            <ProductCard product={beer} />
-          </li>
-        ))}
-      </ul>
+
+      {beers.length === 0 ? (
+        <div>No beers</div>
+      ) : (
+        <ul className={styles.productList}>
+          {beers.map(beer => (
+            <li key={beer.id} className={styles.productItem}>
+              <ProductCard product={beer} />
+            </li>
+          ))}
+        </ul>
+      )}
 
       {nextOffset && (
         <div className={styles.button}>

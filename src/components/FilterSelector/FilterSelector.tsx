@@ -61,17 +61,15 @@ export const FilterSelector: React.FC<Props> = ({ option }) => {
             const isLastItem = index === option.filterBy.length - 1;
 
             return (
-              <React.Fragment key={item.value}>
-                <li key={item.title}>
-                  <button
-                    onClick={() => handleOptionSelect(item.value)}
-                    className={styles.dropdownItem}
-                  >
-                    {item.title}
-                  </button>
-                  {!isLastItem && <Divider />}
-                </li>
-              </React.Fragment>
+              <li key={item.value}>
+                <button
+                  onClick={() => handleOptionSelect(item.value)}
+                  className={styles.dropdownItem}
+                >
+                  {item.title}
+                </button>
+                {!isLastItem && <Divider />}
+              </li>
             );
           })}
         </ul>

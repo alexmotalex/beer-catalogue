@@ -4,21 +4,24 @@
   gap: 48px;
 }
 
+.filterToolbar {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
 .selectContent {
   display: flex;
   gap: 16px;
 }
 
 .productList {
-  padding: 0;
-  justify-content: center;
-  list-style: none;
-}
-
-.productList {
   margin: 0;
   padding: 0;
   display: flex;
+  justify-content: center;
   flex-wrap: wrap;
   gap: 32px 24px;
   list-style: none;
