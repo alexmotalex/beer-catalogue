@@ -57,7 +57,7 @@
   <symbol id="edit-icon" viewBox="0 0 24 24">
     <path d="M5 19H6.425L16.2 9.225L14.775 7.8L5 17.575V19ZM3 21V16.75L17.625 2.175L21.8 6.45L7.25 21H3ZM15.475 8.525L14.775 7.8L16.2 9.225L15.475 8.525Z" fill="currentColor"/>
   </symbol>
-  <symbol id="arrow-up-icon" viewBox="0 0 20 20">
+  <symbol id="arrow-up-icon" viewBox="0 0 24 24">
     <path d="M12.72 11.76L8.11997 16.36L6.71997 14.96L12.72 8.96001L18.72 14.96L17.32 16.36L12.72 11.76Z" fill="currentColor"/>
   </symbol>
   <symbol id="arrow-down-icon" viewBox="0 0 20 20">

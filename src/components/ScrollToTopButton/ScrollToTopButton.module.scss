@@ -1,0 +1,33 @@
+@use '../../styles/variables.scss' as var;
+
+.button {
+  padding: 0;
+  position: fixed;
+  bottom: 52px;
+  right: 52px;
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  border-radius: 20%;
+  background-color: var.$brown-50-color;
+  color: var.$white-color;
+  cursor: pointer;
+  z-index: 100;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  transition:
+    opacity 0.2s ease,
+    transform 0.2s ease;
+
+  &:hover {
+    opacity: 0.85;
+    transform: translateY(-2px);
+  }
+
+  &Icon {
+    width: 32px;
+    height: 32px;
+  }
+}

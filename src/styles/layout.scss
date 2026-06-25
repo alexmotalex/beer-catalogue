@@ -32,10 +32,10 @@ h5 {
   display: flex;
   flex: 1;
 
-  // @media (min-width: 1440px) {
-  //   margin-inline: auto;
-  //   width: 1440px;
-  // }
+  @media (min-width: 2560px) {
+    margin-inline: auto;
+    width: 2560px;
+  }
 
   & > section,
   & > div {

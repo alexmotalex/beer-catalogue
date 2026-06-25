@@ -67,7 +67,7 @@ export const ProductCard: React.FC<Props> = ({ product }) => {
     ? 'Out of stock'
     : inCart
       ? 'Added to cart'
-      : `Add to cart | $${price}`;
+      : `Add to cart`;
 
   return (
     <article className={styles.productCard}>
