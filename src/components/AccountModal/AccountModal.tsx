@@ -17,10 +17,11 @@ export const AccountModal: React.FC<Props> = ({ closeFn }) => {
   const dialogRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
 
-  const userFullName = [user?.first_name, user?.last_name]
-    .filter(Boolean)
-    .map(capitalizeFirstLetter)
-    .join(' ');
+  const userFullName =
+    [user?.first_name, user?.last_name]
+      .filter(Boolean)
+      .map(capitalizeFirstLetter)
+      .join(' ') || '';
 
   const handleEdit = () => {
     closeFn();
@@ -37,9 +38,10 @@ export const AccountModal: React.FC<Props> = ({ closeFn }) => {
     navigate(ROUTES.help);
   };
 
-  const handleLogOut = () => {
+  const handleLogOut = async () => {
     closeFn();
-    logout();
+    await logout();
+    navigate(ROUTES.home);
   };
 
   useEffect(() => {
@@ -120,7 +122,7 @@ export const AccountModal: React.FC<Props> = ({ closeFn }) => {
       <div className={styles.userInfoWrapper}>
         <div className={styles.userInfo}>
           <p className={styles.userName}>{userFullName}</p>
-          <p className={styles.userEmail}>{user?.email}</p>
+          <p className={styles.userEmail}>{user?.email || ''}</p>
         </div>
 
         <button type="button" className={styles.userEdit} onClick={handleEdit}>

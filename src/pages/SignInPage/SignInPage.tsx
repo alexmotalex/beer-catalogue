@@ -14,13 +14,15 @@ import styles from './SignInPage.module.scss';
 
 export const SigninPage = () => {
   const [formData, setFormData] = useState<AuthCredentials>(emptySignInForm);
+  const [showValidationErrors, setShowValidationErrors] = useState(false);
 
   const navigate = useNavigate();
 
   const { login, isLoading, serverErrors, setServerErrors } = useAuth();
 
   const validationErrors = validateSignInForm(formData);
-  const isFormValid = Object.keys(validationErrors).length === 0;
+  const emailError = validationErrors.email || serverErrors.email;
+  const passwordError = validationErrors.password || serverErrors.password;
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -38,10 +40,19 @@ export const SigninPage = () => {
 
   const handleSubmit = async (e: React.SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setShowValidationErrors(true);
+
+    const formIsInvalid = Object.keys(validationErrors).length > 0;
+
+    if (formIsInvalid) {
+      return;
+    }
 
     const loginSuccess = await login(formData);
 
     if (loginSuccess) {
+      setShowValidationErrors(false);
+
       navigate(ROUTES.home);
     }
   };
@@ -60,39 +71,39 @@ export const SigninPage = () => {
 
       <p className="subtitle">Continue to your personal account</p>
 
-      <form className="authForm" onSubmit={handleSubmit}>
-        <div className="authFormInputsWrapper">
-          <div className="authFormLabelInputWrapper">
+      <form className="form" onSubmit={handleSubmit}>
+        <div className="formInputsWrapper">
+          <div className="formLabelInputWrapper">
             <LabeledInput
               autoComplete="email"
               label="Email"
               name="email"
               type="email"
-              error={Boolean(serverErrors.email)}
+              error={Boolean(showValidationErrors && emailError)}
               value={formData.email}
               onChange={handleChange}
               placeholder="john.doe@email.com"
-              required
             />
 
-            {serverErrors.email && <ErrorInfo errorText={serverErrors.email} />}
+            {showValidationErrors && emailError && (
+              <ErrorInfo errorText={emailError} />
+            )}
           </div>
 
-          <div className="authFormLabelInputWrapper">
+          <div className="formLabelInputWrapper">
             <LabeledInput
               autoComplete="current-password"
               label="Password"
               name="password"
               type="password"
-              error={Boolean(serverErrors.password)}
+              error={showValidationErrors && Boolean(passwordError)}
               value={formData.password}
               onChange={handleChange}
               placeholder="••••••••"
-              required
             />
 
-            {serverErrors.password && (
-              <ErrorInfo errorText={serverErrors.password} />
+            {showValidationErrors && passwordError && (
+              <ErrorInfo errorText={passwordError} />
             )}
 
             <Link to={ROUTES.forgotPassword} className={styles.forgotPassword}>
@@ -101,8 +112,8 @@ export const SigninPage = () => {
           </div>
         </div>
 
-        <div className="authFormButton">
-          <PrimaryButton title="Sign In" disabled={!isFormValid || isLoading} />
+        <div className="formButton">
+          <PrimaryButton title="Sign In" disabled={isLoading} />
         </div>
 
         <RedirectText

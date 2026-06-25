@@ -16,12 +16,14 @@ export const ForgotPasswordPage = () => {
     emptyForgotPasswordForm,
   );
 
+  const [showValidationErrors, setShowValidationErrors] = useState(false);
+
   const navigate = useNavigate();
 
   const { isLoading, serverErrors, passwordReset, setServerErrors } = useAuth();
 
   const validationErrors = validateForgotPasswordForm(formData);
-  const isFormValid = Object.keys(validationErrors).length === 0;
+  const emailError = validationErrors.email || serverErrors.email;
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -39,11 +41,20 @@ export const ForgotPasswordPage = () => {
 
   const handleSubmit = async (e: React.SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setShowValidationErrors(true);
+
+    const formIsInvalid = Object.keys(validationErrors).length > 0;
+
+    if (formIsInvalid) {
+      return;
+    }
 
     const registrationSuccess = await passwordReset(formData);
 
     if (registrationSuccess) {
       setFormData(emptyForgotPasswordForm);
+      setShowValidationErrors(false);
+
       navigate(ROUTES.checkEmail, {
         state: {
           email: formData.email,
@@ -68,30 +79,28 @@ export const ForgotPasswordPage = () => {
 
       <p className="subtitle">Receive a code to reset your password</p>
 
-      <form className="authForm" onSubmit={handleSubmit}>
-        <div className="authFormInputsWrapper">
-          <div className="authFormLabelInputWrapper">
+      <form className="form" onSubmit={handleSubmit}>
+        <div className="formInputsWrapper">
+          <div className="formLabelInputWrapper">
             <LabeledInput
               autoComplete="email"
               label="Email"
               name="email"
               type="email"
-              error={Boolean(serverErrors.email)}
+              error={showValidationErrors && Boolean(emailError)}
               value={formData.email}
               onChange={handleChange}
               placeholder="john.doe@email.com"
-              required
             />
 
-            {serverErrors.email && <ErrorInfo errorText={serverErrors.email} />}
+            {showValidationErrors && emailError && (
+              <ErrorInfo errorText={emailError} />
+            )}
           </div>
         </div>
 
-        <div className="authFormButton">
-          <PrimaryButton
-            title="Send сode"
-            disabled={!isFormValid || isLoading}
-          />
+        <div className="formButton">
+          <PrimaryButton title="Send сode" disabled={isLoading} />
         </div>
 
         <RedirectText

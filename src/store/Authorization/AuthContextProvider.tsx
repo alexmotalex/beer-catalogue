@@ -79,6 +79,7 @@ export const AuthContextProvider: React.FC<Props> = ({ children }) => {
 
     try {
       const response = await instance.get('/users/me/');
+
       setUser(response.data);
     } catch {
       setUser(null);
@@ -131,22 +132,26 @@ export const AuthContextProvider: React.FC<Props> = ({ children }) => {
     [fetchUser],
   );
 
-  const editUser = useCallback(async (data: EditUserData) => {
-    setIsLoading(true);
-    setServerErrors({});
+  const editUser = useCallback(
+    async (data: EditUserData) => {
+      setIsLoading(true);
+      setServerErrors({});
 
-    try {
-      await instance.patch('/users/me/', data);
+      try {
+        await instance.patch('/users/me/', data);
 
-      return true;
-    } catch (error) {
-      setServerErrors(extractServerErrors(error, 'general'));
+        return true;
+      } catch (error) {
+        setServerErrors(extractServerErrors(error, 'general'));
 
-      return false;
-    } finally {
-      setIsLoading(false);
-    }
-  }, []);
+        return false;
+      } finally {
+        await fetchUser();
+        setIsLoading(false);
+      }
+    },
+    [fetchUser],
+  );
 
   const logout = useCallback(async () => {
     try {

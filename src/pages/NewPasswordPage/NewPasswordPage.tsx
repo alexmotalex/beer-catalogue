@@ -15,14 +15,20 @@ import type { NewPasswordFormData } from '../../types/Forms';
 export const NewPasswordPage = () => {
   const [formData, setFormData] =
     useState<NewPasswordFormData>(emptyNewPasswordForm);
+  const [showValidationErrors, setShowValidationErrors] = useState(false);
+
   const [searchParams] = useSearchParams();
+
   const navigate = useNavigate();
+
   const { isLoading, serverErrors, setServerErrors, setNewPassword } =
     useAuth();
 
   const token = searchParams.get('token') || '';
   const validationErrors = validateNewPasswordForm(formData);
-  const isFormValid = Object.keys(validationErrors).length === 0;
+  const newPasswordError = validationErrors.password || serverErrors.password;
+  const confirmPasswordError = validationErrors.confirmPassword;
+
   const notify = () =>
     toast.error(serverErrors.resetToken || 'Something went wrong', {
       position: 'top-right',
@@ -30,7 +36,6 @@ export const NewPasswordPage = () => {
       transition: Slide,
     });
 
-  console.log(validationErrors);
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
 
@@ -52,11 +57,21 @@ export const NewPasswordPage = () => {
       return <Navigate to={ROUTES.signIn} replace />;
     }
 
+    setShowValidationErrors(true);
+
+    const formIsInvalid = Object.keys(validationErrors).length > 0;
+
+    if (formIsInvalid) {
+      return;
+    }
+
     const { password } = formData;
 
     const success = await setNewPassword({ password, token });
 
     if (success) {
+      setShowValidationErrors(false);
+
       navigate(ROUTES.signIn);
     } else {
       {
@@ -79,50 +94,48 @@ export const NewPasswordPage = () => {
 
       <p className="subtitle">Create a new password for your account</p>
 
-      <form className="authForm" onSubmit={handleSubmit}>
-        <div className="authFormInputsWrapper">
-          <div className="authFormLabelInputWrapper">
+      <form className="form" onSubmit={handleSubmit}>
+        <div className="formInputsWrapper">
+          <div className="formLabelInputWrapper">
             <LabeledInput
               autoComplete="new-password"
               label="New password"
               name="password"
               type="password"
-              error={Boolean(serverErrors.password)}
+              error={showValidationErrors && Boolean(newPasswordError)}
               value={formData.password}
               onChange={handleChange}
               placeholder="••••••••"
-              required
             />
 
-            {serverErrors.password && (
-              <ErrorInfo errorText={serverErrors.password} />
+            {showValidationErrors && newPasswordError && (
+              <ErrorInfo errorText={newPasswordError} />
             )}
           </div>
 
-          <div className="authFormLabelInputWrapper">
+          <div className="formLabelInputWrapper">
             <LabeledInput
               autoComplete="confirm-password"
               label="Confirm password"
               name="confirmPassword"
               type="password"
-              error={Boolean(validationErrors.isSame)}
+              error={showValidationErrors && Boolean(confirmPasswordError)}
               value={formData.confirmPassword}
               onChange={handleChange}
               placeholder="••••••••"
-              required
             />
 
-            {validationErrors.isSame && (
-              <ErrorInfo errorText={validationErrors.isSame} />
+            {showValidationErrors && confirmPasswordError && (
+              <ErrorInfo errorText={confirmPasswordError} />
             )}
           </div>
         </div>
 
-        <div className="authFormButton">
+        <div className="formButton">
           <PrimaryButton
             title="Reset password"
             type="submit"
-            disabled={!isFormValid || isLoading}
+            disabled={isLoading}
           />
         </div>
       </form>

@@ -89,9 +89,9 @@ export const SignUpPage = () => {
 
       <p className="subtitle">Create your personal account</p>
 
-      <form className="authForm" onSubmit={handleSubmit}>
-        <div className="authFormInputsWrapper">
-          <div className="authFormLabelInputWrapper">
+      <form className="form" onSubmit={handleSubmit}>
+        <div className="formInputsWrapper">
+          <div className="formLabelInputWrapper">
             <LabeledInput
               autoComplete="given-name"
               label="First name"
@@ -107,7 +107,7 @@ export const SignUpPage = () => {
             )}
           </div>
 
-          <div className="authFormLabelInputWrapper">
+          <div className="formLabelInputWrapper">
             <LabeledInput
               autoComplete="family-name"
               label="Last name"
@@ -122,13 +122,13 @@ export const SignUpPage = () => {
               <ErrorInfo errorText={lastNameError} />
             )}
           </div>
-          <div className="authFormLabelInputWrapper">
+          <div className="formLabelInputWrapper">
             <LabeledInput
               autoComplete="email"
               label="Email"
               name="email"
               type="email"
-              error={showValidationErrors && Boolean(serverErrors.email)}
+              error={showValidationErrors && Boolean(emailError)}
               value={formData.email}
               onChange={handleChange}
               placeholder="john.doe@email.com"
@@ -139,13 +139,13 @@ export const SignUpPage = () => {
             )}
           </div>
 
-          <div className="authFormLabelInputWrapper">
+          <div className="formLabelInputWrapper">
             <LabeledInput
               autoComplete="new-password"
               label="Password"
               name="password"
               type="password"
-              error={showValidationErrors && Boolean(serverErrors.password)}
+              error={showValidationErrors && Boolean(passwordError)}
               value={formData.password}
               onChange={handleChange}
               placeholder="••••••••"
@@ -158,7 +158,7 @@ export const SignUpPage = () => {
         </div>
 
         <div className={styles.checkboxesWrapper}>
-          <div className="authFormLabelInputWrapper">
+          <div className="formLabelInputWrapper">
             <Checkbox
               label="I confirm that I am at least 18 years old"
               name="age"
@@ -172,7 +172,7 @@ export const SignUpPage = () => {
             )}
           </div>
 
-          <div className="authFormLabelInputWrapper">
+          <div className="formLabelInputWrapper">
             <Checkbox
               label={agreeLabel}
               name="terms"
@@ -187,7 +187,7 @@ export const SignUpPage = () => {
           </div>
         </div>
 
-        <div className="authFormButton">
+        <div className="formButton">
           <PrimaryButton
             title={isLoading ? 'Signing Up...' : 'Sign Up'}
             disabled={isLoading}

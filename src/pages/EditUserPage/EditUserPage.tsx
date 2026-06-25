@@ -11,16 +11,26 @@ import type { EditUserFormData } from '../../types/Forms';
 import { SuccessMessage } from '../../components/SuccessMessage';
 import { ROUTES } from '../../constants/routes';
 import styles from './EditUserPage.module.scss';
+import { capitalizeFirstLetter } from '../../utils/capitalizeFirstLetter';
+import { ErrorInfo } from '../../components/ErrorInfo';
 
 export const EditUserPage = () => {
-  const [formData, setFormData] = useState<EditUserFormData>(emptyEditUserForm);
+  const { user, isLoading, editUser, serverErrors, setServerErrors } =
+    useAuth();
+
+  const [formData, setFormData] = useState<EditUserFormData>({
+    firstName: capitalizeFirstLetter(user?.first_name) ?? '',
+    lastName: capitalizeFirstLetter(user?.last_name) ?? '',
+  });
   const [isSuccess, setIsSuccess] = useState(false);
+  const [showValidationErrors, setShowValidationErrors] = useState(false);
+
   const navigate = useNavigate();
 
-  const { isLoading, editUser, serverErrors, setServerErrors } = useAuth();
-
   const validationErrors = validateEditUserForm(formData);
-  const isFormValid = Object.keys(validationErrors).length === 0;
+
+  const firstNameError = validationErrors.firstName || serverErrors.firstName;
+  const lastNameError = validationErrors.lastName || serverErrors.lastName;
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -38,7 +48,14 @@ export const EditUserPage = () => {
 
   const handleSubmit = async (e: React.SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setShowValidationErrors(true);
     setIsSuccess(false);
+
+    const formIsInvalid = Object.keys(validationErrors).length > 0;
+
+    if (formIsInvalid) {
+      return;
+    }
 
     const payload = mapToEditUserData(formData);
 
@@ -46,11 +63,12 @@ export const EditUserPage = () => {
 
     if (registrationSuccess) {
       setFormData(emptyEditUserForm);
+      setShowValidationErrors(false);
       setIsSuccess(true);
 
       setTimeout(() => {
         navigate(ROUTES.home);
-      }, 3000);
+      }, 2000);
     }
   };
 
@@ -68,33 +86,43 @@ export const EditUserPage = () => {
 
       <h1 className={styles.title}>Personal Information</h1>
 
-      <form className="authForm" onSubmit={handleSubmit}>
-        <div className="authFormInputsWrapper">
-          <LabeledInput
-            autoComplete="given-name"
-            label="First name"
-            name="firstName"
-            value={formData.firstName}
-            onChange={handleChange}
-            placeholder="John"
-            required
-          />
+      <form className="form" onSubmit={handleSubmit}>
+        <div className="formInputsWrapper">
+          <div className="formLabelInputWrapper">
+            <LabeledInput
+              autoComplete="given-name"
+              label="First name"
+              name="firstName"
+              error={showValidationErrors && Boolean(firstNameError)}
+              value={formData.firstName}
+              onChange={handleChange}
+              placeholder="John"
+            />
+            {showValidationErrors && firstNameError && (
+              <ErrorInfo errorText={firstNameError} />
+            )}
+          </div>
 
-          <LabeledInput
-            autoComplete="family-name"
-            label="Last name"
-            name="lastName"
-            value={formData.lastName}
-            onChange={handleChange}
-            placeholder="Doe"
-            required
-          />
+          <div className="formLabelInputWrapper">
+            <LabeledInput
+              autoComplete="family-name"
+              label="Last name"
+              name="lastName"
+              error={showValidationErrors && Boolean(lastNameError)}
+              value={formData.lastName}
+              onChange={handleChange}
+              placeholder="Doe"
+            />
+            {showValidationErrors && lastNameError && (
+              <ErrorInfo errorText={lastNameError} />
+            )}
+          </div>
         </div>
 
-        <div className="authFormButton">
+        <div className="formButton">
           <PrimaryButton
             title={isLoading ? 'Saving changes...' : 'Save changes'}
-            disabled={!isFormValid || isLoading}
+            disabled={isLoading}
           />
         </div>
       </form>
