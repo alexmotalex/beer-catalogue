@@ -49,7 +49,7 @@ export const Catalogue = () => {
         <div className={styles.button}>
           <SecondaryButton
             type="button"
-            title="View all"
+            title="Load more"
             onClick={handleViewAll}
           />
         </div>

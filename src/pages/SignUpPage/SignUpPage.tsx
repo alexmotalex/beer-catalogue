@@ -16,12 +16,17 @@ import styles from './SignUpPage.module.scss';
 
 export const SignUpPage = () => {
   const [formData, setFormData] = useState<SignupFormData>(emptySignUpForm);
+  const [showValidationErrors, setShowValidationErrors] = useState(false);
 
   const { register, isLoading, serverErrors, setServerErrors } = useAuth();
   const navigate = useNavigate();
 
   const validationErrors = validateSignUpForm(formData);
-  const isFormValid = Object.keys(validationErrors).length === 0;
+
+  const passwordError = validationErrors.password || serverErrors.password;
+  const firstNameError = validationErrors.firstName || serverErrors.firstName;
+  const lastNameError = validationErrors.lastName || serverErrors.lastName;
+  const emailError = validationErrors.email || serverErrors.email;
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value, type, checked } = e.target;
@@ -40,12 +45,22 @@ export const SignUpPage = () => {
   const handleSubmit = async (e: React.SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
 
+    setShowValidationErrors(true);
+
+    const formIsInvalid = Object.keys(validationErrors).length > 0;
+
+    if (formIsInvalid) {
+      return;
+    }
+
     const payload = mapToRegisterData(formData);
 
     const registrationSuccess = await register(payload);
 
     if (registrationSuccess) {
       setFormData(emptySignUpForm);
+      setShowValidationErrors(false);
+
       navigate(ROUTES.checkEmail, {
         state: { email: formData.email, formData, type: 'register' },
       });
@@ -76,40 +91,52 @@ export const SignUpPage = () => {
 
       <form className="authForm" onSubmit={handleSubmit}>
         <div className="authFormInputsWrapper">
-          <LabeledInput
-            autoComplete="given-name"
-            label="First name"
-            name="firstName"
-            value={formData.firstName}
-            onChange={handleChange}
-            placeholder="John"
-            required
-          />
+          <div className="authFormLabelInputWrapper">
+            <LabeledInput
+              autoComplete="given-name"
+              label="First name"
+              name="firstName"
+              error={showValidationErrors && Boolean(firstNameError)}
+              value={formData.firstName}
+              onChange={handleChange}
+              placeholder="John"
+            />
 
-          <LabeledInput
-            autoComplete="family-name"
-            label="Last name"
-            name="lastName"
-            value={formData.lastName}
-            onChange={handleChange}
-            placeholder="Doe"
-            required
-          />
+            {showValidationErrors && firstNameError && (
+              <ErrorInfo errorText={firstNameError} />
+            )}
+          </div>
 
+          <div className="authFormLabelInputWrapper">
+            <LabeledInput
+              autoComplete="family-name"
+              label="Last name"
+              name="lastName"
+              error={showValidationErrors && Boolean(lastNameError)}
+              value={formData.lastName}
+              onChange={handleChange}
+              placeholder="Doe"
+            />
+
+            {showValidationErrors && lastNameError && (
+              <ErrorInfo errorText={lastNameError} />
+            )}
+          </div>
           <div className="authFormLabelInputWrapper">
             <LabeledInput
               autoComplete="email"
               label="Email"
               name="email"
               type="email"
-              error={Boolean(serverErrors.email)}
+              error={showValidationErrors && Boolean(serverErrors.email)}
               value={formData.email}
               onChange={handleChange}
               placeholder="john.doe@email.com"
-              required
             />
 
-            {serverErrors.email && <ErrorInfo errorText={serverErrors.email} />}
+            {showValidationErrors && emailError && (
+              <ErrorInfo errorText={emailError} />
+            )}
           </div>
 
           <div className="authFormLabelInputWrapper">
@@ -118,43 +145,53 @@ export const SignUpPage = () => {
               label="Password"
               name="password"
               type="password"
-              error={Boolean(serverErrors.password)}
+              error={showValidationErrors && Boolean(serverErrors.password)}
               value={formData.password}
               onChange={handleChange}
               placeholder="••••••••"
-              required
             />
 
-            {serverErrors.password && (
-              <ErrorInfo errorText={serverErrors.password} />
+            {showValidationErrors && passwordError && (
+              <ErrorInfo errorText={passwordError} />
             )}
           </div>
         </div>
 
         <div className={styles.checkboxesWrapper}>
-          <Checkbox
-            label="I confirm that I am at least 18 years old"
-            name="age"
-            type="checkbox"
-            checked={formData.age}
-            onChange={handleChange}
-            required
-          />
+          <div className="authFormLabelInputWrapper">
+            <Checkbox
+              label="I confirm that I am at least 18 years old"
+              name="age"
+              type="checkbox"
+              checked={formData.age}
+              onChange={handleChange}
+            />
 
-          <Checkbox
-            label={agreeLabel}
-            name="terms"
-            type="checkbox"
-            checked={formData.terms}
-            onChange={handleChange}
-            required
-          />
+            {showValidationErrors && validationErrors.age && (
+              <ErrorInfo errorText={validationErrors.age} />
+            )}
+          </div>
+
+          <div className="authFormLabelInputWrapper">
+            <Checkbox
+              label={agreeLabel}
+              name="terms"
+              type="checkbox"
+              checked={formData.terms}
+              onChange={handleChange}
+            />
+
+            {showValidationErrors && validationErrors.terms && (
+              <ErrorInfo errorText={validationErrors.terms} />
+            )}
+          </div>
         </div>
 
         <div className="authFormButton">
           <PrimaryButton
             title={isLoading ? 'Signing Up...' : 'Sign Up'}
-            disabled={!isFormValid || isLoading}
+            disabled={isLoading}
+            type="submit"
           />
         </div>
 
