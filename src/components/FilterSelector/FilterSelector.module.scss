@@ -2,8 +2,6 @@
 @use '../../styles/mixins.scss' as mixins;
 
 .dropdownContainer {
-  width: 100%;
-  height: 100%;
   display: flex;
   flex-direction: column;
   gap: 4px;
@@ -16,7 +14,8 @@
 
 .dropdownTrigger {
   padding: 14px 16px;
-  width: 100%;
+  width: auto;
+  white-space: nowrap;
   min-width: 0;
   display: flex;
   gap: 8px;
@@ -34,10 +33,8 @@
 
   &Title {
     overflow: hidden;
-    text-overflow: ellipsis;
     white-space: nowrap;
     min-width: 0;
-    flex: 1;
   }
 
   &Icon {
