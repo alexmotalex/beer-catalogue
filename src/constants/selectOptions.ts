@@ -17,7 +17,7 @@ export const selectOptions = [
   },
 
   {
-    title: 'Alcohol',
+    title: 'ABV',
     searchParamKey: 'alcohol',
     icon: 'percent',
     filterBy: [

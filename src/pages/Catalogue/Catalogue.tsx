@@ -17,13 +17,20 @@ export const Catalogue = () => {
   return (
     <section className={clsx('pageContent', styles.catalogue)}>
       <div className={styles.filterToolbar}>
-        <BeerSearch />
-
-        <div className={styles.selectContent}>
-          {selectOptions.map(option => (
-            <FilterSelector key={option.searchParamKey} option={option} />
-          ))}
+        <div className={styles.search}>
+          <BeerSearch />
         </div>
+
+        <ul className={styles.selectContent}>
+          {selectOptions.map(option => (
+            <li
+              key={option.searchParamKey}
+              className={styles.selectContentItem}
+            >
+              <FilterSelector key={option.searchParamKey} option={option} />
+            </li>
+          ))}
+        </ul>
       </div>
 
       {beers.length === 0 ? (
