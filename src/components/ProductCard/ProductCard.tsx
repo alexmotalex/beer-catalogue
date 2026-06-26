@@ -4,12 +4,13 @@ import { PrimaryButton } from '../Buttons/PrimaryButton';
 import { capitalizeFirstLetter } from '../../utils/capitalizeFirstLetter';
 import { useCart } from '../../hooks/useCart';
 import { useAuth } from '../../hooks/useAuth';
+import { resolvePublicUrl } from '../../utils/resolvePublicUrl';
 import { buildProductPath } from '../../utils/buildProductPath';
 import { ROUTES } from '../../constants/routes';
 import type { Beer } from '../../types/Beer';
+import clsx from 'clsx';
 import styles from './ProductCard.module.scss';
 import placeholderBeer from '../../assets/images/beer-placeholder.webp';
-import clsx from 'clsx';
 
 type Props = {
   product: Omit<Beer, 'description'>;
@@ -20,6 +21,7 @@ export const ProductCard: React.FC<Props> = ({ product }) => {
     id,
     name,
     price,
+    image_url,
     alcohol_percentage,
     beer_type,
     volume,
@@ -31,6 +33,7 @@ export const ProductCard: React.FC<Props> = ({ product }) => {
   const { addToCart, isInCart } = useCart();
   const navigate = useNavigate();
   const productPath = buildProductPath(id);
+  const imageSrc = image_url ? resolvePublicUrl(image_url) : placeholderBeer;
 
   const handleAddToCart = () => {
     if (!user) {
@@ -73,7 +76,7 @@ export const ProductCard: React.FC<Props> = ({ product }) => {
     <article className={styles.productCard}>
       <Link to={productPath} className={styles.imageContent}>
         <img
-          src={placeholderBeer}
+          src={imageSrc}
           alt={name}
           className={clsx(
             styles.productImage,
