@@ -2,7 +2,6 @@
 @use '../../styles/mixins' as mixins;
 
 .cartItem {
-  height: 100%;
   padding: 16px;
   width: 100%;
   display: flex;
@@ -18,7 +17,6 @@
   width: 100%;
   max-width: 184px;
   height: 164px;
-  flex-shrink: 0;
 }
 
 .productImage {

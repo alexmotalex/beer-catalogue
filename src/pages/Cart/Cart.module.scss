@@ -6,6 +6,7 @@
   display: flex;
   flex: 1;
   gap: 128px;
+  align-items: flex-start;
 
   &NotFound {
     display: flex;
@@ -69,6 +70,8 @@
 }
 
 .summary {
+  position: sticky;
+  top: 92px;
   padding: 32px;
   display: flex;
   flex-direction: column;

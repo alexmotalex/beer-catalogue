@@ -7,17 +7,18 @@ import { BasketModal } from '../../components/BasketModal';
 import { Divider } from '../../components/Divider';
 import { useCart } from '../../hooks/useCart';
 import { ROUTES } from '../../constants/routes';
-import styles from './Cart.module.scss';
 import { NotFound } from '../../components/NotFound';
+import styles from './Cart.module.scss';
 
 export const Cart = () => {
-  const { cartItems, subtotal, total, error, clearCart } = useCart();
+  const { cartItems, subtotal, total, error, isLoading, clearCart } = useCart();
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const navigate = useNavigate();
 
   const isCartEmpty = cartItems.length === 0;
+  const cartItemsToRender = cartItems.sort((a, b) => a.id - b.id);
 
-  if (error) {
+  if (!isLoading && error) {
     return <div>{error}</div>;
   }
 
@@ -57,13 +58,13 @@ export const Cart = () => {
           )}
         </div>
 
-        {isCartEmpty ? (
+        {!isLoading && isCartEmpty ? (
           <div className={styles.cartNotFound}>
             <NotFound />
           </div>
         ) : (
           <ul className={styles.mainProductList}>
-            {cartItems.map(item => (
+            {cartItemsToRender.map(item => (
               <li key={item.id} className={styles.mainProductItem}>
                 <CartItem cartItem={item} />
               </li>
