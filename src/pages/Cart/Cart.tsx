@@ -35,7 +35,7 @@ export const Cart = () => {
 
   const summaryItems = [
     { title: 'Subtotal', value: `$${subtotal}` },
-    { title: 'Delivery fee', value: '$4' },
+    { title: 'Delivery fee', value: '$5' },
     { title: 'Discounts', value: '$0' },
   ];
 

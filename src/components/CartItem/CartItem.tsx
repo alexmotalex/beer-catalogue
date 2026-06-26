@@ -16,6 +16,8 @@ export const CartItem: React.FC<Props> = ({ cartItem }) => {
   const { id, beer_id, quantity, name, price } = cartItem;
   const error = itemErrors.get(beer_id);
 
+  const totalItemPrice = +(Number(price) * quantity).toFixed(1);
+
   const handleIncrease = () => {
     addToCart(beer_id);
   };
@@ -41,7 +43,7 @@ export const CartItem: React.FC<Props> = ({ cartItem }) => {
           <div className={styles.header}>
             <p className={styles.name}>{name}</p>
 
-            <p className={styles.price}>${price}</p>
+            <p className={styles.price}>${totalItemPrice}</p>
           </div>
 
           <span className={styles.volume}>500ml</span>
