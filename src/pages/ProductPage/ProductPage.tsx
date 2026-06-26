@@ -12,6 +12,7 @@ import { ROUTES } from '../../constants/routes';
 import clsx from 'clsx';
 import styles from './ProductPage.module.scss';
 import placeholderBeer from '../../assets/images/beer-placeholder.webp';
+import { resolvePublicUrl } from '../../utils/resolvePublicUrl';
 
 export const ProductPage = () => {
   const { productId } = useParams();
@@ -50,10 +51,13 @@ export const ProductPage = () => {
     is_filtered,
     volume,
     is_available,
+    image_url,
   } = beer;
 
   const inCart = isInCart(beerId);
   const cartItem = cartItems.find(item => item.beer_id === beerId);
+  const imageSrc = image_url ? resolvePublicUrl(image_url) : placeholderBeer;
+
   const error = itemErrors.get(beerId);
 
   const handleIncrease = () => {
@@ -110,11 +114,7 @@ export const ProductPage = () => {
             !is_available && styles.imageContentSoldOut,
           )}
         >
-          <img
-            src={placeholderBeer}
-            alt={name}
-            className={styles.productImage}
-          />
+          <img src={imageSrc} alt={name} className={styles.productImage} />
         </div>
 
         <section className={styles.about}>
