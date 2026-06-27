@@ -44,6 +44,18 @@
   }
 }
 
+.icon {
+  width: 20px;
+  height: 20px;
+  color: var.$brown-80-color;
+
+  transition: transform 0.3s ease;
+
+  .dropdownTriggerOpen & {
+    transform: rotate(180deg);
+  }
+}
+
 .dropdown {
   margin: 0;
   padding: 0 16px;

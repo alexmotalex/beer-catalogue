@@ -1,7 +1,7 @@
 import { storyParagraphs } from '../../constants/storyParagraphs';
-import styles from './AboutUs.module.scss';
+import styles from './AboutUsPage.module.scss';
 
-export const AboutUs = () => {
+export const AboutUsPage = () => {
   return (
     <section className={styles.story}>
       <div className={styles.storyContent}>

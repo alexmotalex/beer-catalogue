@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import styles from './ScrollToTopButton.module.scss';
-import { Icon } from '../Icon';
+import { Icon } from '../../Icon';
 
 const SCROLL_THRESHOLD = 300;
 

@@ -1,0 +1,69 @@
+@use '../../styles/variables' as var;
+@use '../../styles/mixins' as mixins;
+
+.accordion {
+  width: 100%;
+  padding: 20px 24px;
+  display: grid;
+  grid-template-rows: auto 0fr;
+  gap: 0;
+  background-color: var.$brown-10-color;
+  border-radius: 4px;
+  transition: grid-template-rows 0.3s ease;
+
+  &Open {
+    grid-template-rows: auto 1fr;
+    gap: 16px;
+    transition:
+      grid-template-rows 0.3s ease,
+      gap 0.3s ease;
+  }
+}
+
+.trigger {
+  padding: 0;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  text-align: left;
+}
+
+.question {
+  font-size: 18px;
+  font-weight: 400;
+  line-height: 135%;
+  color: var.$brown-80-color;
+}
+
+.icon {
+  width: 24px;
+  height: 24px;
+  flex-shrink: 0;
+  color: var.$brown-80-color;
+  transition: transform 0.3s ease;
+
+  .accordionOpen & {
+    transform: rotate(180deg);
+  }
+}
+
+.answerWrapper {
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  min-height: 0;
+}
+
+.answer {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 150%;
+  color: var.$brown-80-color;
+}

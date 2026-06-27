@@ -1,0 +1,54 @@
+@use '../../styles/variables' as var;
+
+.questionsWrapper {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
+  max-width: 680px;
+  align-self: center;
+}
+
+.helpContent {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.helpDivider {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  &Logo {
+    flex-shrink: 0;
+    width: 26px;
+    height: 26px;
+    background-image: url('../../assets/images/mini-logo.png');
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+  }
+}
+.supportContent {
+  padding: 24px 160px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  align-items: center;
+  border-radius: 4px;
+  background-color: var.$background-90-color;
+
+  & > p {
+    text-align: center;
+  }
+
+  &Button {
+    width: 248px;
+    height: 48px;
+  }
+}

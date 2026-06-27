@@ -12,7 +12,8 @@ import { ActivatePage } from './pages/ActivatePage';
 import { EditUserPage } from './pages/EditUserPage';
 import { NewPasswordPage } from './pages/NewPasswordPage';
 import { ForgotPasswordPage } from './pages/ForgotPasswordPage';
-import { AboutUs } from './pages/AboutUs';
+import { HelpCenterPage } from './pages/HelpCenterPage';
+import { AboutUsPage } from './pages/AboutUsPage';
 import { ROUTES } from './constants/routes';
 import './App.scss';
 
@@ -35,7 +36,9 @@ function App() {
           <Route path={ROUTES.catalogue} element={<Catalogue />} />
           <Route path="product/:productId" element={<ProductPage />} />
           <Route path={ROUTES.cart} element={<Cart />} />
-          <Route path={ROUTES.about} element={<AboutUs />} />
+          <Route path={ROUTES.about} element={<AboutUsPage />} />
+          <Route path={ROUTES.help} element={<HelpCenterPage />} />
+
           <Route path="*" element={<h1>Not Found</h1>} />
         </Route>
       </Routes>

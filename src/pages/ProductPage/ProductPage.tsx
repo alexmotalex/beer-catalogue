@@ -9,10 +9,10 @@ import { useBeerById } from '../../hooks/useBeerById';
 import { useAuth } from '../../hooks/useAuth';
 import { useCart } from '../../hooks/useCart';
 import { ROUTES } from '../../constants/routes';
+import { resolvePublicUrl } from '../../utils/resolvePublicUrl';
 import clsx from 'clsx';
 import styles from './ProductPage.module.scss';
 import placeholderBeer from '../../assets/images/beer-placeholder.webp';
-import { resolvePublicUrl } from '../../utils/resolvePublicUrl';
 
 export const ProductPage = () => {
   const { productId } = useParams();

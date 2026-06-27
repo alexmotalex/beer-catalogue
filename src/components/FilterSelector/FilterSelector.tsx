@@ -39,7 +39,10 @@ export const FilterSelector: React.FC<Props> = ({ option }) => {
     <div className={styles.dropdownContainer} ref={dropdownRef}>
       <div className={styles.dropdownWrapper}>
         <button
-          className={styles.dropdownTrigger}
+          className={clsx(
+            styles.dropdownTrigger,
+            isOpen && styles.dropdownTriggerOpen,
+          )}
           onClick={() => setIsOpen(prev => !prev)}
           aria-label="Search"
         >
@@ -49,14 +52,12 @@ export const FilterSelector: React.FC<Props> = ({ option }) => {
           <span className={styles.dropdownTriggerTitle}>
             {selectedOption?.value ? selectedOption.title : option.title}
           </span>
-          <div className={styles.dropdownTriggerIcon}>
-            <Icon name={isOpen ? 'arrow-up' : 'arrow-down'} />
+          <div className={styles.icon}>
+            <Icon name="arrow-down" />
           </div>
         </button>
 
-        <ul
-          className={clsx(styles.dropdown, { [styles.dropdownOpen]: isOpen })}
-        >
+        <ul className={clsx(styles.dropdown, isOpen && styles.dropdownOpen)}>
           {option.filterBy.map((item, index) => {
             const isLastItem = index === option.filterBy.length - 1;
 
