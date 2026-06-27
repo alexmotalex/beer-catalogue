@@ -1,12 +1,12 @@
 import React, { useRef, useState } from 'react';
 import styles from './FilterSelector.module.scss';
 import { useSearchParams } from 'react-router';
-import type { SelectOptions } from '../../types/SelectOptions';
-import { setParams } from '../../utils/setParams';
-import { useClickOutside } from '../../hooks/UseClickOutside';
-import { Icon } from '../Icon';
-import clsx from 'clsx';
 import { Divider } from '../Divider';
+import { Icon } from '../Icon';
+import { useClickOutside } from '../../hooks/UseClickOutside';
+import { setParams } from '../../utils/setParams';
+import type { SelectOptions } from '../../types/SelectOptions';
+import clsx from 'clsx';
 
 type Props = {
   option: SelectOptions;

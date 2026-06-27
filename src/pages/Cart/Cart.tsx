@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router';
 import { PrimaryButton } from '../../components/Buttons/PrimaryButton';
 import { SecondaryButton } from '../../components/Buttons/SecondaryButton';
 import { CartItem } from '../../components/CartItem';
-import { BasketModal } from '../../components/BasketModal';
+import { CartModal } from '../../components/CartModal';
 import { Divider } from '../../components/Divider';
 import { useCart } from '../../hooks/useCart';
 import { ROUTES } from '../../constants/routes';
@@ -42,7 +42,7 @@ export const Cart = () => {
 
   return (
     <div className={styles.cart}>
-      <BasketModal
+      <CartModal
         isOpen={modalIsOpen}
         cancelFn={closeModal}
         primaryFn={handleConfirm}

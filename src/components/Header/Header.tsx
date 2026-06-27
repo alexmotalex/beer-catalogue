@@ -58,9 +58,7 @@ export const Header = () => {
           </div>
 
           {modalIsOpen && (
-            <div className={styles.modalWrapper} onClick={closeModal}>
-              <AccountModal closeFn={closeModal} />
-            </div>
+            <AccountModal isOpen={modalIsOpen} closeFn={closeModal} />
           )}
         </div>
       );

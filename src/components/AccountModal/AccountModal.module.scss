@@ -3,7 +3,7 @@
 
 .dialog {
   position: fixed;
-  top: 72px; // below header
+  top: 72px;
   right: 116px;
   width: 288px;
   height: auto;
@@ -74,10 +74,17 @@
 }
 
 .option {
-  padding-block: 12px;
+  padding: 12px 0;
+  width: 100%;
   display: flex;
   align-items: center;
   justify-content: space-between;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+
+  @include mixins.hover(color, var.$brown-60-color);
 
   &Title {
     margin: 0;
@@ -88,17 +95,14 @@
     color: var.$brown-100-color;
   }
 
-  &Button {
-    padding: 0;
+  &Icon {
     width: 16px;
     height: 16px;
     color: var.$brown-100-color;
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: transparent;
-    border: none;
-    cursor: pointer;
+    flex-shrink: 0;
   }
 }
 

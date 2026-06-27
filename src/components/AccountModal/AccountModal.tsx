@@ -6,12 +6,14 @@ import { useNavigate } from 'react-router';
 import { Divider } from '../Divider';
 import { useAuth } from '../../hooks/useAuth';
 import { capitalizeFirstLetter } from '../../utils/capitalizeFirstLetter';
+import { useClickOutside } from '../../hooks/UseClickOutside';
 
 interface Props {
+  isOpen: boolean;
   closeFn: () => void;
 }
 
-export const AccountModal: React.FC<Props> = ({ closeFn }) => {
+export const AccountModal: React.FC<Props> = ({ isOpen, closeFn }) => {
   const { logout, user } = useAuth();
 
   const dialogRef = useRef<HTMLDivElement>(null);
@@ -40,9 +42,16 @@ export const AccountModal: React.FC<Props> = ({ closeFn }) => {
 
   const handleLogOut = async () => {
     closeFn();
+
     await logout();
     navigate(ROUTES.home);
   };
+
+  useClickOutside({
+    ref: dialogRef as React.RefObject<HTMLDivElement>,
+    isOpen,
+    onClose: closeFn,
+  });
 
   useEffect(() => {
     const focusableSelectors = [
@@ -131,31 +140,29 @@ export const AccountModal: React.FC<Props> = ({ closeFn }) => {
       </div>
 
       <div className={styles.optionsWrapper}>
-        <div className={styles.option}>
-          <p className={styles.optionTitle}>Change password</p>
-
-          <button
-            type="button"
-            className={styles.optionButton}
-            onClick={handleChangePassword}
-          >
+        <button
+          type="button"
+          className={styles.option}
+          onClick={handleChangePassword}
+        >
+          <span className={styles.optionTitle}>Change password</span>
+          <div className={styles.optionIcon}>
             <Icon name="right-arrow" />
-          </button>
-        </div>
+          </div>
+        </button>
 
         <Divider />
 
-        <div className={styles.option}>
-          <p className={styles.optionTitle}>Help center</p>
-
-          <button
-            type="button"
-            className={styles.optionButton}
-            onClick={handleHelpCenter}
-          >
+        <button
+          type="button"
+          className={styles.option}
+          onClick={handleHelpCenter}
+        >
+          <span className={styles.optionTitle}>Help center</span>
+          <div className={styles.optionIcon}>
             <Icon name="right-arrow" />
-          </button>
-        </div>
+          </div>
+        </button>
       </div>
 
       <div className={styles.logOutWrapper}>
