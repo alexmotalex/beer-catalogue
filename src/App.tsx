@@ -15,6 +15,7 @@ import { ForgotPasswordPage } from './pages/ForgotPasswordPage';
 import { HelpCenterPage } from './pages/HelpCenterPage';
 import { AboutUsPage } from './pages/AboutUsPage';
 import { ROUTES } from './constants/routes';
+import { ChangePasswordPage } from './pages/ChangePasswordPage';
 import './App.scss';
 
 function App() {
@@ -32,6 +33,10 @@ function App() {
             element={<ForgotPasswordPage />}
           />
           <Route path={ROUTES.setNewPassword} element={<NewPasswordPage />} />
+          <Route
+            path={ROUTES.changePassword}
+            element={<ChangePasswordPage />}
+          />
           <Route path={ROUTES.checkEmail} element={<CheckEmailPage />} />
           <Route path={ROUTES.catalogue} element={<Catalogue />} />
           <Route path="product/:productId" element={<ProductPage />} />

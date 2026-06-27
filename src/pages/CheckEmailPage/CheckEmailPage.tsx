@@ -2,7 +2,7 @@ import { Navigate, useLocation } from 'react-router';
 import { useEffect, useState } from 'react';
 import { useAuth } from '../../hooks/useAuth';
 import { BackButton } from '../../components/Buttons/BackButton';
-import { SuccessMessage } from '../../components/SuccessMessage';
+import { InfoMessage } from '../../components/InfoMessage';
 import { PrimaryButton } from '../../components/Buttons/PrimaryButton';
 import { ROUTES } from '../../constants/routes';
 import styles from './CheckEmailPage.module.scss';
@@ -70,7 +70,7 @@ export const CheckEmailPage = () => {
     <section className="pageContent">
       {showResendToast && (
         <div className="successMessageWrapper">
-          <SuccessMessage title="Verification link sent" />
+          <InfoMessage title="Verification link sent" />
         </div>
       )}
 

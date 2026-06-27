@@ -8,7 +8,7 @@ import { mapToEditUserData } from '../../utils/formMappers';
 import { validateEditUserForm } from '../../utils/formValidate/validateEditUserForm';
 import { emptyEditUserForm } from '../../constants/formsData';
 import type { EditUserFormData } from '../../types/Forms';
-import { SuccessMessage } from '../../components/SuccessMessage';
+import { InfoMessage } from '../../components/InfoMessage';
 import { ROUTES } from '../../constants/routes';
 import styles from './EditUserPage.module.scss';
 import { capitalizeFirstLetter } from '../../utils/capitalizeFirstLetter';
@@ -76,7 +76,7 @@ export const EditUserPage = () => {
     <section className="pageContent">
       {isSuccess && (
         <div className="successMessageWrapper">
-          <SuccessMessage title="Success" />
+          <InfoMessage title="Success" />
         </div>
       )}
 
