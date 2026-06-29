@@ -54,7 +54,7 @@ export const ProductCard: React.FC<Props> = ({ product }) => {
     },
     {
       id: 2,
-      spec: alcohol_percentage,
+      spec: `${alcohol_percentage}%`,
     },
     {
       id: 3,
@@ -62,7 +62,7 @@ export const ProductCard: React.FC<Props> = ({ product }) => {
     },
     {
       id: 4,
-      spec: volume,
+      spec: `${volume}ml`,
     },
   ];
 

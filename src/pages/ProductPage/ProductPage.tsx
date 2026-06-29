@@ -13,6 +13,7 @@ import { resolvePublicUrl } from '../../utils/resolvePublicUrl';
 import clsx from 'clsx';
 import styles from './ProductPage.module.scss';
 import placeholderBeer from '../../assets/images/beer-placeholder.webp';
+import { capitalizeFirstLetter } from '../../utils/capitalizeFirstLetter';
 
 export const ProductPage = () => {
   const { productId } = useParams();
@@ -81,7 +82,7 @@ export const ProductPage = () => {
   const specifications = [
     {
       label: 'Type',
-      value: beer_type,
+      value: capitalizeFirstLetter(beer_type),
     },
     {
       label: 'ABV',
