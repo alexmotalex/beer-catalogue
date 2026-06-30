@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Navigate, useNavigate, useSearchParams } from 'react-router';
 import { Slide, toast } from 'react-toastify';
-import { BackButton } from '../../components/Buttons/BackButton';
 import { LabeledInput } from '../../components/LabeledInput';
 import { ErrorInfo } from '../../components/ErrorInfo';
 import { PrimaryButton } from '../../components/Buttons/PrimaryButton';
@@ -26,7 +25,10 @@ export const NewPasswordPage = () => {
 
   const token = searchParams.get('token') || '';
   const validationErrors = validateNewPasswordForm(formData);
-  const newPasswordError = validationErrors.password || serverErrors.password;
+  const newPasswordError =
+    validationErrors.password ||
+    validationErrors.isSame ||
+    serverErrors.password;
   const confirmPasswordError = validationErrors.confirmPassword;
 
   const notify = () =>
@@ -86,10 +88,6 @@ export const NewPasswordPage = () => {
 
   return (
     <section className="pageContent">
-      <div className="backButtonWrapper">
-        <BackButton />
-      </div>
-
       <h1 className="title">Create new password</h1>
 
       <p className="subtitle">Create a new password for your account</p>

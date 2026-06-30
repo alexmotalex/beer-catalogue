@@ -1,0 +1,8 @@
+@use '../../styles/variables.scss' as var;
+
+.dot {
+  width: 4px;
+  height: 4px;
+  background-color: var.$brown-40-color;
+  border-radius: 50%;
+}

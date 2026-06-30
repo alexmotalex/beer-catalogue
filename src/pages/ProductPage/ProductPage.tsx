@@ -5,15 +5,17 @@ import { BackButton } from '../../components/Buttons/BackButton';
 import { PrimaryButton } from '../../components/Buttons/PrimaryButton';
 import { Stepper } from '../../components/Stepper';
 import { ErrorInfo } from '../../components/ErrorInfo';
+import { Dot } from '../../components/Dot';
 import { useBeerById } from '../../hooks/useBeerById';
 import { useAuth } from '../../hooks/useAuth';
 import { useCart } from '../../hooks/useCart';
+import { capitalizeFirstLetter } from '../../utils/capitalizeFirstLetter';
+import { formatOccasions } from '../../utils/formatOccasions';
 import { ROUTES } from '../../constants/routes';
 import { resolvePublicUrl } from '../../utils/resolvePublicUrl';
 import clsx from 'clsx';
 import styles from './ProductPage.module.scss';
 import placeholderBeer from '../../assets/images/beer-placeholder.webp';
-import { capitalizeFirstLetter } from '../../utils/capitalizeFirstLetter';
 
 export const ProductPage = () => {
   const { productId } = useParams();
@@ -53,11 +55,13 @@ export const ProductPage = () => {
     volume,
     is_available,
     image_url,
+    event_type,
   } = beer;
 
   const inCart = isInCart(beerId);
   const cartItem = cartItems.find(item => item.beer_id === beerId);
   const imageSrc = image_url ? resolvePublicUrl(image_url) : placeholderBeer;
+  const occasions = formatOccasions(event_type);
 
   const error = itemErrors.get(beerId);
 
@@ -119,14 +123,29 @@ export const ProductPage = () => {
         </div>
 
         <section className={styles.about}>
-          <div className={styles.description}>
+          <div className={styles.detail}>
             <div className={styles.info}>
               <span className={styles.barrel}>Old Barrel</span>
               <h1 className={styles.title}>{name}</h1>
               <p className={styles.price}>Price ${price}</p>
             </div>
 
-            <p className={styles.detail}>{description}</p>
+            <div className={styles.description}>
+              <p className={styles.descriptionText}>{description}</p>
+
+              <ul className={styles.occasions}>
+                {occasions?.map((item, index) => {
+                  const isLastItem = index === occasions.length - 1;
+
+                  return (
+                    <li key={item} className={styles.occasionsItem}>
+                      <span className={styles.occasionsText}>{item}</span>
+                      {!isLastItem && <Dot />}
+                    </li>
+                  );
+                })}
+              </ul>
+            </div>
 
             <div className={styles.specifications}>
               <h2 className={styles.specificationsTitle}>Specifications</h2>

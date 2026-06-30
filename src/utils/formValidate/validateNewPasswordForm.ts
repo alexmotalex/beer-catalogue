@@ -18,7 +18,7 @@ export const validateNewPasswordForm = (formData: NewPasswordFormData) => {
     formData.confirmPassword.trim() &&
     formData.password.trim() !== formData.confirmPassword.trim()
   ) {
-    newErrors.isSame = 'Passwords are not equal';
+    newErrors.isSame = 'Passwords are missmatching';
   }
 
   return newErrors;

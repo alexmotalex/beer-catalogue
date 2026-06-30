@@ -62,7 +62,7 @@ export const ProductCard: React.FC<Props> = ({ product }) => {
     },
     {
       id: 4,
-      spec: `${volume}ml`,
+      spec: `${volume} ml`,
     },
   ];
 

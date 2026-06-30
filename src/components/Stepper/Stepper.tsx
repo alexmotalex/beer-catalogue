@@ -13,13 +13,13 @@ type Props = {
 
 export const Stepper: React.FC<Props> = ({
   value,
-  error,
   isLoading,
+  error,
   onIncrease,
   onDecrease,
   onDelete,
 }) => {
-  const isDisabled = value < 1;
+  const isDisabled = value < 1 || Boolean(isLoading) || error;
   const isDeleteButton = value === 1;
   const leftButtonIcon = isDeleteButton ? 'trash' : 'minus';
 
@@ -37,7 +37,7 @@ export const Stepper: React.FC<Props> = ({
     <div className={styles.stepper}>
       <button
         type="button"
-        disabled={isDisabled || Boolean(isLoading)}
+        disabled={isDisabled}
         className={styles.button}
         onClick={handleLeftButtonClick}
         aria-label={isDisabled ? 'Remove item' : 'Decrease quantity'}
@@ -51,7 +51,7 @@ export const Stepper: React.FC<Props> = ({
 
       <button
         type="button"
-        disabled={error || Boolean(isLoading)}
+        disabled={isDisabled}
         className={styles.button}
         onClick={onIncrease}
         aria-label="Increase quantity"

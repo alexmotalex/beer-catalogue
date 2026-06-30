@@ -51,7 +51,7 @@ export const Header = () => {
             </div>
           </NavLink>
 
-          <div className={styles.actionLink} onClick={openModal}>
+          <div className={styles.actionLink} onMouseEnter={openModal}>
             <div className={styles.actionLinkIconWrapper}>
               <Icon name="acc" />
             </div>

@@ -45,7 +45,7 @@
   justify-content: space-between;
 }
 
-.description {
+.detail {
   display: flex;
   flex-direction: column;
   gap: 40px;
@@ -81,12 +81,41 @@
   color: var.$brown-80-color;
 }
 
-.detail {
+.description {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+
+  &Text {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 150%;
+    color: var.$brown-80-color;
+  }
+}
+
+.occasions {
   margin: 0;
-  font-size: 16px;
-  font-weight: 500;
-  line-height: 150%;
-  color: var.$brown-80-color;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  list-style: none;
+
+  &Item {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  &Text {
+    display: block;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 145%;
+    color: var.$brown-50-color;
+  }
 }
 
 .specifications {
