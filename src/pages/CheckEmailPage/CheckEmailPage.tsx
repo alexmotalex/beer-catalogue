@@ -2,16 +2,16 @@ import { Navigate, useLocation } from 'react-router';
 import { useEffect, useState } from 'react';
 import { useAuth } from '../../hooks/useAuth';
 import { BackButton } from '../../components/Buttons/BackButton';
-import { InfoMessage } from '../../components/InfoMessage';
 import { PrimaryButton } from '../../components/Buttons/PrimaryButton';
 import { ROUTES } from '../../constants/routes';
 import styles from './CheckEmailPage.module.scss';
+import { Toast } from '../../components/Toast';
 
 const RESEND_TIMEOUT_SECONDS = 60;
 
 export const CheckEmailPage = () => {
   const [secondsLeft, setSecondsLeft] = useState(RESEND_TIMEOUT_SECONDS);
-  const [showResendToast, setShowResendToast] = useState(false);
+  const [toast, setToast] = useState<string | null>(null);
 
   const { register, passwordReset } = useAuth();
   const location = useLocation();
@@ -35,7 +35,7 @@ export const CheckEmailPage = () => {
     await resendFn(formData);
 
     setSecondsLeft(RESEND_TIMEOUT_SECONDS);
-    setShowResendToast(true);
+    setToast('Verification link sent');
   };
 
   useEffect(() => {
@@ -50,29 +50,13 @@ export const CheckEmailPage = () => {
     return () => clearTimeout(timerId);
   }, [secondsLeft]);
 
-  useEffect(() => {
-    if (!showResendToast) {
-      return;
-    }
-
-    const toastTimerId = setTimeout(() => {
-      setShowResendToast(false);
-    }, 5000);
-
-    return () => clearTimeout(toastTimerId);
-  }, [showResendToast]);
-
   if (!email) {
     return <Navigate to={ROUTES.signUp} replace />;
   }
 
   return (
     <section className="pageContent">
-      {showResendToast && (
-        <div className="successMessageWrapper">
-          <InfoMessage title="Verification link sent" />
-        </div>
-      )}
+      {toast && <Toast title={toast} onClose={() => setToast(null)} />}
 
       <div className="backButtonWrapper">
         <BackButton />

@@ -14,9 +14,13 @@ import placeholderBeer from '../../assets/images/beer-placeholder.webp';
 
 type Props = {
   product: Omit<Beer, 'description'>;
+  setToast?: (message: string | null) => void;
 };
 
-export const ProductCard: React.FC<Props> = ({ product }) => {
+export const ProductCard: React.FC<Props> = ({
+  product,
+  setToast = () => {},
+}) => {
   const {
     id,
     name,
@@ -30,7 +34,7 @@ export const ProductCard: React.FC<Props> = ({ product }) => {
   } = product;
 
   const { user } = useAuth();
-  const { addToCart, isInCart } = useCart();
+  const { addToCart, getQuantityInCart, isInCart, isLoading } = useCart();
   const navigate = useNavigate();
   const productPath = buildProductPath(id);
   const imageSrc = image_url ? resolvePublicUrl(image_url) : placeholderBeer;
@@ -43,9 +47,11 @@ export const ProductCard: React.FC<Props> = ({ product }) => {
     }
 
     addToCart(id);
+    setToast(`${name} successfully added to cart`);
   };
 
   const inCart = isInCart(id);
+  const itemsInCart = getQuantityInCart(id);
 
   const specifications = [
     {
@@ -69,8 +75,8 @@ export const ProductCard: React.FC<Props> = ({ product }) => {
   const buttonTitle = !is_available
     ? 'Out of stock'
     : inCart
-      ? 'Added to cart'
-      : `Add to cart`;
+      ? `Add to cart | ${itemsInCart} ${itemsInCart === 1 ? 'item' : 'items'}`
+      : 'Add to cart';
 
   return (
     <article className={styles.productCard}>
@@ -106,7 +112,7 @@ export const ProductCard: React.FC<Props> = ({ product }) => {
           type="button"
           title={buttonTitle}
           onClick={handleAddToCart}
-          disabled={!is_available || inCart}
+          disabled={!is_available || isLoading}
         />
       </div>
     </article>

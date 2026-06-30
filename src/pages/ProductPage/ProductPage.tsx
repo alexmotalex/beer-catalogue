@@ -1,9 +1,6 @@
-// import styles from './Catalogue.module.scss';
-
 import { useNavigate, useParams } from 'react-router';
 import { BackButton } from '../../components/Buttons/BackButton';
 import { PrimaryButton } from '../../components/Buttons/PrimaryButton';
-import { Stepper } from '../../components/Stepper';
 import { ErrorInfo } from '../../components/ErrorInfo';
 import { Dot } from '../../components/Dot';
 import { useBeerById } from '../../hooks/useBeerById';
@@ -20,14 +17,8 @@ import placeholderBeer from '../../assets/images/beer-placeholder.webp';
 export const ProductPage = () => {
   const { productId } = useParams();
   const { user } = useAuth();
-  const {
-    addToCart,
-    isInCart,
-    itemErrors,
-    cartItems,
-    isLoading,
-    deleteFromCart,
-  } = useCart();
+  const { getQuantityInCart, addToCart, isInCart, itemErrors, isLoading } =
+    useCart();
   const navigate = useNavigate();
 
   const beerId = Number(productId);
@@ -59,28 +50,20 @@ export const ProductPage = () => {
   } = beer;
 
   const inCart = isInCart(beerId);
-  const cartItem = cartItems.find(item => item.beer_id === beerId);
+
   const imageSrc = image_url ? resolvePublicUrl(image_url) : placeholderBeer;
   const occasions = formatOccasions(event_type);
 
   const error = itemErrors.get(beerId);
+  const itemsInCart = getQuantityInCart(beerId);
 
-  const handleIncrease = () => {
+  const handleAddToCart = async () => {
     if (!user) {
       navigate(ROUTES.signIn);
-
       return;
     }
 
-    addToCart(beerId);
-  };
-
-  const handleDecrease = () => {
-    if (!cartItem) {
-      return;
-    }
-
-    deleteFromCart(cartItem.id, beerId);
+    await addToCart(beerId);
   };
 
   const specifications = [
@@ -105,8 +88,8 @@ export const ProductPage = () => {
   const buttonTitle = !is_available
     ? 'Out of stock'
     : inCart
-      ? 'Added to cart'
-      : `Add to cart  | $${price}`;
+      ? `Add to cart | ${itemsInCart} ${itemsInCart === 1 ? 'item' : 'items'}`
+      : 'Add to cart';
 
   return (
     <section className={styles.product}>
@@ -175,21 +158,12 @@ export const ProductPage = () => {
               </div>
             )}
 
-            <Stepper
-              value={cartItem?.quantity || 0}
-              error={Boolean(error)}
-              isLoading={Boolean(isLoading)}
-              onIncrease={handleIncrease}
-              onDecrease={handleDecrease}
-              onDelete={handleDecrease}
-            />
-
             <div className={styles.addToBasket}>
               <PrimaryButton
                 type="button"
                 title={buttonTitle}
-                onClick={handleIncrease}
-                disabled={!is_available || inCart}
+                onClick={handleAddToCart}
+                disabled={!is_available}
               />
             </div>
           </div>

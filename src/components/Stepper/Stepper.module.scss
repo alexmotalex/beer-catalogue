@@ -39,3 +39,15 @@
     color: var.$brown-30-color;
   }
 }
+
+.valueInput {
+  width: 48px;
+  text-align: center;
+  border: 1px solid var.$brown-40-color;
+  border-radius: 4px;
+  font: inherit;
+  font-size: 24px;
+  color: inherit;
+  outline: none;
+  background: transparent;
+}

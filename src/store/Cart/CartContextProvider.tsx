@@ -23,6 +23,12 @@ export type CartContextType = {
   itemErrors: Map<number, string>;
   fetchCart: () => Promise<void>;
   addToCart: (beerId: number) => Promise<void>;
+  getQuantityInCart: (beerId: number) => number;
+  updateCartItemQuantity: (
+    itemId: number,
+    beerId: number,
+    quantity: number,
+  ) => Promise<void>;
   deleteFromCart: (itemId: number, beerId: number) => Promise<void>;
   clearCart: () => Promise<void>;
   isInCart: (beerId: number) => boolean;
@@ -65,12 +71,13 @@ export const CartContextProvider: React.FC<Props> = ({ children }) => {
       setItemErrors(prev => {
         const next = new Map(prev);
         next.delete(beerId);
-
         return next;
       });
 
       try {
-        await instance.post(`/cart/${beerId}/`);
+        await instance.post(`/cart/${beerId}/`, null, {
+          params: { quantity: 1 },
+        });
         await fetchCart();
       } catch (err: unknown) {
         const axiosError = err as {
@@ -81,7 +88,6 @@ export const CartContextProvider: React.FC<Props> = ({ children }) => {
         setItemErrors(prev => {
           const next = new Map(prev);
           next.set(beerId, msg ?? 'Failed to add item');
-
           return next;
         });
       } finally {
@@ -89,6 +95,35 @@ export const CartContextProvider: React.FC<Props> = ({ children }) => {
       }
     },
     [user, fetchCart],
+  );
+
+  const updateCartItemQuantity = useCallback(
+    async (itemId: number, beerId: number, quantity: number) => {
+      setItemErrors(prev => {
+        const next = new Map(prev);
+        next.delete(beerId);
+        return next;
+      });
+
+      try {
+        await instance.patch(`/cart/${itemId}/`, null, {
+          params: { quantity },
+        });
+        await fetchCart();
+      } catch (err: unknown) {
+        const axiosError = err as {
+          response?: { data?: { detail?: { beer_id?: string } } };
+        };
+        const msg = axiosError.response?.data?.detail?.beer_id;
+
+        setItemErrors(prev => {
+          const next = new Map(prev);
+          next.set(beerId, msg ?? 'Failed to update quantity');
+          return next;
+        });
+      }
+    },
+    [fetchCart],
   );
 
   const deleteFromCart = useCallback(
@@ -121,6 +156,11 @@ export const CartContextProvider: React.FC<Props> = ({ children }) => {
     }
   }, []);
 
+  const getQuantityInCart = useCallback(
+    (beerId: number) =>
+      cart.cart_items.find(item => item.beer_id === beerId)?.quantity ?? 0,
+    [cart.cart_items],
+  );
   const isInCart = useCallback(
     (beerId: number) => cart.cart_items.some(item => item.beer_id === beerId),
     [cart.cart_items],
@@ -168,6 +208,8 @@ export const CartContextProvider: React.FC<Props> = ({ children }) => {
       isLoading,
       fetchCart,
       addToCart,
+      getQuantityInCart,
+      updateCartItemQuantity,
       deleteFromCart,
       clearCart,
       isInCart,
@@ -175,6 +217,8 @@ export const CartContextProvider: React.FC<Props> = ({ children }) => {
     [
       cart,
       addToCart,
+      getQuantityInCart,
+      updateCartItemQuantity,
       clearCart,
       deleteFromCart,
       totalCartItems,

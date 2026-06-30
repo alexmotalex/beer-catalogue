@@ -6,8 +6,11 @@ import { FilterSelector } from '../../components/FilterSelector';
 import { selectOptions } from '../../constants/selectOptions';
 import styles from './Catalogue.module.scss';
 import { BeerSearch } from '../../components/BeerSearch';
+import { useState } from 'react';
+import { Toast } from '../../components/Toast';
 
 export const Catalogue = () => {
+  const [toast, setToast] = useState<string | null>(null);
   const { beers, nextOffset, loadBeers } = useBeers();
 
   const handleViewAll = async () => {
@@ -16,6 +19,8 @@ export const Catalogue = () => {
 
   return (
     <section className={clsx('pageContent', styles.catalogue)}>
+      {toast && <Toast title={toast} onClose={() => setToast(null)} />}
+
       <div className={styles.filterToolbar}>
         <div className={styles.search}>
           <BeerSearch />
@@ -39,7 +44,7 @@ export const Catalogue = () => {
         <ul className={styles.productList}>
           {beers.map(beer => (
             <li key={beer.id} className={styles.productItem}>
-              <ProductCard product={beer} />
+              <ProductCard product={beer} setToast={setToast} />
             </li>
           ))}
         </ul>

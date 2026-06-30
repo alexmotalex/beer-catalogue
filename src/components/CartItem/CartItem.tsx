@@ -13,7 +13,8 @@ type Props = {
 };
 
 export const CartItem: React.FC<Props> = ({ cartItem }) => {
-  const { addToCart, deleteFromCart, itemErrors, isLoading } = useCart();
+  const { updateCartItemQuantity, deleteFromCart, itemErrors, isLoading } =
+    useCart();
   const { id, beer_id, quantity, name, price, image_url } = cartItem;
   const error = itemErrors.get(beer_id);
 
@@ -22,10 +23,29 @@ export const CartItem: React.FC<Props> = ({ cartItem }) => {
   const displayedPrice = `$${totalItemPrice.toFixed(2)}`;
 
   const handleIncrease = () => {
-    addToCart(beer_id);
+    updateCartItemQuantity(id, beer_id, quantity + 1);
   };
+
   const handleDecrease = () => {
+    if (quantity <= 1) {
+      deleteFromCart(id, beer_id);
+      return;
+    }
+
+    updateCartItemQuantity(id, beer_id, quantity - 1);
+  };
+
+  const handleDelete = () => {
     deleteFromCart(id, beer_id);
+  };
+
+  const handleManualChange = (newQuantity: number) => {
+    if (newQuantity <= 0) {
+      deleteFromCart(id, beer_id);
+      return;
+    }
+
+    updateCartItemQuantity(id, beer_id, newQuantity);
   };
 
   const productPath = buildProductPath(beer_id);
@@ -60,7 +80,8 @@ export const CartItem: React.FC<Props> = ({ cartItem }) => {
           isLoading={Boolean(isLoading)}
           onIncrease={handleIncrease}
           onDecrease={handleDecrease}
-          onDelete={handleDecrease}
+          onDelete={handleDelete}
+          onChange={handleManualChange}
         />
       </div>
     </article>
