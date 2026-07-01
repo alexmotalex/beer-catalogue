@@ -59,8 +59,8 @@ export const selectOptions = [
         value: 'after-midnight',
       },
       {
-        title: 'Dinners and Drinks',
-        value: 'dinners-and-drinks',
+        title: 'Dinner and Drinks',
+        value: 'dinner-and-drinks',
       },
     ],
   },
@@ -81,18 +81,30 @@ export const selectOptions = [
     ],
   },
   {
-    title: 'Sort',
+    title: 'Sort by',
+    searchParamKey: 'sort_by',
+    icon: 'card',
+    filterBy: [
+      { title: 'All', value: '' },
+      {
+        title: 'Price',
+        value: 'price',
+      },
+    ],
+  },
+  {
+    title: 'Sort order',
     searchParamKey: 'sort_order',
     icon: 'sort',
     filterBy: [
       { title: 'All', value: '' },
       {
-        title: 'Ascending',
-        value: 'asc',
+        title: 'High to low',
+        value: 'desc',
       },
       {
-        title: 'Descending',
-        value: 'desc',
+        title: 'Low to high',
+        value: 'asc',
       },
     ],
   },
