@@ -1,8 +1,10 @@
+import { useState } from 'react';
 import { useNavigate, useParams } from 'react-router';
 import { BackButton } from '../../components/Buttons/BackButton';
 import { PrimaryButton } from '../../components/Buttons/PrimaryButton';
 import { ProductPageSkeleton } from '../../components/ProductPageSkeleton';
 import { SlowServerMessage } from '../../components/SlowServerMessage';
+import { Toast } from '../../components/Toast';
 import { ErrorInfo } from '../../components/ErrorInfo';
 import { Dot } from '../../components/Dot';
 import { useBeerById } from '../../hooks/useBeerById';
@@ -18,10 +20,17 @@ import placeholderBeer from '../../assets/images/beer-placeholder.webp';
 import styles from './ProductPage.module.scss';
 
 export const ProductPage = () => {
+  const [toast, setToast] = useState<string | null>(null);
   const { productId } = useParams();
   const beerId = Number(productId);
   const { user } = useAuth();
-  const { getQuantityInCart, addToCart, isInCart, itemErrors } = useCart();
+  const {
+    getQuantityInCart,
+    addToCart,
+    isInCart,
+    itemErrors,
+    isLoading: cartIsLoading,
+  } = useCart();
   const { beer, isError, isLoading: beerIsLoading } = useBeerById(beerId);
   const navigate = useNavigate();
   const isSlow = useSlowLoad(beerIsLoading);
@@ -71,6 +80,7 @@ export const ProductPage = () => {
     }
 
     await addToCart(beerId);
+    setToast(`This item successfully added to cart`);
   };
 
   const specifications = [
@@ -101,6 +111,8 @@ export const ProductPage = () => {
   return (
     <section className={styles.product}>
       <BackButton />
+
+      {toast && <Toast title={toast} onClose={() => setToast(null)} />}
 
       <div className={styles.overall}>
         <div
@@ -170,7 +182,7 @@ export const ProductPage = () => {
                 type="button"
                 title={buttonTitle}
                 onClick={handleAddToCart}
-                disabled={!is_available}
+                disabled={!is_available || cartIsLoading}
               />
             </div>
           </div>
