@@ -1,12 +1,12 @@
 import { Link } from 'react-router';
-import { buildProductPath } from '../../utils/buildProductPath';
 import { Stepper } from '../Stepper';
-import type { CartEntry } from '../../types/Cart';
-import { useCart } from '../../hooks/useCart';
 import { ErrorInfo } from '../ErrorInfo';
-import placeholderBeer from '../../assets/images/beer-placeholder.webp';
-import styles from './CartItem.module.scss';
+import { buildProductPath } from '../../utils/buildProductPath';
+import { useCart } from '../../hooks/useCart';
 import { resolvePublicUrl } from '../../utils/resolvePublicUrl';
+import placeholderBeer from '../../assets/images/beer-placeholder.webp';
+import type { CartEntry } from '../../types/Cart';
+import styles from './CartItem.module.scss';
 
 type Props = {
   cartItem: CartEntry;
@@ -40,11 +40,6 @@ export const CartItem: React.FC<Props> = ({ cartItem }) => {
   };
 
   const handleManualChange = (newQuantity: number) => {
-    if (newQuantity <= 0) {
-      deleteFromCart(id, beer_id);
-      return;
-    }
-
     updateCartItemQuantity(id, beer_id, newQuantity);
   };
 
