@@ -3,7 +3,7 @@
 
 .dialog {
   position: fixed;
-  top: 72px;
+  top: 58px;
   right: 116px;
   width: 288px;
   height: auto;
@@ -15,6 +15,23 @@
   flex-direction: column;
   justify-content: space-around;
   gap: 16px;
+
+  opacity: 0;
+  transform: translateY(-8px);
+  visibility: hidden;
+  pointer-events: none;
+
+  transition:
+    opacity 0.3s ease,
+    transform 0.3s ease,
+    visibility 0.3s;
+
+  &Open {
+    opacity: 1;
+    transform: translateY(4px);
+    visibility: visible;
+    pointer-events: auto;
+  }
 }
 
 .userInfoWrapper {

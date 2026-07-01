@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router';
 import { Divider } from '../Divider';
 import { useAuth } from '../../hooks/useAuth';
 import { capitalizeFirstLetter } from '../../utils/capitalizeFirstLetter';
-import { useClickOutside } from '../../hooks/UseClickOutside';
+import clsx from 'clsx';
 
 interface Props {
   isOpen: boolean;
@@ -46,12 +46,6 @@ export const AccountModal: React.FC<Props> = ({ isOpen, closeFn }) => {
     await logout();
     navigate(ROUTES.home);
   };
-
-  useClickOutside({
-    ref: dialogRef as React.RefObject<HTMLDivElement>,
-    isOpen,
-    onClose: closeFn,
-  });
 
   useEffect(() => {
     const focusableSelectors = [
@@ -125,7 +119,7 @@ export const AccountModal: React.FC<Props> = ({ isOpen, closeFn }) => {
       aria-modal="true"
       aria-label="Account menu"
       tabIndex={-1}
-      className={styles.dialog}
+      className={clsx(styles.dialog, isOpen && styles.dialogOpen)}
       onClick={e => e.stopPropagation()}
     >
       <div className={styles.userInfoWrapper}>

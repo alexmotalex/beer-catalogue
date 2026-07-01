@@ -51,15 +51,17 @@ export const Header = () => {
             </div>
           </NavLink>
 
-          <div className={styles.actionLink} onMouseEnter={openModal}>
+          <div
+            className={styles.actionLink}
+            onMouseEnter={openModal}
+            onMouseLeave={closeModal}
+          >
             <div className={styles.actionLinkIconWrapper}>
               <Icon name="acc" />
             </div>
-          </div>
 
-          {modalIsOpen && (
             <AccountModal isOpen={modalIsOpen} closeFn={closeModal} />
-          )}
+          </div>
         </div>
       );
     }

@@ -40,6 +40,7 @@ export const NewPasswordPage = () => {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
+    setShowValidationErrors(true);
 
     setServerErrors({
       ...serverErrors,
