@@ -2,9 +2,11 @@ import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router';
 import { BackButton } from '../../components/Buttons/BackButton';
 import { LabeledInput } from '../../components/LabeledInput';
+import { SlowServerMessage } from '../../components/SlowServerMessage';
 import { ErrorInfo } from '../../components/ErrorInfo';
 import { PrimaryButton } from '../../components/Buttons/PrimaryButton';
 import { RedirectText } from '../../components/RedirectText';
+import { useSlowLoad } from '../../hooks/useSlowLoad';
 import { useAuth } from '../../hooks/useAuth';
 import { validateSignInForm } from '../../utils/formValidate/validateSignInForm';
 import { emptySignInForm } from '../../constants/formsData';
@@ -15,10 +17,9 @@ import styles from './SignInPage.module.scss';
 export const SigninPage = () => {
   const [formData, setFormData] = useState<AuthCredentials>(emptySignInForm);
   const [showValidationErrors, setShowValidationErrors] = useState(false);
-
   const navigate = useNavigate();
-
   const { login, isLoading, serverErrors, setServerErrors } = useAuth();
+  const isSlow = useSlowLoad(isLoading);
 
   const validationErrors = validateSignInForm(formData);
   const emailError = validationErrors.email || serverErrors.email;
@@ -66,6 +67,8 @@ export const SigninPage = () => {
       <div className="backButtonWrapper">
         <BackButton />
       </div>
+
+      {isSlow && <SlowServerMessage />}
 
       <h1 className="authPageTitle">Sign In</h1>
 

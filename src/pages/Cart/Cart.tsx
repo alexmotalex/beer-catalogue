@@ -4,16 +4,19 @@ import { PrimaryButton } from '../../components/Buttons/PrimaryButton';
 import { SecondaryButton } from '../../components/Buttons/SecondaryButton';
 import { CartItem } from '../../components/CartItem';
 import { CartModal } from '../../components/CartModal';
+import { CartItemSkeleton } from '../../components/CartItemSkeleton';
 import { Divider } from '../../components/Divider';
+import { SlowServerMessage } from '../../components/SlowServerMessage';
 import { useCart } from '../../hooks/useCart';
+import { useSlowLoad } from '../../hooks/useSlowLoad';
 import { ROUTES } from '../../constants/routes';
-import { NotFound } from '../../components/NotFound';
 import styles from './Cart.module.scss';
 
 export const Cart = () => {
   const { cartItems, subtotal, total, error, isLoading, clearCart } = useCart();
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const navigate = useNavigate();
+  const isSlow = useSlowLoad(isLoading);
 
   const isCartEmpty = cartItems.length === 0;
   const cartItemsToRender = cartItems.sort((a, b) => a.id - b.id);
@@ -40,6 +43,38 @@ export const Cart = () => {
     { title: 'Discounts', value: '$0' },
   ];
 
+  const renderContent = () => {
+    if (isLoading && isCartEmpty) {
+      return (
+        <>
+          {isSlow && <SlowServerMessage />}
+
+          <ul className={styles.mainProductList}>
+            {Array.from({ length: 3 }).map((_, index) => (
+              <li key={index} className={styles.mainProductItem}>
+                <CartItemSkeleton />
+              </li>
+            ))}
+          </ul>
+        </>
+      );
+    }
+
+    if (isCartEmpty) {
+      return <div>No beers found</div>;
+    }
+
+    return (
+      <ul className={styles.mainProductList}>
+        {cartItemsToRender.map(item => (
+          <li key={item.id} className={styles.mainProductItem}>
+            <CartItem cartItem={item} />
+          </li>
+        ))}
+      </ul>
+    );
+  };
+
   return (
     <div className={styles.cart}>
       <CartModal
@@ -58,19 +93,7 @@ export const Cart = () => {
           )}
         </div>
 
-        {!isLoading && isCartEmpty ? (
-          <div className={styles.cartNotFound}>
-            <NotFound />
-          </div>
-        ) : (
-          <ul className={styles.mainProductList}>
-            {cartItemsToRender.map(item => (
-              <li key={item.id} className={styles.mainProductItem}>
-                <CartItem cartItem={item} />
-              </li>
-            ))}
-          </ul>
-        )}
+        {renderContent()}
       </section>
 
       <section className={styles.summary}>

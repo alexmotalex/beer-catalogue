@@ -1,20 +1,55 @@
-import clsx from 'clsx';
+import { useState } from 'react';
 import { ProductCard } from '../../components/ProductCard';
-import { useBeers } from '../../hooks/useBeers';
 import { SecondaryButton } from '../../components/Buttons/SecondaryButton';
 import { FilterSelector } from '../../components/FilterSelector';
-import { selectOptions } from '../../constants/selectOptions';
-import styles from './Catalogue.module.scss';
-import { BeerSearch } from '../../components/BeerSearch';
-import { useState } from 'react';
+import { ProductCardSkeleton } from '../../components/ProductCardSkeleton';
+import { SlowServerMessage } from '../../components/SlowServerMessage';
 import { Toast } from '../../components/Toast';
+import { useBeers } from '../../hooks/useBeers';
+import { useSlowLoad } from '../../hooks/useSlowLoad';
+import { selectOptions } from '../../constants/selectOptions';
+import { BeerSearch } from '../../components/BeerSearch';
+import clsx from 'clsx';
+import styles from './Catalogue.module.scss';
 
 export const Catalogue = () => {
   const [toast, setToast] = useState<string | null>(null);
-  const { beers, nextOffset, loadBeers } = useBeers();
+  const { beers, nextOffset, loadBeers, isLoading } = useBeers();
+  const isSlow = useSlowLoad(isLoading);
 
   const handleViewAll = async () => {
     loadBeers(nextOffset);
+  };
+
+  const renderContent = () => {
+    if (isLoading && beers.length === 0) {
+      return (
+        <>
+          {isSlow && <SlowServerMessage />}
+          <ul className={styles.productList}>
+            {Array.from({ length: 6 }).map((_, i) => (
+              <li key={i} className={styles.productItem}>
+                <ProductCardSkeleton />
+              </li>
+            ))}
+          </ul>
+        </>
+      );
+    }
+
+    if (beers.length === 0) {
+      return <div>No beers found</div>;
+    }
+
+    return (
+      <ul className={styles.productList}>
+        {beers.map(beer => (
+          <li key={beer.id} className={styles.productItem}>
+            <ProductCard product={beer} setToast={setToast} />
+          </li>
+        ))}
+      </ul>
+    );
   };
 
   return (
@@ -38,17 +73,7 @@ export const Catalogue = () => {
         </ul>
       </div>
 
-      {beers.length === 0 ? (
-        <div>No beers</div>
-      ) : (
-        <ul className={styles.productList}>
-          {beers.map(beer => (
-            <li key={beer.id} className={styles.productItem}>
-              <ProductCard product={beer} setToast={setToast} />
-            </li>
-          ))}
-        </ul>
-      )}
+      {renderContent()}
 
       {nextOffset && (
         <div className={styles.button}>

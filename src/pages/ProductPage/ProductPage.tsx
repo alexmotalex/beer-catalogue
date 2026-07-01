@@ -1,39 +1,46 @@
 import { useNavigate, useParams } from 'react-router';
 import { BackButton } from '../../components/Buttons/BackButton';
 import { PrimaryButton } from '../../components/Buttons/PrimaryButton';
+import { ProductPageSkeleton } from '../../components/ProductPageSkeleton';
+import { SlowServerMessage } from '../../components/SlowServerMessage';
 import { ErrorInfo } from '../../components/ErrorInfo';
 import { Dot } from '../../components/Dot';
 import { useBeerById } from '../../hooks/useBeerById';
 import { useAuth } from '../../hooks/useAuth';
+import { useSlowLoad } from '../../hooks/useSlowLoad';
 import { useCart } from '../../hooks/useCart';
 import { capitalizeFirstLetter } from '../../utils/capitalizeFirstLetter';
 import { formatOccasions } from '../../utils/formatOccasions';
-import { ROUTES } from '../../constants/routes';
 import { resolvePublicUrl } from '../../utils/resolvePublicUrl';
+import { ROUTES } from '../../constants/routes';
 import clsx from 'clsx';
-import styles from './ProductPage.module.scss';
 import placeholderBeer from '../../assets/images/beer-placeholder.webp';
+import styles from './ProductPage.module.scss';
 
 export const ProductPage = () => {
   const { productId } = useParams();
-  const { user } = useAuth();
-  const { getQuantityInCart, addToCart, isInCart, itemErrors, isLoading } =
-    useCart();
-  const navigate = useNavigate();
-
   const beerId = Number(productId);
-  const { beer, isError } = useBeerById(beerId);
+  const { user } = useAuth();
+  const { getQuantityInCart, addToCart, isInCart, itemErrors } = useCart();
+  const { beer, isError, isLoading: beerIsLoading } = useBeerById(beerId);
+  const navigate = useNavigate();
+  const isSlow = useSlowLoad(beerIsLoading);
 
-  if (isLoading) {
-    return <h2>Loading</h2>;
+  if (beerIsLoading) {
+    return (
+      <section className={styles.product}>
+        <BackButton />
+        {isSlow ? <SlowServerMessage /> : <ProductPageSkeleton />}
+      </section>
+    );
   }
 
   if (isError) {
-    return <h2>Error</h2>;
+    return <h2>Failed to load beer.</h2>;
   }
 
   if (!beer) {
-    return <h2>Not found</h2>;
+    return <h2>Beer not found.</h2>;
   }
 
   const {

@@ -1,0 +1,72 @@
+@use '../../styles/variables' as var;
+@use '../../styles/mixins' as mixins;
+
+.cartItem {
+  padding: 16px;
+  width: 100%;
+  display: flex;
+  gap: 24px;
+
+  border: 1px solid var.$brown-20-color;
+  border-radius: 4px;
+}
+
+.image {
+  @include mixins.skeleton-block;
+
+  width: 100%;
+  max-width: 184px;
+  height: 164px;
+  border-radius: 4px;
+}
+
+.info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.product {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.name {
+  @include mixins.skeleton-block;
+
+  width: 220px;
+  height: 30px;
+  border-radius: 4px;
+}
+
+.price {
+  @include mixins.skeleton-block;
+
+  width: 80px;
+  height: 30px;
+  border-radius: 4px;
+}
+
+.volume {
+  @include mixins.skeleton-block;
+
+  width: 70px;
+  height: 18px;
+  border-radius: 4px;
+}
+
+.stepper {
+  @include mixins.skeleton-block;
+
+  width: 220px;
+  height: 48px;
+  border-radius: 4px;
+}

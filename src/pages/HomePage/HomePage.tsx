@@ -3,20 +3,56 @@ import { useNavigate } from 'react-router';
 import { PrimaryButton } from '../../components/Buttons/PrimaryButton';
 import { SecondaryButton } from '../../components/Buttons/SecondaryButton';
 import { ProductCard } from '../../components/ProductCard';
+import { SlowServerMessage } from '../../components/SlowServerMessage';
+import { ProductCardSkeleton } from '../../components/ProductCardSkeleton';
 import { useBeers } from '../../hooks/useBeers';
+import { useSlowLoad } from '../../hooks/useSlowLoad';
+import { getThreeUniqueRandoms } from '../../utils/getThreeUniqueRandoms';
 import { beerDescriptions } from '../../constants/beerDescriptions';
 import { storyParagraphs } from '../../constants/storyParagraphs';
 import { ROUTES } from '../../constants/routes';
-import { getThreeUniqueRandoms } from '../../utils/getThreeUniqueRandoms';
 import styles from './HomePage.module.scss';
 
 export const HomePage = () => {
-  const { beers } = useBeers();
+  const { beers, isLoading } = useBeers();
   const navigate = useNavigate();
+  const isSlow = useSlowLoad(isLoading);
   const picksBeers = getThreeUniqueRandoms(beers);
 
   const handleOpenCatalogue = () => {
     navigate(ROUTES.catalogue);
+  };
+
+  const renderContent = () => {
+    if (isLoading && beers.length === 0) {
+      return (
+        <>
+          {isSlow && <SlowServerMessage />}
+
+          <ul className={styles.picksList}>
+            {Array.from({ length: 3 }).map((_, i) => (
+              <li key={i} className={styles.picksItem}>
+                <ProductCardSkeleton />
+              </li>
+            ))}
+          </ul>
+        </>
+      );
+    }
+
+    if (beers.length === 0) {
+      return <div>No beers found</div>;
+    }
+
+    return (
+      <ul className={styles.picksList}>
+        {picksBeers.map(beer => (
+          <li key={beer.id} className={styles.picksItem}>
+            <ProductCard product={beer} />
+          </li>
+        ))}
+      </ul>
+    );
   };
 
   return (
@@ -82,13 +118,7 @@ export const HomePage = () => {
       <section className={styles.picks}>
         <h2 className={styles.picksTitle}>Our Picks</h2>
 
-        <ul className={styles.picksList}>
-          {picksBeers.map(beer => (
-            <li key={beer.id} className={styles.picksItem}>
-              <ProductCard product={beer} />
-            </li>
-          ))}
-        </ul>
+        {renderContent()}
 
         <div className={styles.picksButton}>
           <SecondaryButton

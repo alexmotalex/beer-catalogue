@@ -4,8 +4,10 @@ import { BackButton } from '../../components/Buttons/BackButton';
 import { LabeledInput } from '../../components/LabeledInput';
 import { Checkbox } from '../../components/Checkbox';
 import { PrimaryButton } from '../../components/Buttons/PrimaryButton';
+import { SlowServerMessage } from '../../components/SlowServerMessage';
 import { RedirectText } from '../../components/RedirectText';
 import { ErrorInfo } from '../../components/ErrorInfo';
+import { useSlowLoad } from '../../hooks/useSlowLoad';
 import { useAuth } from '../../hooks/useAuth';
 import { validateSignUpForm } from '../../utils/formValidate/validateSignUpForm';
 import { mapToRegisterData } from '../../utils/formMappers';
@@ -17,9 +19,9 @@ import styles from './SignUpPage.module.scss';
 export const SignUpPage = () => {
   const [formData, setFormData] = useState<SignupFormData>(emptySignUpForm);
   const [showValidationErrors, setShowValidationErrors] = useState(false);
-
-  const { register, isLoading, serverErrors, setServerErrors } = useAuth();
   const navigate = useNavigate();
+  const { register, isLoading, serverErrors, setServerErrors } = useAuth();
+  const isSlow = useSlowLoad(isLoading);
 
   const validationErrors = validateSignUpForm(formData);
 
@@ -84,6 +86,8 @@ export const SignUpPage = () => {
       <div className="backButtonWrapper">
         <BackButton />
       </div>
+
+      {isSlow && <SlowServerMessage />}
 
       <h1 className="authPageTitle">Sign Up</h1>
 
