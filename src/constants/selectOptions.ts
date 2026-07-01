@@ -4,7 +4,7 @@ export const selectOptions = [
     searchParamKey: 'beer_type',
     icon: 'type',
     filterBy: [
-      { title: 'All', value: '' },
+      { title: 'Default', value: '' },
       {
         title: 'Dark',
         value: 'dark',
@@ -21,7 +21,7 @@ export const selectOptions = [
     searchParamKey: 'alcohol',
     icon: 'percent',
     filterBy: [
-      { title: 'All', value: '' },
+      { title: 'Default', value: '' },
       {
         title: '4-6',
         value: '4-6',
@@ -41,7 +41,7 @@ export const selectOptions = [
     searchParamKey: 'event_type',
     icon: 'fire',
     filterBy: [
-      { title: 'All', value: '' },
+      { title: 'Default', value: '' },
       {
         title: 'After Work',
         value: 'after-work',
@@ -69,7 +69,7 @@ export const selectOptions = [
     searchParamKey: 'filtered',
     icon: 'filter',
     filterBy: [
-      { title: 'All', value: '' },
+      { title: 'Default', value: '' },
       {
         title: 'Filtered',
         value: 'true',
@@ -85,7 +85,7 @@ export const selectOptions = [
     searchParamKey: 'sort_by',
     icon: 'card',
     filterBy: [
-      { title: 'All', value: '' },
+      { title: 'Default', value: '' },
       {
         title: 'Price',
         value: 'price',
@@ -97,7 +97,7 @@ export const selectOptions = [
     searchParamKey: 'sort_order',
     icon: 'sort',
     filterBy: [
-      { title: 'All', value: '' },
+      { title: 'Default', value: '' },
       {
         title: 'High to low',
         value: 'desc',
