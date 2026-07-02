@@ -119,6 +119,8 @@
 
   &Image {
     flex: 1;
+    border-top-left-radius: 4px;
+    border-bottom-left-radius: 4px;
     background-image: url('../../assets/images/our-story.webp');
     background-repeat: no-repeat;
     background-size: cover;

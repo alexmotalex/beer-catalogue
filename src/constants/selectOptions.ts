@@ -102,10 +102,6 @@ export const selectOptions = [
         title: 'High to low',
         value: 'desc',
       },
-      {
-        title: 'Low to high',
-        value: 'asc',
-      },
     ],
   },
 ];
