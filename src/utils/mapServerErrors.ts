@@ -37,9 +37,7 @@ export const mapServerErrors = (details: unknown): ServerErrors => {
     const detailObject = details as Record<string, unknown>;
 
     Object.entries(detailObject).forEach(([field, value]) => {
-      const errorMessage = Array.isArray(value)
-        ? value.join('. ')
-        : String(value);
+      const errorMessage = Array.isArray(value) ? value[0] : String(value);
 
       if (field === 'user_account') {
         errors.email = errorMessage;
