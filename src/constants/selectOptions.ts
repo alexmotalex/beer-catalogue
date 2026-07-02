@@ -97,7 +97,7 @@ export const selectOptions = [
     searchParamKey: 'sort_order',
     icon: 'sort',
     filterBy: [
-      { title: 'Default', value: '' },
+      { title: 'Low to high', value: 'asc' },
       {
         title: 'High to low',
         value: 'desc',

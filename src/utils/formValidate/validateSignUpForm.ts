@@ -1,27 +1,26 @@
 import type { SignupFormData, SignupFormErrors } from '../../types/Forms';
+import { validateName } from '../validateName';
 import { validatePassword } from '../validatePassword';
-
-const NAME_REGEX = /^[a-zA-Zа-яА-ЯіІїЇєЄ'\- ]+$/;
 
 export const validateSignUpForm = (formData: SignupFormData) => {
   const newErrors: SignupFormErrors = {};
 
   if (!formData.firstName.trim()) {
     newErrors.firstName = 'First name is required.';
-  } else if (formData.firstName.trim().length < 2) {
-    newErrors.firstName = 'First name must be at least 2 characters.';
-  } else if (!NAME_REGEX.test(formData.firstName)) {
-    newErrors.firstName =
-      'First name can only contain letters, hyphens, and apostrophes.';
+  } else {
+    const firstNameError = validateName(formData.firstName, 'First name');
+    if (firstNameError) {
+      newErrors.firstName = firstNameError;
+    }
   }
 
   if (!formData.lastName.trim()) {
     newErrors.lastName = 'Last name is required.';
-  } else if (formData.lastName.trim().length < 2) {
-    newErrors.lastName = 'Last name must be at least 2 characters.';
-  } else if (!NAME_REGEX.test(formData.lastName)) {
-    newErrors.lastName =
-      'Last name can only contain letters, hyphens, and apostrophes.';
+  } else {
+    const lastNameError = validateName(formData.lastName, 'Last name');
+    if (lastNameError) {
+      newErrors.lastName = lastNameError;
+    }
   }
 
   if (!formData.email.trim()) {
