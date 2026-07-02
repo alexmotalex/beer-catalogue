@@ -25,11 +25,9 @@ export const NewPasswordPage = () => {
 
   const token = searchParams.get('token') || '';
   const validationErrors = validateNewPasswordForm(formData);
-  const newPasswordError =
-    validationErrors.password ||
-    validationErrors.isSame ||
-    serverErrors.password;
-  const confirmPasswordError = validationErrors.confirmPassword;
+  const newPasswordError = validationErrors.password || serverErrors.password;
+  const confirmPasswordError =
+    validationErrors.confirmPassword || validationErrors.isSame;
 
   const notify = () =>
     toast.error(serverErrors.resetToken || 'Something went wrong', {
