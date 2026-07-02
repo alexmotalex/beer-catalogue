@@ -1,11 +1,11 @@
 import type React from 'react';
 import { Link, useNavigate } from 'react-router';
 import { PrimaryButton } from '../Buttons/PrimaryButton';
-import { capitalizeFirstLetter } from '../../utils/capitalizeFirstLetter';
 import { useCart } from '../../hooks/useCart';
 import { useAuth } from '../../hooks/useAuth';
 import { resolvePublicUrl } from '../../utils/resolvePublicUrl';
 import { buildProductPath } from '../../utils/buildProductPath';
+import { capitalizeFirstLetter } from '../../utils/capitalizeFirstLetter';
 import { ROUTES } from '../../constants/routes';
 import type { Beer } from '../../types/Beer';
 import clsx from 'clsx';
