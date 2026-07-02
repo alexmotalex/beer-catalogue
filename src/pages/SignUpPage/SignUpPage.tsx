@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router';
 import { BackButton } from '../../components/Buttons/BackButton';
 import { LabeledInput } from '../../components/LabeledInput';
@@ -76,10 +76,6 @@ export const SignUpPage = () => {
       linkText="Terms & Conditions"
     />
   );
-
-  useEffect(() => {
-    setServerErrors({});
-  }, [setServerErrors]);
 
   return (
     <section className="authPage">
