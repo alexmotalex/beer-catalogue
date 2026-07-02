@@ -115,7 +115,7 @@ export const AuthContextProvider: React.FC<Props> = ({ children }) => {
       setServerErrors({});
 
       try {
-        const response = await instance.post('/users/logn/', data);
+        const response = await instance.post('/users/login/', data);
         const token = response.data.access_token;
 
         setAccessToken(token);

@@ -7,14 +7,14 @@ export const mapToRegisterData = (
   return {
     email: formData.email,
     password: formData.password,
-    first_name: formData.firstName,
-    last_name: formData.lastName,
+    first_name: formData.firstName || null,
+    last_name: formData.lastName || null,
   };
 };
 
 export const mapToEditUserData = (formData: EditUserFormData): EditUserData => {
   return {
-    first_name: formData.firstName,
-    last_name: formData.lastName,
+    first_name: formData.firstName || null,
+    last_name: formData.lastName || null,
   };
 };
