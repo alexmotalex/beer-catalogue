@@ -1,10 +1,8 @@
-import { useState } from 'react';
 import { useNavigate, useParams } from 'react-router';
 import { BackButton } from '../../components/Buttons/BackButton';
 import { PrimaryButton } from '../../components/Buttons/PrimaryButton';
 import { ProductPageSkeleton } from '../../components/ProductPageSkeleton';
 import { SlowServerMessage } from '../../components/SlowServerMessage';
-import { Toast } from '../../components/Toast';
 import { ErrorInfo } from '../../components/ErrorInfo';
 import { Dot } from '../../components/Dot';
 import { useBeerById } from '../../hooks/useBeerById';
@@ -20,7 +18,6 @@ import placeholderBeer from '../../assets/images/beer-placeholder.webp';
 import styles from './ProductPage.module.scss';
 
 export const ProductPage = () => {
-  const [toast, setToast] = useState<string | null>(null);
   const { productId } = useParams();
   const beerId = Number(productId);
   const { user } = useAuth();
@@ -31,7 +28,7 @@ export const ProductPage = () => {
     itemErrors,
     isLoading: cartIsLoading,
   } = useCart();
-  const { beer, isError, isLoading: beerIsLoading } = useBeerById(beerId);
+  const { beer, isLoading: beerIsLoading } = useBeerById(beerId);
   const navigate = useNavigate();
   const isSlow = useSlowLoad(beerIsLoading);
 
@@ -44,31 +41,12 @@ export const ProductPage = () => {
     );
   }
 
-  if (isError) {
-    return <h2>Failed to load beer.</h2>;
-  }
-
-  if (!beer) {
-    return <h2>Beer not found.</h2>;
-  }
-
-  const {
-    name,
-    price,
-    description,
-    beer_type,
-    alcohol_percentage,
-    is_filtered,
-    volume,
-    is_available,
-    image_url,
-    event_type,
-  } = beer;
-
   const inCart = isInCart(beerId);
 
-  const imageSrc = image_url ? resolvePublicUrl(image_url) : placeholderBeer;
-  const occasions = formatOccasions(event_type);
+  const imageSrc = beer?.image_url
+    ? resolvePublicUrl(beer?.image_url)
+    : placeholderBeer;
+  const occasions = formatOccasions(beer?.event_type ?? []);
 
   const error = itemErrors.get(beerId);
   const itemsInCart = getQuantityInCart(beerId);
@@ -80,29 +58,28 @@ export const ProductPage = () => {
     }
 
     await addToCart(beerId);
-    setToast(`This item successfully added to cart`);
   };
 
   const specifications = [
     {
       label: 'Type',
-      value: capitalizeFirstLetter(beer_type),
+      value: capitalizeFirstLetter(beer?.beer_type),
     },
     {
       label: 'ABV',
-      value: `${alcohol_percentage}%`,
+      value: `${beer?.alcohol_percentage}%`,
     },
     {
       label: 'Filtering',
-      value: is_filtered ? 'Filtered' : 'Unfiltered',
+      value: beer?.is_filtered ? 'Filtered' : 'Unfiltered',
     },
     {
       label: 'Volume',
-      value: `${volume}ml`,
+      value: `${beer?.volume}ml`,
     },
   ];
 
-  const buttonTitle = !is_available
+  const buttonTitle = !beer?.is_available
     ? 'Out of stock'
     : inCart
       ? `Add to cart | ${itemsInCart} ${itemsInCart === 1 ? 'item' : 'items'}`
@@ -112,28 +89,30 @@ export const ProductPage = () => {
     <section className={styles.product}>
       <BackButton />
 
-      {toast && <Toast title={toast} onClose={() => setToast(null)} />}
-
       <div className={styles.overall}>
         <div
           className={clsx(
             styles.imageContent,
-            !is_available && styles.imageContentSoldOut,
+            !beer?.is_available && styles.imageContentSoldOut,
           )}
         >
-          <img src={imageSrc} alt={name} className={styles.productImage} />
+          <img
+            src={imageSrc}
+            alt={beer?.name}
+            className={styles.productImage}
+          />
         </div>
 
         <section className={styles.about}>
           <div className={styles.detail}>
             <div className={styles.info}>
               <span className={styles.barrel}>Old Barrel</span>
-              <h1 className={styles.title}>{name}</h1>
-              <p className={styles.price}>Price ${price}</p>
+              <h1 className={styles.title}>{beer?.name}</h1>
+              <p className={styles.price}>Price ${beer?.price}</p>
             </div>
 
             <div className={styles.description}>
-              <p className={styles.descriptionText}>{description}</p>
+              <p className={styles.descriptionText}>{beer?.description}</p>
 
               <ul className={styles.occasions}>
                 {occasions?.map((item, index) => {
@@ -182,7 +161,7 @@ export const ProductPage = () => {
                 type="button"
                 title={buttonTitle}
                 onClick={handleAddToCart}
-                disabled={!is_available || cartIsLoading}
+                disabled={!beer?.is_available || cartIsLoading}
               />
             </div>
           </div>

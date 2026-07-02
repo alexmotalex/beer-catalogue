@@ -3,16 +3,16 @@ import { useNavigate } from 'react-router';
 import { BackButton } from '../../components/Buttons/BackButton';
 import { LabeledInput } from '../../components/LabeledInput';
 import { PrimaryButton } from '../../components/Buttons/PrimaryButton';
+import { InfoMessage } from '../../components/InfoMessage';
+import { ErrorInfo } from '../../components/ErrorInfo';
 import { useAuth } from '../../hooks/useAuth';
 import { mapToEditUserData } from '../../utils/formMappers';
+import { capitalizeFirstLetter } from '../../utils/capitalizeFirstLetter';
 import { validateEditUserForm } from '../../utils/formValidate/validateEditUserForm';
 import { emptyEditUserForm } from '../../constants/formsData';
-import type { EditUserFormData } from '../../types/Forms';
-import { InfoMessage } from '../../components/InfoMessage';
 import { ROUTES } from '../../constants/routes';
+import type { EditUserFormData } from '../../types/Forms';
 import styles from './EditUserPage.module.scss';
-import { capitalizeFirstLetter } from '../../utils/capitalizeFirstLetter';
-import { ErrorInfo } from '../../components/ErrorInfo';
 
 export const EditUserPage = () => {
   const { user, isLoading, editUser, serverErrors, setServerErrors } =

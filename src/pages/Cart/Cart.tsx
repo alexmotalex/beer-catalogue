@@ -11,9 +11,10 @@ import { useCart } from '../../hooks/useCart';
 import { useSlowLoad } from '../../hooks/useSlowLoad';
 import { ROUTES } from '../../constants/routes';
 import styles from './Cart.module.scss';
+import { NotFound } from '../../components/NotFound';
 
 export const Cart = () => {
-  const { cartItems, subtotal, total, error, isLoading, clearCart } = useCart();
+  const { cartItems, subtotal, total, isLoading, clearCart } = useCart();
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const navigate = useNavigate();
   const isSlow = useSlowLoad(isLoading);
@@ -21,8 +22,8 @@ export const Cart = () => {
   const isCartEmpty = cartItems.length === 0;
   const cartItemsToRender = cartItems.sort((a, b) => a.id - b.id);
 
-  if (!isLoading && error) {
-    return <div>{error}</div>;
+  if (!isLoading && isCartEmpty) {
+    return <NotFound />;
   }
 
   const handleConfirm = () => {
@@ -58,10 +59,6 @@ export const Cart = () => {
           </ul>
         </>
       );
-    }
-
-    if (isCartEmpty) {
-      return <div>No beers found</div>;
     }
 
     return (

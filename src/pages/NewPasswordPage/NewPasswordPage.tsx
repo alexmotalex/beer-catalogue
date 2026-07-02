@@ -1,6 +1,5 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Navigate, useNavigate, useSearchParams } from 'react-router';
-import { Slide, toast } from 'react-toastify';
 import { LabeledInput } from '../../components/LabeledInput';
 import { ErrorInfo } from '../../components/ErrorInfo';
 import { PrimaryButton } from '../../components/Buttons/PrimaryButton';
@@ -28,13 +27,6 @@ export const NewPasswordPage = () => {
   const newPasswordError = validationErrors.password || serverErrors.password;
   const confirmPasswordError =
     validationErrors.confirmPassword || validationErrors.isSame;
-
-  const notify = () =>
-    toast.error(serverErrors.resetToken || 'Something went wrong', {
-      position: 'top-right',
-      theme: 'colored',
-      transition: Slide,
-    });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -74,16 +66,8 @@ export const NewPasswordPage = () => {
       setShowValidationErrors(false);
 
       navigate(ROUTES.signIn);
-    } else {
-      {
-        notify();
-      }
     }
   };
-
-  useEffect(() => {
-    setServerErrors({});
-  }, [setServerErrors]);
 
   return (
     <section className="pageContent">

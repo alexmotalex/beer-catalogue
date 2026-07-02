@@ -12,29 +12,31 @@ export const NotFound = () => {
   };
 
   return (
-    <div className={styles.notFound}>
-      <div className={styles.notFoundImageContent}>
-        <img
-          className={styles.notFoundImage}
-          src={emptyCartLogo}
-          alt="Not found"
-        />
-      </div>
+    <div className="pageContent">
+      <div className={styles.notFound}>
+        <div className={styles.notFoundImageContent}>
+          <img
+            className={styles.notFoundImage}
+            src={emptyCartLogo}
+            alt="Not found"
+          />
+        </div>
 
-      <div className={styles.content}>
-        <h3 className={styles.contentTitle}>Nothing here yet</h3>
+        <div className={styles.content}>
+          <h3 className={styles.contentTitle}>Nothing here yet</h3>
 
-        <p className={styles.contentText}>
-          Your next favorite beer is waiting. Start exploring the catalog.
-        </p>
-      </div>
+          <p className={styles.contentText}>
+            Your next favorite beer is waiting. Start exploring the catalog.
+          </p>
+        </div>
 
-      <div className={styles.notFoundButton}>
-        <PrimaryButton
-          type="button"
-          title="Browse beers"
-          onClick={handleBrowseBeers}
-        />
+        <div className={styles.notFoundButton}>
+          <PrimaryButton
+            type="button"
+            title="Browse beers"
+            onClick={handleBrowseBeers}
+          />
+        </div>
       </div>
     </div>
   );

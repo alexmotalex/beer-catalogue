@@ -4,6 +4,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import { instance } from '../../api/axiosInstance';
 import { CartContext } from './CartContext';
 import { useAuth } from '../../hooks/useAuth';
+import { notifyAxiosError } from '../../utils/notifyAxiosError';
 
 const emptyCart: Cart = {
   id: 0,
@@ -19,7 +20,6 @@ export type CartContextType = {
   subtotal: string;
   total: string;
   isLoading: boolean;
-  error: string | null;
   itemErrors: Map<number, string>;
   fetchCart: () => Promise<void>;
   addToCart: (beerId: number) => Promise<void>;
@@ -41,7 +41,6 @@ type Props = {
 export const CartContextProvider: React.FC<Props> = ({ children }) => {
   const [cart, setCart] = useState<Cart>(emptyCart);
   const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
   const [itemErrors, setItemErrors] = useState<Map<number, string>>(new Map());
 
   const { user, isLoading: isAuthLoading } = useAuth();
@@ -53,8 +52,8 @@ export const CartContextProvider: React.FC<Props> = ({ children }) => {
     try {
       const response = await instance.get('/cart/');
       setCart(response.data);
-    } catch {
-      setError('Failed to load cart');
+    } catch (error) {
+      notifyAxiosError(error);
     } finally {
       setIsLoading(false);
     }
@@ -138,8 +137,8 @@ export const CartContextProvider: React.FC<Props> = ({ children }) => {
 
         await instance.delete(`/cart/${itemId}/`);
         await fetchCart();
-      } catch {
-        setError('Failed to remove item');
+      } catch (error) {
+        notifyAxiosError(error);
       }
     },
     [fetchCart],
@@ -151,8 +150,8 @@ export const CartContextProvider: React.FC<Props> = ({ children }) => {
 
       await instance.delete('/cart/clear/');
       setCart(emptyCart);
-    } catch {
-      setError('Failed to clear cart');
+    } catch (error) {
+      notifyAxiosError(error);
     }
   }, []);
 
@@ -180,7 +179,6 @@ export const CartContextProvider: React.FC<Props> = ({ children }) => {
       const timeoutId = window.setTimeout(() => {
         setCart(emptyCart);
         setItemErrors(new Map());
-        setError(null);
         setIsLoading(false);
       }, 0);
 
@@ -203,7 +201,6 @@ export const CartContextProvider: React.FC<Props> = ({ children }) => {
       subtotal: cart.subtotal,
       total: cart.total,
       quantity: totalCartItems,
-      error,
       itemErrors,
       isLoading,
       fetchCart,
@@ -222,7 +219,6 @@ export const CartContextProvider: React.FC<Props> = ({ children }) => {
       clearCart,
       deleteFromCart,
       totalCartItems,
-      error,
       itemErrors,
       isLoading,
       isInCart,

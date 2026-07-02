@@ -3,12 +3,12 @@ import type { Beer } from '../../types/Beer';
 import { BeerContext } from './BeerContext';
 import { fetchBeers } from '../../services/fetchBeers';
 import { useSearchParams } from 'react-router';
+import { notifyAxiosError } from '../../utils/notifyAxiosError';
 
 export type BeerContextType = {
   beers: Omit<Beer, 'description'>[];
   nextOffset: number | null;
   isLoading: boolean;
-  isError: boolean;
   loadBeers: (offset: number | null) => Promise<void>;
 };
 
@@ -20,13 +20,11 @@ export const BeerContextProvider: React.FC<Props> = ({ children }) => {
   const [beers, setBeers] = useState<Omit<Beer, 'description'>[]>([]);
   const [nextOffset, setNextOffset] = useState<number | null>(null);
   const [isLoading, setIsLoading] = useState(true);
-  const [isError, setIsError] = useState(false);
   const [searchParams] = useSearchParams();
 
   const loadBeers = useCallback(
     async (offset: number | null) => {
       setIsLoading(true);
-      setIsError(false);
 
       try {
         const data = await fetchBeers(searchParams, offset ?? undefined);
@@ -36,8 +34,8 @@ export const BeerContextProvider: React.FC<Props> = ({ children }) => {
         );
 
         setNextOffset(data.next_offset);
-      } catch {
-        setIsError(true);
+      } catch (error) {
+        notifyAxiosError(error);
       } finally {
         setIsLoading(false);
       }
@@ -58,10 +56,9 @@ export const BeerContextProvider: React.FC<Props> = ({ children }) => {
       beers,
       nextOffset,
       isLoading,
-      isError,
       loadBeers,
     }),
-    [loadBeers, beers, nextOffset, isLoading, isError],
+    [loadBeers, beers, nextOffset, isLoading],
   );
 
   return <BeerContext.Provider value={value}>{children}</BeerContext.Provider>;

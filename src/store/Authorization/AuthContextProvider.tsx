@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { AuthContext } from './AuthContext';
 import { client } from '../../utils/axiosClient';
+import { notifyAxiosError } from '../../utils/notifyAxiosError';
 import { instance } from '../../api/axiosInstance';
 import { extractServerErrors } from '../../utils/extractServerErrors';
 import type {
@@ -50,6 +51,7 @@ export const AuthContextProvider: React.FC<Props> = ({ children }) => {
       return true;
     } catch (error: unknown) {
       setServerErrors(extractServerErrors(error));
+      notifyAxiosError(error);
 
       return false;
     } finally {
@@ -67,6 +69,7 @@ export const AuthContextProvider: React.FC<Props> = ({ children }) => {
       return true;
     } catch (error: unknown) {
       setServerErrors(extractServerErrors(error));
+      notifyAxiosError(error);
 
       return false;
     } finally {
@@ -98,6 +101,7 @@ export const AuthContextProvider: React.FC<Props> = ({ children }) => {
       return true;
     } catch (error) {
       setServerErrors(extractServerErrors(error));
+      notifyAxiosError(error);
 
       return false;
     } finally {
@@ -111,7 +115,7 @@ export const AuthContextProvider: React.FC<Props> = ({ children }) => {
       setServerErrors({});
 
       try {
-        const response = await instance.post('/users/login/', data);
+        const response = await instance.post('/users/logn/', data);
         const token = response.data.access_token;
 
         setAccessToken(token);
@@ -123,6 +127,7 @@ export const AuthContextProvider: React.FC<Props> = ({ children }) => {
         return true;
       } catch (error) {
         setServerErrors(extractServerErrors(error));
+        notifyAxiosError(error);
 
         return false;
       } finally {
@@ -139,14 +144,16 @@ export const AuthContextProvider: React.FC<Props> = ({ children }) => {
 
       try {
         await instance.patch('/users/me/', data);
+        await fetchUser();
 
         return true;
-      } catch (error) {
+      } catch (error: unknown) {
         setServerErrors(extractServerErrors(error, 'general'));
+
+        notifyAxiosError(error);
 
         return false;
       } finally {
-        await fetchUser();
         setIsLoading(false);
       }
     },
@@ -156,6 +163,8 @@ export const AuthContextProvider: React.FC<Props> = ({ children }) => {
   const logout = useCallback(async () => {
     try {
       await client.post('/users/logout/', {});
+    } catch (error) {
+      notifyAxiosError(error);
     } finally {
       delete instance.defaults.headers.common['Authorization'];
       localStorage.removeItem(HAS_SESSION_KEY);
@@ -241,6 +250,7 @@ export const AuthContextProvider: React.FC<Props> = ({ children }) => {
     [
       login,
       setNewPassword,
+      setServerErrors,
       logout,
       register,
       editUser,
