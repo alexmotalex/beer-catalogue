@@ -4,6 +4,7 @@ import { PrimaryButton } from '../../components/Buttons/PrimaryButton';
 import { SecondaryButton } from '../../components/Buttons/SecondaryButton';
 import { CartItem } from '../../components/CartItem';
 import { CartModal } from '../../components/CartModal';
+import { NotFound } from '../../components/NotFound';
 import { CartItemSkeleton } from '../../components/CartItemSkeleton';
 import { Divider } from '../../components/Divider';
 import { SlowServerMessage } from '../../components/SlowServerMessage';
@@ -11,7 +12,6 @@ import { useCart } from '../../hooks/useCart';
 import { useSlowLoad } from '../../hooks/useSlowLoad';
 import { ROUTES } from '../../constants/routes';
 import styles from './Cart.module.scss';
-import { NotFound } from '../../components/NotFound';
 
 export const Cart = () => {
   const { cartItems, subtotal, total, isLoading, clearCart } = useCart();

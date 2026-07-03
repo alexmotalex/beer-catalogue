@@ -11,15 +11,19 @@ import type { Beer } from '../../types/Beer';
 import clsx from 'clsx';
 import styles from './ProductCard.module.scss';
 import placeholderBeer from '../../assets/images/beer-placeholder.webp';
+import { useState } from 'react';
+import { Spinner } from '../Spinner';
 
 type Props = {
   product: Omit<Beer, 'description'>;
   setToast?: (message: string | null) => void;
+  setToastIcon?: (icon: string) => void;
 };
 
 export const ProductCard: React.FC<Props> = ({
   product,
   setToast = () => {},
+  setToastIcon = () => {},
 }) => {
   const {
     id,
@@ -32,22 +36,38 @@ export const ProductCard: React.FC<Props> = ({
     is_filtered,
     is_available,
   } = product;
+  const [isAdding, setIsAdding] = useState(false);
 
   const { user } = useAuth();
-  const { addToCart, getQuantityInCart, isInCart, isLoading } = useCart();
+  const { addToCart, getQuantityInCart, isInCart, itemErrors } = useCart();
   const navigate = useNavigate();
   const productPath = buildProductPath(id);
   const imageSrc = image_url ? resolvePublicUrl(image_url) : placeholderBeer;
 
-  const handleAddToCart = () => {
+  const handleAddToCart = async () => {
     if (!user) {
       navigate(ROUTES.signIn);
 
       return;
     }
 
-    addToCart(id);
-    setToast(`${name} successfully added to cart`);
+    setToast(null);
+    setIsAdding(true);
+
+    await addToCart(id);
+
+    const error = itemErrors.get(id);
+
+    if (error) {
+      setToastIcon('close');
+
+      setToast(`Attention: ${error}`);
+    } else {
+      setToastIcon('tick');
+      setToast(`${name} successfully added to cart.`);
+    }
+
+    setIsAdding(false);
   };
 
   const inCart = isInCart(id);
@@ -75,7 +95,7 @@ export const ProductCard: React.FC<Props> = ({
   const buttonTitle = !is_available
     ? 'Out of stock'
     : inCart
-      ? `Add to cart | ${itemsInCart} ${itemsInCart === 1 ? 'item' : 'items'}`
+      ? `Add to cart | ${itemsInCart} ${itemsInCart === 1 ? 'item' : 'items'} added`
       : 'Add to cart';
 
   return (
@@ -110,9 +130,10 @@ export const ProductCard: React.FC<Props> = ({
       <div className={styles.button}>
         <PrimaryButton
           type="button"
-          title={buttonTitle}
+          title={isAdding ? 'Adding to cart ' : buttonTitle}
           onClick={handleAddToCart}
-          disabled={!is_available || isLoading}
+          disabled={!is_available || isAdding}
+          icon={isAdding ? <Spinner width={16} height={16} /> : undefined}
         />
       </div>
     </article>

@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router';
 import { BackButton } from '../../components/Buttons/BackButton';
 import { LabeledInput } from '../../components/LabeledInput';
 import { Checkbox } from '../../components/Checkbox';
+import { Spinner } from '../../components/Spinner';
 import { PrimaryButton } from '../../components/Buttons/PrimaryButton';
 import { SlowServerMessage } from '../../components/SlowServerMessage';
 import { RedirectText } from '../../components/RedirectText';
@@ -180,6 +181,7 @@ export const SignUpPage = () => {
             title={isLoading ? 'Signing Up...' : 'Sign Up'}
             disabled={isLoading}
             type="submit"
+            icon={isLoading ? <Spinner width={16} height={16} /> : undefined}
           />
         </div>
 

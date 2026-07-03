@@ -10,6 +10,7 @@ import { emptyForgotPasswordForm } from '../../constants/formsData';
 import { ROUTES } from '../../constants/routes';
 import { validateForgotPasswordForm } from '../../utils/formValidate/validateForgotPasswordForm';
 import type { ForgotPasswordFormData } from '../../types/Forms';
+import { Spinner } from '../../components/Spinner';
 
 export const ForgotPasswordPage = () => {
   const [formData, setFormData] = useState<ForgotPasswordFormData>(
@@ -100,7 +101,11 @@ export const ForgotPasswordPage = () => {
         </div>
 
         <div className="formButton">
-          <PrimaryButton title="Send сode" disabled={isLoading} />
+          <PrimaryButton
+            title={isLoading ? 'Sending сode..' : 'Send сode'}
+            disabled={isLoading}
+            icon={isLoading ? <Spinner width={16} height={16} /> : undefined}
+          />
         </div>
 
         <RedirectText

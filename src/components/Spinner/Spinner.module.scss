@@ -2,8 +2,6 @@
 @use '../../styles/variables.scss' as var;
 
 .spinner {
-  width: 40px;
-  height: 40px;
   border: 3px solid var.$brown-20-color;
   border-top-color: var.$brown-60-color;
   border-radius: 50%;

@@ -14,6 +14,7 @@ import styles from './Catalogue.module.scss';
 
 export const Catalogue = () => {
   const [toast, setToast] = useState<string | null>(null);
+  const [toastIcon, setToastIcon] = useState('tick');
   const { beers, nextOffset, loadBeers, isLoading } = useBeers();
   const isSlow = useSlowLoad(isLoading);
 
@@ -45,7 +46,11 @@ export const Catalogue = () => {
       <ul className={styles.productList}>
         {beers.map(beer => (
           <li key={beer.id} className={styles.productItem}>
-            <ProductCard product={beer} setToast={setToast} />
+            <ProductCard
+              product={beer}
+              setToast={setToast}
+              setToastIcon={setToastIcon}
+            />
           </li>
         ))}
       </ul>
@@ -54,7 +59,9 @@ export const Catalogue = () => {
 
   return (
     <section className={clsx('pageContent', styles.catalogue)}>
-      {toast && <Toast title={toast} onClose={() => setToast(null)} />}
+      {toast && (
+        <Toast title={toast} onClose={() => setToast(null)} icon={toastIcon} />
+      )}
 
       <div className={styles.filterToolbar}>
         <div className={styles.search}>

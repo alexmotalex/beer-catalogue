@@ -11,6 +11,7 @@ import { emptyEditUserForm } from '../../constants/formsData';
 import { ROUTES } from '../../constants/routes';
 import type { EditUserFormData } from '../../types/Forms';
 import styles from './EditUserPage.module.scss';
+import { Spinner } from '../../components/Spinner';
 
 export const EditUserPage = () => {
   const { user, isLoading, editUser, serverErrors, setServerErrors } =
@@ -99,6 +100,7 @@ export const EditUserPage = () => {
           <PrimaryButton
             title={isLoading ? 'Saving changes...' : 'Save changes'}
             disabled={isLoading}
+            icon={isLoading ? <Spinner width={16} height={16} /> : undefined}
           />
         </div>
       </form>

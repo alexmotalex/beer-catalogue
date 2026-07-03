@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router';
 import { BackButton } from '../../components/Buttons/BackButton';
+import { Spinner } from '../../components/Spinner';
 import { LabeledInput } from '../../components/LabeledInput';
 import { SlowServerMessage } from '../../components/SlowServerMessage';
 import { ErrorInfo } from '../../components/ErrorInfo';
@@ -116,7 +117,11 @@ export const SigninPage = () => {
         </div>
 
         <div className="formButton">
-          <PrimaryButton title="Sign In" disabled={isLoading} />
+          <PrimaryButton
+            title={isLoading ? 'Signing In...' : 'Sign In'}
+            disabled={isLoading}
+            icon={isLoading ? <Spinner width={16} height={16} /> : undefined}
+          />
         </div>
 
         <RedirectText

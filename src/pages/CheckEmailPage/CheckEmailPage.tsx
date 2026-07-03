@@ -6,6 +6,7 @@ import { PrimaryButton } from '../../components/Buttons/PrimaryButton';
 import { ROUTES } from '../../constants/routes';
 import styles from './CheckEmailPage.module.scss';
 import { Toast } from '../../components/Toast';
+import { Spinner } from '../../components/Spinner';
 
 const RESEND_TIMEOUT_SECONDS = 60;
 
@@ -13,7 +14,7 @@ export const CheckEmailPage = () => {
   const [secondsLeft, setSecondsLeft] = useState(RESEND_TIMEOUT_SECONDS);
   const [toast, setToast] = useState<string | null>(null);
 
-  const { register, passwordReset } = useAuth();
+  const { register, passwordReset, isLoading } = useAuth();
   const location = useLocation();
 
   const email = location.state?.email ?? '';
@@ -77,9 +78,10 @@ export const CheckEmailPage = () => {
         <div className={styles.contentButton}>
           <PrimaryButton
             type="button"
-            title="Resend link"
+            title={isLoading ? 'Resendiing link...' : 'Resend link'}
             onClick={handleResend}
             disabled={!canResend}
+            icon={isLoading ? <Spinner width={16} height={16} /> : undefined}
           />
         </div>
 

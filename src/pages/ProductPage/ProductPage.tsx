@@ -1,8 +1,11 @@
+import { useState } from 'react';
 import { useNavigate, useParams } from 'react-router';
 import { BackButton } from '../../components/Buttons/BackButton';
 import { PrimaryButton } from '../../components/Buttons/PrimaryButton';
 import { ProductPageSkeleton } from '../../components/ProductPageSkeleton';
 import { SlowServerMessage } from '../../components/SlowServerMessage';
+import { Toast } from '../../components/Toast';
+import { Spinner } from '../../components/Spinner';
 import { ErrorInfo } from '../../components/ErrorInfo';
 import { Dot } from '../../components/Dot';
 import { useBeerById } from '../../hooks/useBeerById';
@@ -18,6 +21,8 @@ import placeholderBeer from '../../assets/images/beer-placeholder.webp';
 import styles from './ProductPage.module.scss';
 
 export const ProductPage = () => {
+  const [toast, setToast] = useState<string | null>(null);
+  const [toastIcon, setToastIcon] = useState('tick');
   const { productId } = useParams();
   const beerId = Number(productId);
   const { user } = useAuth();
@@ -57,7 +62,22 @@ export const ProductPage = () => {
       return;
     }
 
-    await addToCart(beerId);
+    setToast(null);
+
+    if (beer?.id) {
+      await addToCart(beer.id);
+
+      const error = itemErrors.get(beer.id);
+
+      if (error) {
+        setToastIcon('close');
+
+        setToast(`Attention: ${error}`);
+      } else {
+        setToastIcon('tick');
+        setToast(`${beer?.name} successfully added to cart.`);
+      }
+    }
   };
 
   const specifications = [
@@ -82,11 +102,15 @@ export const ProductPage = () => {
   const buttonTitle = !beer?.is_available
     ? 'Out of stock'
     : inCart
-      ? `Add to cart | ${itemsInCart} ${itemsInCart === 1 ? 'item' : 'items'}`
+      ? `Add to cart | ${itemsInCart} ${itemsInCart === 1 ? 'item' : 'items'} added`
       : 'Add to cart';
 
   return (
     <section className={styles.product}>
+      {toast && (
+        <Toast title={toast} onClose={() => setToast(null)} icon={toastIcon} />
+      )}
+
       <BackButton />
 
       <div className={styles.overall}>
@@ -159,9 +183,12 @@ export const ProductPage = () => {
             <div className={styles.addToBasket}>
               <PrimaryButton
                 type="button"
-                title={buttonTitle}
+                title={cartIsLoading ? 'Addiing to cart' : buttonTitle}
                 onClick={handleAddToCart}
                 disabled={!beer?.is_available || cartIsLoading}
+                icon={
+                  cartIsLoading ? <Spinner width={16} height={16} /> : undefined
+                }
               />
             </div>
           </div>

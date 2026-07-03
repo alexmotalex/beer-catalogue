@@ -8,6 +8,7 @@ import { validateNewPasswordForm } from '../../utils/formValidate/validateNewPas
 import { emptyNewPasswordForm } from '../../constants/formsData';
 import { ROUTES } from '../../constants/routes';
 import type { NewPasswordFormData } from '../../types/Forms';
+import { Spinner } from '../../components/Spinner';
 // import styles from './NewPasswordPage.module.scss';
 
 export const NewPasswordPage = () => {
@@ -114,9 +115,10 @@ export const NewPasswordPage = () => {
 
         <div className="formButton">
           <PrimaryButton
-            title="Reset password"
+            title={isLoading ? 'Reseting password...' : 'Reset password'}
             type="submit"
             disabled={isLoading}
+            icon={isLoading ? <Spinner width={16} height={16} /> : undefined}
           />
         </div>
       </form>
