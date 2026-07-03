@@ -119,7 +119,7 @@ export const Stepper: React.FC<Props> = ({
           className={clsx(styles.value, isDisabled && styles.valueDisabled)}
           onDoubleClick={handleDoubleClick}
         >
-          {value}
+          {isLoading ? <Spinner width={16} height={16} /> : value}
         </div>
       )}
 
