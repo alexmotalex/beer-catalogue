@@ -19,6 +19,7 @@ export type CartContextType = {
   quantity: number;
   subtotal: string;
   total: string;
+  isInitialLoading: boolean;
   isLoading: boolean;
   itemErrors: Map<number, string>;
   fetchCart: () => Promise<void>;
@@ -42,11 +43,11 @@ export const CartContextProvider: React.FC<Props> = ({ children }) => {
   const [cart, setCart] = useState<Cart>(emptyCart);
   const [isLoading, setIsLoading] = useState(true);
   const [itemErrors, setItemErrors] = useState<Map<number, string>>(new Map());
+  const [isInitialLoading, setIsInitialLoading] = useState(true);
 
   const { user, isLoading: isAuthLoading } = useAuth();
 
   const fetchCart = useCallback(async () => {
-    setCart(emptyCart);
     setIsLoading(true);
 
     try {
@@ -56,6 +57,7 @@ export const CartContextProvider: React.FC<Props> = ({ children }) => {
       notifyAxiosError(error);
     } finally {
       setIsLoading(false);
+      setIsInitialLoading(false);
     }
   }, []);
 
@@ -202,6 +204,7 @@ export const CartContextProvider: React.FC<Props> = ({ children }) => {
       total: cart.total,
       quantity: totalCartItems,
       itemErrors,
+      isInitialLoading,
       isLoading,
       fetchCart,
       addToCart,
@@ -220,6 +223,7 @@ export const CartContextProvider: React.FC<Props> = ({ children }) => {
       deleteFromCart,
       totalCartItems,
       itemErrors,
+      isInitialLoading,
       isLoading,
       isInCart,
       fetchCart,

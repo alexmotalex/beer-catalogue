@@ -7,14 +7,15 @@ import { resolvePublicUrl } from '../../utils/resolvePublicUrl';
 import placeholderBeer from '../../assets/images/beer-placeholder.webp';
 import type { CartEntry } from '../../types/Cart';
 import styles from './CartItem.module.scss';
+import { useState } from 'react';
 
 type Props = {
   cartItem: CartEntry;
 };
 
 export const CartItem: React.FC<Props> = ({ cartItem }) => {
-  const { updateCartItemQuantity, deleteFromCart, itemErrors, isLoading } =
-    useCart();
+  const { updateCartItemQuantity, deleteFromCart, itemErrors } = useCart();
+  const [isAdding, setIsAdding] = useState(false);
   const { id, beer_id, quantity, name, price, image_url } = cartItem;
   const error = itemErrors.get(beer_id);
 
@@ -22,25 +23,43 @@ export const CartItem: React.FC<Props> = ({ cartItem }) => {
   const totalItemPrice = Number(price) * quantity;
   const displayedPrice = `$${totalItemPrice.toFixed(2)}`;
 
-  const handleIncrease = () => {
-    updateCartItemQuantity(id, beer_id, quantity + 1);
+  const handleIncrease = async () => {
+    setIsAdding(true);
+
+    await updateCartItemQuantity(id, beer_id, quantity + 1);
+
+    setIsAdding(false);
   };
 
-  const handleDecrease = () => {
+  const handleDecrease = async () => {
+    setIsAdding(true);
+
     if (quantity <= 1) {
-      deleteFromCart(id, beer_id);
+      await deleteFromCart(id, beer_id);
+
+      setIsAdding(false);
+
       return;
     }
 
-    updateCartItemQuantity(id, beer_id, quantity - 1);
+    await updateCartItemQuantity(id, beer_id, quantity - 1);
+    setIsAdding(false);
   };
 
-  const handleDelete = () => {
-    deleteFromCart(id, beer_id);
+  const handleDelete = async () => {
+    setIsAdding(true);
+
+    await deleteFromCart(id, beer_id);
+
+    setIsAdding(false);
   };
 
-  const handleManualChange = (newQuantity: number) => {
-    updateCartItemQuantity(id, beer_id, newQuantity);
+  const handleManualChange = async (newQuantity: number) => {
+    setIsAdding(true);
+
+    await updateCartItemQuantity(id, beer_id, newQuantity);
+
+    setIsAdding(false);
   };
 
   const productPath = buildProductPath(beer_id);
@@ -72,7 +91,7 @@ export const CartItem: React.FC<Props> = ({ cartItem }) => {
         <Stepper
           value={quantity}
           error={Boolean(error)}
-          isLoading={Boolean(isLoading)}
+          isLoading={isAdding}
           onIncrease={handleIncrease}
           onDecrease={handleDecrease}
           onDelete={handleDelete}

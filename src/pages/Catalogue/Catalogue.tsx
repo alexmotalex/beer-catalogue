@@ -11,6 +11,7 @@ import { selectOptions } from '../../constants/selectOptions';
 import { BeerSearch } from '../../components/BeerSearch';
 import clsx from 'clsx';
 import styles from './Catalogue.module.scss';
+import { Spinner } from '../../components/Spinner';
 
 export const Catalogue = () => {
   const [toast, setToast] = useState<string | null>(null);
@@ -86,8 +87,9 @@ export const Catalogue = () => {
         <div className={styles.button}>
           <SecondaryButton
             type="button"
-            title="Load more"
+            title={isLoading ? 'Loading...' : 'Load more'}
             onClick={handleViewAll}
+            icon={isLoading ? <Spinner width={16} height={16} /> : undefined}
           />
         </div>
       )}

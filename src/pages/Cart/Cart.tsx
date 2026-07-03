@@ -14,7 +14,8 @@ import { ROUTES } from '../../constants/routes';
 import styles from './Cart.module.scss';
 
 export const Cart = () => {
-  const { cartItems, subtotal, total, isLoading, clearCart } = useCart();
+  const { cartItems, subtotal, total, isInitialLoading, isLoading, clearCart } =
+    useCart();
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const navigate = useNavigate();
   const isSlow = useSlowLoad(isLoading);
@@ -45,7 +46,7 @@ export const Cart = () => {
   ];
 
   const renderContent = () => {
-    if (isLoading && isCartEmpty) {
+    if (isInitialLoading) {
       return (
         <>
           {isSlow && <SlowServerMessage />}

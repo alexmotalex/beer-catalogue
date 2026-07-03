@@ -2,14 +2,15 @@ import clsx from 'clsx';
 import { Icon } from '../Icon';
 import styles from './Stepper.module.scss';
 import { useState } from 'react';
+import { Spinner } from '../Spinner';
 
 type Props = {
   value: number;
   error: boolean;
   isLoading: boolean;
-  onIncrease: () => void;
-  onDecrease: () => void;
-  onDelete: () => void;
+  onIncrease: () => Promise<void>;
+  onDecrease: () => Promise<void>;
+  onDelete: () => Promise<void>;
   onChange?: (value: number) => void;
 };
 
@@ -24,19 +25,30 @@ export const Stepper: React.FC<Props> = ({
 }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [inputValue, setInputValue] = useState(String(value));
+  const [loadingSide, setLoadingSide] = useState<'left' | 'right' | null>(null);
 
-  const isDisabled = value < 1 || Boolean(isLoading) || error;
+  const isDisabled = value < 1 || isLoading;
   const isDeleteButton = value === 1;
   const leftButtonIcon = isDeleteButton ? 'trash' : 'minus';
 
-  const handleLeftButtonClick = () => {
-    if (isDeleteButton) {
-      onDelete();
+  const handleLeftButtonClick = async () => {
+    setLoadingSide('left');
 
-      return;
+    if (isDeleteButton) {
+      await onDelete();
+    } else {
+      await onDecrease();
     }
 
-    onDecrease();
+    setLoadingSide(null);
+  };
+
+  const handleRightButtonClick = async () => {
+    setLoadingSide('right');
+
+    await onIncrease();
+
+    setLoadingSide(null);
   };
 
   const handleDoubleClick = () => {
@@ -84,7 +96,11 @@ export const Stepper: React.FC<Props> = ({
         onClick={handleLeftButtonClick}
         aria-label={isDisabled ? 'Remove item' : 'Decrease quantity'}
       >
-        <Icon name={leftButtonIcon} />
+        {loadingSide === 'left' ? (
+          <Spinner width={16} height={16} />
+        ) : (
+          <Icon name={leftButtonIcon} />
+        )}
       </button>
 
       {isEditing ? (
@@ -109,12 +125,16 @@ export const Stepper: React.FC<Props> = ({
 
       <button
         type="button"
-        disabled={Boolean(isLoading) || error}
+        disabled={isLoading || error}
         className={styles.button}
-        onClick={onIncrease}
+        onClick={handleRightButtonClick}
         aria-label="Increase quantity"
       >
-        <Icon name="plus" />
+        {loadingSide === 'right' ? (
+          <Spinner width={16} height={16} />
+        ) : (
+          <Icon name="plus" />
+        )}
       </button>
     </div>
   );
