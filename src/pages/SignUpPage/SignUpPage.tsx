@@ -26,6 +26,8 @@ export const SignUpPage = () => {
 
   const validationErrors = validateSignUpForm(formData);
 
+  const firstNameError = validationErrors.firstName || serverErrors.firstName;
+  const lastNameError = validationErrors.lastName || serverErrors.lastName;
   const passwordError = validationErrors.password || serverErrors.password;
   const emailError = validationErrors.email || serverErrors.email;
 
@@ -95,10 +97,15 @@ export const SignUpPage = () => {
               autoComplete="given-name"
               label="First name"
               name="firstName"
+              error={showValidationErrors && Boolean(firstNameError)}
               value={formData.firstName}
               onChange={handleChange}
               placeholder="John"
             />
+
+            {showValidationErrors && firstNameError && (
+              <ErrorInfo errorText={firstNameError} />
+            )}
           </div>
 
           <div className="formLabelInputWrapper">
@@ -106,11 +113,17 @@ export const SignUpPage = () => {
               autoComplete="family-name"
               label="Last name"
               name="lastName"
+              error={showValidationErrors && Boolean(lastNameError)}
               value={formData.lastName}
               onChange={handleChange}
               placeholder="Doe"
             />
+
+            {showValidationErrors && lastNameError && (
+              <ErrorInfo errorText={lastNameError} />
+            )}
           </div>
+
           <div className="formLabelInputWrapper">
             <LabeledInput
               autoComplete="email"

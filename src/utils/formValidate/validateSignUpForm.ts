@@ -1,8 +1,25 @@
 import type { SignupFormData, SignupFormErrors } from '../../types/Forms';
+import { validateName } from '../validateName';
 import { validatePassword } from '../validatePassword';
 
 export const validateSignUpForm = (formData: SignupFormData) => {
   const newErrors: SignupFormErrors = {};
+
+  if (formData.firstName.trim()) {
+    const firstNameError = validateName(formData.firstName, 'First name');
+
+    if (firstNameError) {
+      newErrors.firstName = firstNameError;
+    }
+  }
+
+  if (formData.lastName.trim()) {
+    const lastNameError = validateName(formData.lastName, 'Last name');
+
+    if (lastNameError) {
+      newErrors.lastName = lastNameError;
+    }
+  }
 
   if (!formData.email.trim()) {
     newErrors.email = 'Email is required.';
