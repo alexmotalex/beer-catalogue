@@ -7,7 +7,7 @@ import { SlowServerMessage } from '../../components/SlowServerMessage';
 import { ProductCardSkeleton } from '../../components/ProductCardSkeleton';
 import { useBeers } from '../../hooks/useBeers';
 import { useSlowLoad } from '../../hooks/useSlowLoad';
-import { getThreeUniqueRandoms } from '../../utils/getThreeUniqueRandoms';
+import { getUniqueRandoms } from '../../utils/getThreeUniqueRandoms';
 import { beerDescriptions } from '../../constants/beerDescriptions';
 import { storyParagraphs } from '../../constants/storyParagraphs';
 import { ROUTES } from '../../constants/routes';
@@ -17,7 +17,7 @@ export const HomePage = () => {
   const { beers, isLoading } = useBeers();
   const navigate = useNavigate();
   const isSlow = useSlowLoad(isLoading);
-  const picksBeers = getThreeUniqueRandoms(beers);
+  const picksBeers = getUniqueRandoms(beers, 5);
 
   const handleOpenCatalogue = () => {
     navigate(ROUTES.catalogue);
@@ -30,7 +30,7 @@ export const HomePage = () => {
           {isSlow && <SlowServerMessage />}
 
           <ul className={styles.picksList}>
-            {Array.from({ length: 3 }).map((_, i) => (
+            {Array.from({ length: 5 }).map((_, i) => (
               <li key={i} className={styles.picksItem}>
                 <ProductCardSkeleton />
               </li>

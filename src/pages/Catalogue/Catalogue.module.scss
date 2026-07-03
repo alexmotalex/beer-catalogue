@@ -6,6 +6,8 @@
 
 .filterToolbar {
   width: 100%;
+  max-width: 1720px;
+
   display: flex;
   align-items: center;
   gap: 16px;
@@ -31,7 +33,7 @@
 
 .productList {
   margin: 0;
-  max-width: 1200px;
+  max-width: 1720px;
   padding: 0;
   display: flex;
   justify-content: center;
@@ -43,9 +45,9 @@
 .productItem {
   display: flex;
   flex: 1 1 calc((100% - 48px) / 3);
-  max-width: 391px;
-  min-width: 280px;
-  height: 553px;
+  max-width: 556px;
+  min-width: 260px;
+  max-height: 764px;
 }
 
 .button {

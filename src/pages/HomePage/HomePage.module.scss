@@ -193,19 +193,38 @@
   }
 
   &List {
-    margin: 0;
-    padding: 0;
     display: flex;
     gap: 24px;
-    align-items: center;
-    justify-content: center;
     list-style: none;
+    margin: 0;
+    padding: 0;
   }
 
   &Item {
-    max-width: 391px;
+    flex: 1;
     min-width: 280px;
-    height: 553px;
+    min-height: 553px;
+    max-height: 640px;
+
+    &:nth-child(n + 4) {
+      display: none;
+    }
+
+    @media (min-width: 1660px) {
+      &:nth-child(n + 4) {
+        display: block;
+      }
+
+      &:nth-child(n + 5) {
+        display: none;
+      }
+    }
+
+    @media (min-width: 2560px) {
+      &:nth-child(n + 5) {
+        display: block;
+      }
+    }
   }
 
   &Button {
