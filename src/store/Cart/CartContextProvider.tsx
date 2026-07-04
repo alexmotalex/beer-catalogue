@@ -23,7 +23,7 @@ export type CartContextType = {
   isLoading: boolean;
   itemErrors: Map<number, string>;
   fetchCart: () => Promise<void>;
-  addToCart: (beerId: number) => Promise<void>;
+  addToCart: (beerId: number) => Promise<string | null>;
   getQuantityInCart: (beerId: number) => number;
   updateCartItemQuantity: (
     itemId: number,
@@ -62,9 +62,9 @@ export const CartContextProvider: React.FC<Props> = ({ children }) => {
   }, []);
 
   const addToCart = useCallback(
-    async (beerId: number) => {
+    async (beerId: number): Promise<string | null> => {
       if (!user) {
-        return;
+        return null;
       }
 
       setIsLoading(true);
@@ -80,17 +80,23 @@ export const CartContextProvider: React.FC<Props> = ({ children }) => {
           params: { quantity: 1 },
         });
         await fetchCart();
+
+        return null;
       } catch (err: unknown) {
         const axiosError = err as {
           response?: { data?: { detail?: { beer_id?: string } } };
         };
-        const msg = axiosError.response?.data?.detail?.beer_id;
+        const msg =
+          axiosError.response?.data?.detail?.beer_id ?? 'Failed to add item';
 
         setItemErrors(prev => {
           const next = new Map(prev);
-          next.set(beerId, msg ?? 'Failed to add item');
+          next.set(beerId, msg);
+
           return next;
         });
+
+        return msg;
       } finally {
         setIsLoading(false);
       }

@@ -39,7 +39,7 @@ export const ProductCard: React.FC<Props> = ({
   const [isAdding, setIsAdding] = useState(false);
 
   const { user } = useAuth();
-  const { addToCart, getQuantityInCart, isInCart, itemErrors } = useCart();
+  const { addToCart, getQuantityInCart, isInCart } = useCart();
   const navigate = useNavigate();
   const productPath = buildProductPath(id);
   const imageSrc = image_url ? resolvePublicUrl(image_url) : placeholderBeer;
@@ -54,9 +54,7 @@ export const ProductCard: React.FC<Props> = ({
     setToast(null);
     setIsAdding(true);
 
-    await addToCart(id);
-
-    const error = itemErrors.get(id);
+    const error = await addToCart(id);
 
     if (error) {
       setToastIcon('close');

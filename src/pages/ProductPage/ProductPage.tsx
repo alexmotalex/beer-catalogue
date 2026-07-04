@@ -65,9 +65,7 @@ export const ProductPage = () => {
     setToast(null);
 
     if (beer?.id) {
-      await addToCart(beer.id);
-
-      const error = itemErrors.get(beer.id);
+      const error = await addToCart(beer.id);
 
       if (error) {
         setToastIcon('close');
