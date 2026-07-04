@@ -105,6 +105,7 @@ export const Stepper: React.FC<Props> = ({
         <div
           className={clsx(styles.value, isDisabled && styles.valueDisabled)}
           onDoubleClick={handleDoubleClick}
+          title={onChange ? 'Double-click to edit quantity' : undefined}
         >
           {isLoading ? <Spinner width={16} height={16} /> : value}
         </div>
