@@ -3,15 +3,17 @@ import { ProductCard } from '../../components/ProductCard';
 import { SecondaryButton } from '../../components/Buttons/SecondaryButton';
 import { FilterSelector } from '../../components/FilterSelector';
 import { ProductCardSkeleton } from '../../components/ProductCardSkeleton';
+import { NotFound } from '../../components/NotFound';
 import { SlowServerMessage } from '../../components/SlowServerMessage';
+import { Spinner } from '../../components/Spinner';
 import { Toast } from '../../components/Toast';
 import { useBeers } from '../../hooks/useBeers';
 import { useSlowLoad } from '../../hooks/useSlowLoad';
 import { selectOptions } from '../../constants/selectOptions';
 import { BeerSearch } from '../../components/BeerSearch';
+import emptySearchLogo from '../../assets/images/empty-search.png';
 import clsx from 'clsx';
 import styles from './Catalogue.module.scss';
-import { Spinner } from '../../components/Spinner';
 
 export const Catalogue = () => {
   const [toast, setToast] = useState<string | null>(null);
@@ -39,8 +41,15 @@ export const Catalogue = () => {
       );
     }
 
-    if (beers.length === 0) {
-      return <div>No beers found</div>;
+    if (!isLoading && beers.length === 0) {
+      return (
+        <NotFound
+          logo={emptySearchLogo}
+          title="No results found"
+          subtitle="Try adjusting your search or discover something new from our selection."
+          buttonTitle="Explore catalogue"
+        />
+      );
     }
 
     return (

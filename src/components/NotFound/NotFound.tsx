@@ -2,9 +2,21 @@ import { useNavigate } from 'react-router';
 import { PrimaryButton } from '../Buttons/PrimaryButton';
 import styles from './NotFound.module.scss';
 import { ROUTES } from '../../constants/routes';
-import emptyCartLogo from '../../assets/images/empty-cart.png';
+import type React from 'react';
 
-export const NotFound = () => {
+type Props = {
+  logo: string;
+  title: string;
+  subtitle: string;
+  buttonTitle: string;
+};
+
+export const NotFound: React.FC<Props> = ({
+  logo,
+  title,
+  subtitle,
+  buttonTitle,
+}) => {
   const navigate = useNavigate();
 
   const handleBrowseBeers = () => {
@@ -15,25 +27,19 @@ export const NotFound = () => {
     <div className="pageContent">
       <div className={styles.notFound}>
         <div className={styles.notFoundImageContent}>
-          <img
-            className={styles.notFoundImage}
-            src={emptyCartLogo}
-            alt="Not found"
-          />
+          <img className={styles.notFoundImage} src={logo} alt="Not found" />
         </div>
 
         <div className={styles.content}>
-          <h3 className={styles.contentTitle}>Nothing here yet</h3>
+          <h3 className={styles.contentTitle}>{title}</h3>
 
-          <p className={styles.contentText}>
-            Your next favorite beer is waiting. Start exploring the catalog.
-          </p>
+          <p className={styles.contentText}>{subtitle}</p>
         </div>
 
         <div className={styles.notFoundButton}>
           <PrimaryButton
             type="button"
-            title="Browse beers"
+            title={buttonTitle}
             onClick={handleBrowseBeers}
           />
         </div>

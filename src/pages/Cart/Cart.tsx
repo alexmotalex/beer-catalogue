@@ -11,6 +11,7 @@ import { SlowServerMessage } from '../../components/SlowServerMessage';
 import { useCart } from '../../hooks/useCart';
 import { useSlowLoad } from '../../hooks/useSlowLoad';
 import { ROUTES } from '../../constants/routes';
+import emptyCartLogo from '../../assets/images/empty-cart.png';
 import styles from './Cart.module.scss';
 
 export const Cart = () => {
@@ -24,7 +25,14 @@ export const Cart = () => {
   const cartItemsToRender = cartItems.sort((a, b) => a.id - b.id);
 
   if (!isLoading && isCartEmpty) {
-    return <NotFound />;
+    return (
+      <NotFound
+        logo={emptyCartLogo}
+        title="Nothing here yet"
+        subtitle="Your next favorite beer is waiting. Start exploring the catalogue."
+        buttonTitle="Browse beers"
+      />
+    );
   }
 
   const handleConfirm = () => {
