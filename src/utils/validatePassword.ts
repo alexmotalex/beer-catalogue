@@ -1,4 +1,8 @@
 export const validatePassword = (password: string): string => {
+  if (password.length > 4096) {
+    return 'Password exceeds maximum allowed size.';
+  }
+
   if (password.length < 8) {
     return 'Password must be at least 8 characters.';
   }
