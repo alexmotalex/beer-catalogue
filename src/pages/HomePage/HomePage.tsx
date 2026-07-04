@@ -17,7 +17,7 @@ export const HomePage = () => {
   const { beers, isLoading } = useBeers();
   const navigate = useNavigate();
   const isSlow = useSlowLoad(isLoading);
-  const picksBeers = getUniqueRandoms(beers, 5);
+  const picksBeers = getUniqueRandoms(beers, 3);
 
   const handleOpenCatalogue = () => {
     navigate(ROUTES.catalogue);

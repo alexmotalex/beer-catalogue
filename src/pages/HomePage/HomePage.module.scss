@@ -205,30 +205,10 @@
     min-width: 280px;
     min-height: 553px;
     max-height: 640px;
-
-    &:nth-child(n + 4) {
-      display: none;
-    }
-
-    // @media (min-width: 1660px) {
-    //   &:nth-child(n + 4) {
-    //     display: block;
-    //   }
-
-    //   &:nth-child(n + 5) {
-    //     display: none;
-    //   }
-    // }
-
-    // @media (min-width: 2560px) {
-    //   &:nth-child(n + 5) {
-    //     display: block;
-    //   }
-    // }
   }
 
   &Button {
-    width: 547px;
+    width: 470px;
     height: 48px;
     align-self: center;
   }
