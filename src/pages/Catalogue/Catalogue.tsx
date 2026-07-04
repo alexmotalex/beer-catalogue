@@ -26,7 +26,7 @@ export const Catalogue = () => {
   };
 
   const renderContent = () => {
-    if (isLoading && beers.length === 0) {
+    if (isLoading) {
       return (
         <>
           {isSlow && <SlowServerMessage />}

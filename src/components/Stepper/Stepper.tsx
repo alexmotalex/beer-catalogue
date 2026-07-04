@@ -25,30 +25,21 @@ export const Stepper: React.FC<Props> = ({
 }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [inputValue, setInputValue] = useState(String(value));
-  const [loadingSide, setLoadingSide] = useState<'left' | 'right' | null>(null);
 
   const isDisabled = value < 1 || isLoading;
   const isDeleteButton = value === 1;
   const leftButtonIcon = isDeleteButton ? 'trash' : 'minus';
 
   const handleLeftButtonClick = async () => {
-    setLoadingSide('left');
-
     if (isDeleteButton) {
       await onDelete();
     } else {
       await onDecrease();
     }
-
-    setLoadingSide(null);
   };
 
   const handleRightButtonClick = async () => {
-    setLoadingSide('right');
-
     await onIncrease();
-
-    setLoadingSide(null);
   };
 
   const handleDoubleClick = () => {
@@ -96,11 +87,7 @@ export const Stepper: React.FC<Props> = ({
         onClick={handleLeftButtonClick}
         aria-label={isDisabled ? 'Remove item' : 'Decrease quantity'}
       >
-        {loadingSide === 'left' ? (
-          <Spinner width={16} height={16} />
-        ) : (
-          <Icon name={leftButtonIcon} />
-        )}
+        <Icon name={leftButtonIcon} />
       </button>
 
       {isEditing ? (
@@ -130,11 +117,7 @@ export const Stepper: React.FC<Props> = ({
         onClick={handleRightButtonClick}
         aria-label="Increase quantity"
       >
-        {loadingSide === 'right' ? (
-          <Spinner width={16} height={16} />
-        ) : (
-          <Icon name="plus" />
-        )}
+        <Icon name="plus" />
       </button>
     </div>
   );
