@@ -64,7 +64,7 @@
   text-decoration: none;
   white-space: nowrap;
 
-  @include mixins.hover(color, var.$hover-color);
+  @include mixins.hover(color, var.$brown-40-color);
 }
 
 .social {

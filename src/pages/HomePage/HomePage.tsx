@@ -27,8 +27,6 @@ export const HomePage = () => {
     if (isLoading && beers.length === 0) {
       return (
         <>
-          {isSlow && <SlowServerMessage />}
-
           <ul className={styles.picksList}>
             {Array.from({ length: 5 }).map((_, i) => (
               <li key={i} className={styles.picksItem}>
@@ -117,6 +115,8 @@ export const HomePage = () => {
 
       <section className={styles.picks}>
         <h2 className={styles.picksTitle}>Our Picks</h2>
+
+        {isSlow && <SlowServerMessage />}
 
         {renderContent()}
 

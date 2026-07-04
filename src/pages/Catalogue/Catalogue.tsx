@@ -26,10 +26,9 @@ export const Catalogue = () => {
   };
 
   const renderContent = () => {
-    if (isLoading) {
+    if (isLoading && beers.length === 0) {
       return (
         <>
-          {isSlow && <SlowServerMessage />}
           <ul className={styles.productList}>
             {Array.from({ length: 6 }).map((_, i) => (
               <li key={i} className={styles.productItem}>
@@ -89,6 +88,8 @@ export const Catalogue = () => {
           ))}
         </ul>
       </div>
+
+      {isSlow && <SlowServerMessage />}
 
       {renderContent()}
 
