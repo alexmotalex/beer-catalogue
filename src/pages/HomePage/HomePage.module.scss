@@ -210,21 +210,21 @@
       display: none;
     }
 
-    @media (min-width: 1660px) {
-      &:nth-child(n + 4) {
-        display: block;
-      }
+    // @media (min-width: 1660px) {
+    //   &:nth-child(n + 4) {
+    //     display: block;
+    //   }
 
-      &:nth-child(n + 5) {
-        display: none;
-      }
-    }
+    //   &:nth-child(n + 5) {
+    //     display: none;
+    //   }
+    // }
 
-    @media (min-width: 2560px) {
-      &:nth-child(n + 5) {
-        display: block;
-      }
-    }
+    // @media (min-width: 2560px) {
+    //   &:nth-child(n + 5) {
+    //     display: block;
+    //   }
+    // }
   }
 
   &Button {
