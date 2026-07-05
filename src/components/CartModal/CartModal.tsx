@@ -72,15 +72,10 @@ export const CartModal: React.FC<Props> = ({ isOpen, cancelFn, primaryFn }) => {
   }, [isOpen]);
 
   useEffect(() => {
-    if (isOpen) {
-      document.body.style.overflow = 'hidden';
-    }
-
-    const previousOverflow = document.body.style.overflow;
-    document.body.style.overflow = 'hidden';
+    document.body.style.overflow = isOpen ? 'hidden' : '';
 
     return () => {
-      document.body.style.overflow = previousOverflow;
+      document.body.style.overflow = '';
     };
   }, [isOpen]);
 
