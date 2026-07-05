@@ -50,7 +50,6 @@ The app will usually run at http://localhost:5173.
 
 - `npm run dev` — start the Vite development server
 - `npm run build` — type-check and build the production bundle
-- `npm run preview` — preview the production build locally
 - `npm run lint` — run ESLint
 - `npm run deploy` — deploy the build to GitHub Pages
 - `npm run doctor` — run React Doctor checks

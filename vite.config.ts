@@ -4,5 +4,5 @@ import babel from '@rolldown/plugin-babel';
 
 export default defineConfig({
   plugins: [react(), babel({ presets: [reactCompilerPreset()] })],
-  base: '/beer-catalogue/',
+  base: process.env.VITE_BASE_URL || '/',
 });
