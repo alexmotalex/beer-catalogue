@@ -37,6 +37,7 @@ export const Footer = () => {
                   key={item.label}
                   className={styles.footerLink}
                   to={item.to}
+                  target="_blank"
                 >
                   {item.label}
                 </Link>
@@ -52,7 +53,11 @@ export const Footer = () => {
             <ul className={styles.linkList}>
               {FOOTER_LEGAL_LINKS.map(item => (
                 <li key={item.label}>
-                  <Link className={styles.footerLink} to={item.to}>
+                  <Link
+                    className={styles.footerLink}
+                    to={item.to}
+                    target="_blank"
+                  >
                     {item.label}
                   </Link>
                 </li>
