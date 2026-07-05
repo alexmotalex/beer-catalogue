@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useEffectEvent, useState } from 'react';
 import { InfoMessage } from '../InfoMessage';
 import styles from './Toast.module.scss';
 import clsx from 'clsx';
@@ -22,6 +22,10 @@ export const Toast: React.FC<Props> = ({
   const [isVisible, setIsVisible] = useState(false);
   const [isExiting, setIsExiting] = useState(false);
 
+  const handleClose = useEffectEvent(() => {
+    onClose?.();
+  });
+
   useEffect(() => {
     // trigger enter animation on mount
     const enterTimeout = setTimeout(() => setIsVisible(true), 10);
@@ -33,7 +37,7 @@ export const Toast: React.FC<Props> = ({
 
     // actually unmount after exit animation finishes
     const removeTimeout = setTimeout(() => {
-      onClose?.();
+      handleClose();
     }, duration + EXIT_ANIMATION_DURATION);
 
     return () => {
@@ -41,7 +45,7 @@ export const Toast: React.FC<Props> = ({
       clearTimeout(exitTimeout);
       clearTimeout(removeTimeout);
     };
-  }, [duration, onClose]);
+  }, [duration]);
 
   return (
     <div

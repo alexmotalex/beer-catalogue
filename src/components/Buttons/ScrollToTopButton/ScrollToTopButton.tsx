@@ -4,6 +4,10 @@ import { Icon } from '../../Icon';
 
 const SCROLL_THRESHOLD = 300;
 
+const handleClick = () => {
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+};
+
 export const ScrollToTopButton = () => {
   const [isVisible, setIsVisible] = useState(false);
 
@@ -17,16 +21,13 @@ export const ScrollToTopButton = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const handleClick = () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
-
   if (!isVisible) {
     return null;
   }
 
   return (
     <button
+      type="button"
       className={styles.button}
       onClick={handleClick}
       aria-label="Scroll to top"

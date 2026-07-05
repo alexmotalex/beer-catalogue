@@ -39,6 +39,7 @@ export const FilterSelector: React.FC<Props> = ({ option }) => {
     <div className={styles.dropdownContainer} ref={dropdownRef}>
       <div className={styles.dropdownWrapper}>
         <button
+          type="button"
           className={clsx(
             styles.dropdownTrigger,
             isOpen && styles.dropdownTriggerOpen,
@@ -64,6 +65,7 @@ export const FilterSelector: React.FC<Props> = ({ option }) => {
             return (
               <li key={item.value}>
                 <button
+                  type="button"
                   onClick={() => handleOptionSelect(item.value)}
                   className={styles.dropdownItem}
                 >

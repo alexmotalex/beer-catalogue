@@ -1,15 +1,15 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import type { Beer } from '../../types/Beer';
-import { BeerContext } from './BeerContext';
-import { fetchBeers } from '../../services/fetchBeers';
 import { useSearchParams } from 'react-router';
 import { notifyAxiosError } from '../../utils/notifyAxiosError';
+import { BeerContext } from './BeerContext';
+import { fetchBeers } from '../../services/fetchBeers';
+import type { Beer } from '../../types/Beer';
 
 export type BeerContextType = {
   beers: Omit<Beer, 'description'>[];
   nextOffset: number | null;
   isLoading: boolean;
-  loadBeers: (offset: number | null) => Promise<void>;
+  loadBeers: (offset: number | null) => Promise<boolean>;
 };
 
 type Props = {
@@ -26,6 +26,8 @@ export const BeerContextProvider: React.FC<Props> = ({ children }) => {
     async (offset: number | null) => {
       setIsLoading(true);
 
+      let success = false;
+
       try {
         const data = await fetchBeers(searchParams, offset ?? undefined);
 
@@ -34,11 +36,14 @@ export const BeerContextProvider: React.FC<Props> = ({ children }) => {
         );
 
         setNextOffset(data.next_offset);
+        success = true;
       } catch (error) {
         notifyAxiosError(error);
-      } finally {
-        setIsLoading(false);
       }
+
+      setIsLoading(false);
+
+      return success;
     },
     [searchParams],
   );

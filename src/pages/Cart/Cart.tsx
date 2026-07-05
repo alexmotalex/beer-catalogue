@@ -93,7 +93,11 @@ export const Cart = () => {
         <div className={styles.mainHeader}>
           <h1 className={styles.mainTitle}>Cart</h1>
           {!isCartEmpty && (
-            <button className={styles.mainClearButton} onClick={openModal}>
+            <button
+              type="button"
+              className={styles.mainClearButton}
+              onClick={openModal}
+            >
               Clear cart
             </button>
           )}

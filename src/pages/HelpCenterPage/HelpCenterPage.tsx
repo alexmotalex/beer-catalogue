@@ -4,17 +4,16 @@ import { Divider } from '../../components/Divider';
 import { faqItems } from '../../constants/faqItems';
 import styles from './HelpCenterPage.module.scss';
 
-export const HelpCenterPage = () => {
-  const handleSupportClick = () => {
-    const email = 'support@yourdomain.com';
-    const subject = encodeURIComponent('Support Request');
-    const body = encodeURIComponent(
-      'Hello Support Team,\n\nI need help with...',
-    );
+const handleSupportClick = () => {
+  const email = 'support@yourdomain.com';
+  const subject = encodeURIComponent('Support Request');
+  const body = encodeURIComponent('Hello Support Team,\n\nI need help with...');
 
-    // Triggers the user's email client
-    window.location.href = `mailto:${email}?subject=${subject}&body=${body}`;
-  };
+  // Triggers the user's email client
+  window.location.href = `mailto:${email}?subject=${subject}&body=${body}`;
+};
+
+export const HelpCenterPage = () => {
   return (
     <section className="pageContent">
       <h1 className="authPageTitle">help center</h1>

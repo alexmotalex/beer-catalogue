@@ -15,6 +15,7 @@ export const Accordion: React.FC<Props> = ({ question, answer }) => {
   return (
     <div className={clsx(styles.accordion, isOpen && styles.accordionOpen)}>
       <button
+        type="button"
         className={styles.trigger}
         onClick={() => setIsOpen(prev => !prev)}
         aria-expanded={isOpen}

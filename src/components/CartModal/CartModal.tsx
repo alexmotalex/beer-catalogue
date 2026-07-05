@@ -13,12 +13,6 @@ export const CartModal: React.FC<Props> = ({ isOpen, cancelFn, primaryFn }) => {
   const dialogRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (isOpen) {
-      dialogRef.current?.focus();
-    }
-  }, [isOpen]);
-
-  useEffect(() => {
     if (!isOpen) {
       return;
     }
@@ -47,6 +41,8 @@ export const CartModal: React.FC<Props> = ({ isOpen, cancelFn, primaryFn }) => {
 
     const firstElement = focusableElements[FIRST_INDEX];
     const lastElement = focusableElements[LAST_INDEX];
+
+    firstElement?.focus();
 
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key !== 'Tab') {
@@ -80,8 +76,11 @@ export const CartModal: React.FC<Props> = ({ isOpen, cancelFn, primaryFn }) => {
       document.body.style.overflow = 'hidden';
     }
 
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+
     return () => {
-      document.body.style.overflow = '';
+      document.body.style.overflow = previousOverflow;
     };
   }, [isOpen]);
 
@@ -117,7 +116,9 @@ export const CartModal: React.FC<Props> = ({ isOpen, cancelFn, primaryFn }) => {
         onClick={e => e.stopPropagation()}
       >
         <div className={styles.content}>
-          <h3 className={styles.contentTitle}>Clear cart?</h3>
+          <h3 id="modal-title" className={styles.contentTitle}>
+            Clear cart?
+          </h3>
           <p className={styles.contentText}>
             Are you sure you want to clear your cart? This action cannot be
             undone.

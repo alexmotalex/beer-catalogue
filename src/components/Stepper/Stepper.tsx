@@ -99,6 +99,7 @@ export const Stepper: React.FC<Props> = ({
           onChange={handleInputChange}
           onBlur={commitEdit}
           onKeyDown={handleKeyDown}
+          aria-label="Edit quantity"
           autoFocus
         />
       ) : (

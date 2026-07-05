@@ -45,36 +45,38 @@ export const AuthContextProvider: React.FC<Props> = ({ children }) => {
     setIsLoading(true);
     setServerErrors({});
 
+    let success = false;
+
     try {
       await client.post('/users/register/', data);
-
-      return true;
+      success = true;
     } catch (error: unknown) {
       setServerErrors(extractServerErrors(error));
       notifyAxiosError(error);
-
-      return false;
-    } finally {
-      setIsLoading(false);
     }
+
+    setIsLoading(false);
+
+    return success;
   }, []);
 
   const passwordReset = useCallback(async (data: ForgotPasswordFormData) => {
     setIsLoading(true);
     setServerErrors({});
 
+    let success = false;
+
     try {
       await client.post('/users/password-reset-request/', data);
-
-      return true;
+      success = true;
     } catch (error: unknown) {
       setServerErrors(extractServerErrors(error));
       notifyAxiosError(error);
-
-      return false;
-    } finally {
-      setIsLoading(false);
     }
+
+    setIsLoading(false);
+
+    return success;
   }, []);
 
   const fetchUser = useCallback(async () => {
@@ -86,33 +88,36 @@ export const AuthContextProvider: React.FC<Props> = ({ children }) => {
       setUser(response.data);
     } catch {
       setUser(null);
-    } finally {
-      setIsLoading(false);
     }
+
+    setIsLoading(false);
   }, []);
 
   const setNewPassword = useCallback(async (data: NewPasswordServerData) => {
     setIsLoading(true);
     setServerErrors({});
 
+    let success = false;
+
     try {
       await instance.post('/users/password-reset-complete/', data);
-
-      return true;
+      success = true;
     } catch (error) {
       setServerErrors(extractServerErrors(error));
       notifyAxiosError(error);
-
-      return false;
-    } finally {
-      setIsLoading(false);
     }
+
+    setIsLoading(false);
+
+    return success;
   }, []);
 
   const login = useCallback(
     async (data: AuthCredentials) => {
       setIsLoading(true);
       setServerErrors({});
+
+      let success = false;
 
       try {
         const response = await instance.post('/users/login/', data);
@@ -123,16 +128,15 @@ export const AuthContextProvider: React.FC<Props> = ({ children }) => {
 
         instance.defaults.headers.common['Authorization'] = `Bearer ${token}`;
         await fetchUser();
-
-        return true;
+        success = true;
       } catch (error) {
         setServerErrors(extractServerErrors(error));
         notifyAxiosError(error);
-
-        return false;
-      } finally {
-        setIsLoading(false);
       }
+
+      setIsLoading(false);
+
+      return success;
     },
     [fetchUser],
   );
@@ -142,20 +146,20 @@ export const AuthContextProvider: React.FC<Props> = ({ children }) => {
       setIsLoading(true);
       setServerErrors({});
 
+      let success = false;
+
       try {
         await instance.patch('/users/me/', data);
         await fetchUser();
-
-        return true;
+        success = true;
       } catch (error: unknown) {
         setServerErrors(extractServerErrors(error, 'general'));
-
         notifyAxiosError(error);
-
-        return false;
-      } finally {
-        setIsLoading(false);
       }
+
+      setIsLoading(false);
+
+      return success;
     },
     [fetchUser],
   );
@@ -165,12 +169,12 @@ export const AuthContextProvider: React.FC<Props> = ({ children }) => {
       await client.post('/users/logout/', {});
     } catch (error) {
       notifyAxiosError(error);
-    } finally {
-      delete instance.defaults.headers.common['Authorization'];
-      localStorage.removeItem(HAS_SESSION_KEY);
-      setAccessToken(null);
-      setUser(null);
     }
+
+    delete instance.defaults.headers.common['Authorization'];
+    localStorage.removeItem(HAS_SESSION_KEY);
+    setAccessToken(null);
+    setUser(null);
   }, []);
 
   useEffect(() => {

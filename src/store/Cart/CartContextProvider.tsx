@@ -1,6 +1,6 @@
 import type React from 'react';
 import type { Cart, CartEntry } from '../../types/Cart';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { instance } from '../../api/axiosInstance';
 import { CartContext } from './CartContext';
 import { useAuth } from '../../hooks/useAuth';
@@ -47,7 +47,7 @@ export const CartContextProvider: React.FC<Props> = ({ children }) => {
 
   const { user, isLoading: isAuthLoading } = useAuth();
 
-  const fetchCart = useCallback(async () => {
+  const fetchCart = async () => {
     setIsLoading(true);
 
     try {
@@ -55,104 +55,101 @@ export const CartContextProvider: React.FC<Props> = ({ children }) => {
       setCart(response.data);
     } catch (error) {
       notifyAxiosError(error);
-    } finally {
-      setIsLoading(false);
-      setIsInitialLoading(false);
     }
-  }, []);
 
-  const addToCart = useCallback(
-    async (beerId: number): Promise<string | null> => {
-      if (!user) {
-        return null;
-      }
+    setIsLoading(false);
+    setIsInitialLoading(false);
+  };
 
-      setIsLoading(true);
+  const addToCart = async (beerId: number): Promise<string | null> => {
+    if (!user) {
+      return null;
+    }
+
+    setIsLoading(true);
+
+    setItemErrors(prev => {
+      const next = new Map(prev);
+      next.delete(beerId);
+      return next;
+    });
+
+    let result: string | null = null;
+
+    try {
+      await instance.post(`/cart/${beerId}/`, null, {
+        params: { quantity: 1 },
+      });
+      await fetchCart();
+    } catch (err: unknown) {
+      const axiosError = err as {
+        response?: { data?: { detail?: { beer_id?: string } } };
+      };
+      const msg =
+        axiosError.response?.data?.detail?.beer_id ?? 'Failed to add item';
 
       setItemErrors(prev => {
         const next = new Map(prev);
-        next.delete(beerId);
+        next.set(beerId, msg);
+
         return next;
       });
 
-      try {
-        await instance.post(`/cart/${beerId}/`, null, {
-          params: { quantity: 1 },
-        });
-        await fetchCart();
+      result = msg;
+    }
 
-        return null;
-      } catch (err: unknown) {
-        const axiosError = err as {
-          response?: { data?: { detail?: { beer_id?: string } } };
-        };
-        const msg =
-          axiosError.response?.data?.detail?.beer_id ?? 'Failed to add item';
+    setIsLoading(false);
 
-        setItemErrors(prev => {
-          const next = new Map(prev);
-          next.set(beerId, msg);
+    return result;
+  };
 
-          return next;
-        });
+  const updateCartItemQuantity = async (
+    itemId: number,
+    beerId: number,
+    quantity: number,
+  ) => {
+    setItemErrors(prev => {
+      const next = new Map(prev);
+      next.delete(beerId);
+      return next;
+    });
 
-        return msg;
-      } finally {
-        setIsLoading(false);
-      }
-    },
-    [user, fetchCart],
-  );
+    try {
+      await instance.patch(`/cart/${itemId}/`, null, {
+        params: { quantity },
+      });
+      await fetchCart();
+    } catch (err: unknown) {
+      const axiosError = err as {
+        response?: { data?: { detail?: { beer_id?: string } } };
+      };
+      const msg = axiosError.response?.data?.detail?.beer_id;
 
-  const updateCartItemQuantity = useCallback(
-    async (itemId: number, beerId: number, quantity: number) => {
+      setItemErrors(prev => {
+        const next = new Map(prev);
+        next.set(beerId, msg ?? 'Failed to update quantity');
+        return next;
+      });
+    }
+  };
+
+  const deleteFromCart = async (itemId: number, beerId: number) => {
+    try {
       setItemErrors(prev => {
         const next = new Map(prev);
         next.delete(beerId);
+
         return next;
       });
 
-      try {
-        await instance.patch(`/cart/${itemId}/`, null, {
-          params: { quantity },
-        });
-        await fetchCart();
-      } catch (err: unknown) {
-        const axiosError = err as {
-          response?: { data?: { detail?: { beer_id?: string } } };
-        };
-        const msg = axiosError.response?.data?.detail?.beer_id;
+      await instance.delete(`/cart/${itemId}/`);
+      await fetchCart();
+    } catch (error) {
+      notifyAxiosError(error);
+    }
+  };
 
-        setItemErrors(prev => {
-          const next = new Map(prev);
-          next.set(beerId, msg ?? 'Failed to update quantity');
-          return next;
-        });
-      }
-    },
-    [fetchCart],
-  );
-
-  const deleteFromCart = useCallback(
-    async (itemId: number, beerId: number) => {
-      try {
-        setItemErrors(prev => {
-          const next = new Map(prev);
-          next.delete(beerId);
-
-          return next;
-        });
-
-        await instance.delete(`/cart/${itemId}/`);
-        await fetchCart();
-      } catch (error) {
-        notifyAxiosError(error);
-      }
-    },
-    [fetchCart],
-  );
-
-  const clearCart = useCallback(async () => {
+  const clearCart = async () => {
     try {
       setItemErrors(new Map());
 
@@ -161,21 +158,16 @@ export const CartContextProvider: React.FC<Props> = ({ children }) => {
     } catch (error) {
       notifyAxiosError(error);
     }
-  }, []);
+  };
 
-  const getQuantityInCart = useCallback(
-    (beerId: number) =>
-      cart.cart_items.find(item => item.beer_id === beerId)?.quantity ?? 0,
-    [cart.cart_items],
-  );
-  const isInCart = useCallback(
-    (beerId: number) => cart.cart_items.some(item => item.beer_id === beerId),
-    [cart.cart_items],
-  );
+  const getQuantityInCart = (beerId: number) =>
+    cart.cart_items.find(item => item.beer_id === beerId)?.quantity ?? 0;
+  const isInCart = (beerId: number) =>
+    cart.cart_items.some(item => item.beer_id === beerId);
 
-  const totalCartItems = useMemo(
-    () => cart.cart_items.reduce((total, item) => total + item.quantity, 0),
-    [cart.cart_items],
+  const totalCartItems = cart.cart_items.reduce(
+    (total, item) => total + item.quantity,
+    0,
   );
 
   useEffect(() => {
@@ -200,41 +192,25 @@ export const CartContextProvider: React.FC<Props> = ({ children }) => {
     };
 
     void loadCart();
-  }, [user, isAuthLoading, fetchCart]);
+  }, [user, isAuthLoading]);
 
-  const value = useMemo(
-    () => ({
-      cart,
-      cartItems: cart.cart_items,
-      subtotal: cart.subtotal,
-      total: cart.total,
-      quantity: totalCartItems,
-      itemErrors,
-      isInitialLoading,
-      isLoading,
-      fetchCart,
-      addToCart,
-      getQuantityInCart,
-      updateCartItemQuantity,
-      deleteFromCart,
-      clearCart,
-      isInCart,
-    }),
-    [
-      cart,
-      addToCart,
-      getQuantityInCart,
-      updateCartItemQuantity,
-      clearCart,
-      deleteFromCart,
-      totalCartItems,
-      itemErrors,
-      isInitialLoading,
-      isLoading,
-      isInCart,
-      fetchCart,
-    ],
-  );
+  const value = {
+    cart,
+    cartItems: cart.cart_items,
+    subtotal: cart.subtotal,
+    total: cart.total,
+    quantity: totalCartItems,
+    itemErrors,
+    isInitialLoading,
+    isLoading,
+    fetchCart,
+    addToCart,
+    getQuantityInCart,
+    updateCartItemQuantity,
+    deleteFromCart,
+    clearCart,
+    isInCart,
+  };
 
   return <CartContext.Provider value={value}>{children}</CartContext.Provider>;
 };

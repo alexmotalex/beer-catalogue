@@ -2,32 +2,24 @@ import React, { useEffect, useRef, useState } from 'react';
 import styles from './BeerSearch.module.scss';
 import { useSearchParams } from 'react-router';
 import { setParams } from '../../utils/setParams';
-import { useClickOutside } from '../../hooks/UseClickOutside';
 import { Icon } from '../Icon';
 import { useDebounce } from 'use-debounce';
 
 export const BeerSearch = () => {
-  const [isOpen, setIsOpen] = useState(false);
-  const [query, setQuery] = useState('');
-  const [, setSearchParams] = useSearchParams();
-  const [debouncedQuery] = useDebounce(query, 500);
+  const [searchParams, setSearchParams] = useSearchParams();
   const dropdownRef = useRef<HTMLDivElement | null>(null);
+  const [query, setQuery] = useState(searchParams.get('search') ?? '');
+  const [debouncedQuery] = useDebounce(query, 500);
 
   const handleQueryChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setQuery(event.target.value);
   };
 
-  useClickOutside({
-    ref: dropdownRef as React.RefObject<HTMLDivElement>,
-    isOpen,
-    onClose: () => setIsOpen(false),
-  });
-
   useEffect(() => {
     setSearchParams(prev => {
-      const currentParam = prev.get('search') || '';
+      const currentSearch = prev.get('search') ?? '';
 
-      if (currentParam === debouncedQuery) {
+      if (currentSearch === debouncedQuery) {
         return prev;
       }
 
@@ -50,6 +42,7 @@ export const BeerSearch = () => {
             placeholder="Enter a beer name"
             value={query}
             onChange={handleQueryChange}
+            aria-label="Search beers"
           />
 
           {query && (
@@ -57,6 +50,7 @@ export const BeerSearch = () => {
               type="button"
               className={styles.inputClearButton}
               onClick={() => setQuery('')}
+              aria-label="Clear search"
             >
               <Icon name="close" />
             </button>

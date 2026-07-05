@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router';
+import { useNavigate, useSearchParams } from 'react-router';
 import { PrimaryButton } from '../Buttons/PrimaryButton';
 import styles from './NotFound.module.scss';
 import { ROUTES } from '../../constants/routes';
@@ -18,8 +18,10 @@ export const NotFound: React.FC<Props> = ({
   buttonTitle,
 }) => {
   const navigate = useNavigate();
+  const [, setSearchParams] = useSearchParams();
 
   const handleBrowseBeers = () => {
+    setSearchParams({});
     navigate(ROUTES.catalogue);
   };
 
