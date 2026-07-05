@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router';
 import { PrimaryButton } from '../../components/Buttons/PrimaryButton';
 import { SecondaryButton } from '../../components/Buttons/SecondaryButton';
@@ -12,12 +12,18 @@ import { beerDescriptions } from '../../constants/beerDescriptions';
 import { storyParagraphs } from '../../constants/storyParagraphs';
 import { ROUTES } from '../../constants/routes';
 import styles from './HomePage.module.scss';
+import { Toast } from '../../components/Toast';
 
 export const HomePage = () => {
+  const [toast, setToast] = useState<string | null>(null);
+  const [toastIcon, setToastIcon] = useState('tick');
   const { beers, isLoading } = useBeers();
   const navigate = useNavigate();
   const isSlow = useSlowLoad(isLoading);
-  const picksBeers = getUniqueRandoms(beers, 3);
+
+  const picksBeers = useMemo(() => {
+    return getUniqueRandoms(beers, 3);
+  }, [beers]);
 
   const handleOpenCatalogue = () => {
     navigate(ROUTES.catalogue);
@@ -46,7 +52,11 @@ export const HomePage = () => {
       <ul className={styles.picksList}>
         {picksBeers.map(beer => (
           <li key={beer.id} className={styles.picksItem}>
-            <ProductCard product={beer} />
+            <ProductCard
+              product={beer}
+              setToast={setToast}
+              setToastIcon={setToastIcon}
+            />
           </li>
         ))}
       </ul>
@@ -56,6 +66,13 @@ export const HomePage = () => {
   return (
     <div className={styles.homePage}>
       <section className={styles.brew}>
+        {toast && (
+          <Toast
+            title={toast}
+            onClose={() => setToast(null)}
+            icon={toastIcon}
+          />
+        )}
         <div className={styles.brewContent}>
           <div className={styles.brewTextContent}>
             <h1 className={styles.brewTitleSmall}>

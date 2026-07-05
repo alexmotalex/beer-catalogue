@@ -1,117 +1,98 @@
 # Beer Catalogue
 
-A modern web application for browsing and managing a catalogue of beers. Built with React, TypeScript, and Vite, featuring user authentication and a responsive design.
+A modern React + TypeScript storefront for exploring craft beers, managing a cart, and handling account-related flows.
 
-## Features
+## What the app includes
 
-- 🍺 Browse a catalogue of beers
-- 👤 User authentication (login & registration)
-- 📱 Responsive design for all devices
-- ⚡ Fast development and build with Vite
-- 🔒 Type-safe with TypeScript
-- 🎨 SCSS styling for modern UI
-- 🛡️ ESLint configuration for code quality
+- 🍺 Browse and search a beer catalogue
+- 🛒 Add items to the cart and manage quantities
+- 👤 Sign up, sign in, password reset, and profile editing
+- 🧠 Help center and informational pages
+- 🔔 Toast notifications and responsive UI
+- ⚡ Vite + React 19 + React Compiler setup
 
-## Tech Stack
+## Tech stack
 
-- **Frontend Framework**: React 19
-- **Language**: TypeScript
-- **Build Tool**: Vite 8
-- **Routing**: React Router 7
-- **HTTP Client**: Axios
-- **Styling**: SCSS/Sass
-- **Compiler**: React Compiler (Babel)
-- **Linting**: ESLint with TypeScript support
-- **Git Hooks**: Husky with lint-staged
+- React 19
+- TypeScript
+- Vite 8
+- React Router 7
+- Axios
+- SCSS / CSS Modules
+- React Toastify
+- ESLint + TypeScript support
+- Husky + lint-staged
 
-## Getting Started
+## Getting started
 
 ### Prerequisites
 
-- Node.js (v16 or higher)
-- npm or yarn
+- Node.js 20+
+- npm
 
 ### Installation
 
-1. Clone the repository:
-
 ```bash
-git clone https://github.com/alexmotalex/beer-catalogue.git
+git clone <repository-url>
 cd beer-catalogue
-```
-
-2. Install dependencies:
-
-```bash
 npm install
 ```
 
 ### Development
 
-Start the development server:
-
 ```bash
 npm run dev
 ```
 
-The application will be available at `http://localhost:5173` (or another port if 5173 is in use).
+The app will usually run at http://localhost:5173.
 
-## Available Scripts
+## Available scripts
 
-- `npm run dev` - Start development server with Vite
-- `npm run build` - Build TypeScript and create optimized production bundle
-- `npm run preview` - Preview the production build locally
-- `npm run lint` - Run ESLint to check code quality
-- `npm run deploy` - Deploy to GitHub Pages
+- `npm run dev` — start the Vite development server
+- `npm run build` — type-check and build the production bundle
+- `npm run preview` — preview the production build locally
+- `npm run lint` — run ESLint
+- `npm run deploy` — deploy the build to GitHub Pages
+- `npm run doctor` — run React Doctor checks
 
-## Project Structure
+## Project structure
 
-```
+```text
 src/
-├── api/              # API communication (axios instance)
-├── components/       # Reusable React components
-├── pages/           # Page components (Home, Login, Register, etc.)
-├── layouts/         # Layout components (MainLayout, etc.)
-├── hooks/           # Custom React hooks
-├── store/           # State management
-├── styles/          # Global styles
-├── types/           # TypeScript type definitions
-├── utils/           # Utility functions
-├── App.tsx          # Main App component
-├── App.scss         # App-level styles
-└── index.tsx        # Entry point
+├── api/                # Axios API setup
+├── components/         # Reusable UI components
+├── constants/          # Routes, navigation, FAQ, and form data
+├── hooks/              # Custom hooks
+├── layouts/            # Layout wrappers
+├── pages/              # Route-level pages
+├── services/           # API/data fetching helpers
+├── store/              # Context providers and state logic
+├── styles/             # Global SCSS styles
+├── types/              # TypeScript types
+├── utils/              # Shared helpers and validators
+├── App.tsx             # App routes
+└── index.tsx           # Entry point
 ```
 
-## Pages
+## Main routes
 
-- **Home** (`/`) - Main page displaying the beer catalogue
-- **Login** (`/login`) - User login page
-- **Register** (`/register`) - User registration page
+- `/` — home page
+- `/beers` — catalogue
+- `/cart` — cart page
+- `/signin` and `/signup` — authentication
+- `/help` — help center
+- `/about` — about page
+- `/product/:productId` — product details
 
-## Code Quality
+## Notes
 
-The project uses ESLint for code quality checks. Code formatting is enforced on commit through Husky hooks:
+The project uses React Compiler support through the Vite/Babel setup. For accessibility and quality checks, you can run:
 
 ```bash
 npm run lint
-```
-
-## React Compiler
-
-The React Compiler is enabled for optimized performance. See [React Compiler documentation](https://react.dev/learn/react-compiler) for more details.
-
-## Deployment
-
-Deploy to GitHub Pages:
-
-```bash
-npm run deploy
+npm run doctor
 ```
 
 ## License
 
-See [LICENSE](./LICENSE) file for details.
-
-## Contributing
-
-Contributions are welcome! Please feel free to submit a Pull Request.
+See [LICENSE](./LICENSE).
