@@ -1,5 +1,5 @@
 const NAME_REGEX =
-  /^(?!-)(?!.*[ '-]{2})(?=(?:.*[A-Za-z]){2,})[A-Za-z '-]+(?<![ -])$/;
+  /^(?=.{2,255}$)(?![ '-])(?!.*[ '-]{2})(?=(?:.*[A-Za-z]){2,})[A-Za-z '-]+(?<![ '-])$/;
 
 export const validateName = (
   name: string,
@@ -9,13 +9,17 @@ export const validateName = (
     return '';
   }
 
+  if (name.trim().length > 255) {
+    return `${field} must not exceed 255 characters.`;
+  }
+
   if (!NAME_REGEX.test(name.trim())) {
-    if (/^-/.test(name.trim())) {
-      return `${field} cannot start with a hyphen.`;
+    if (/^[ '-]/.test(name.trim())) {
+      return `${field} cannot start with a space, apostrophe, or hyphen.`;
     }
 
-    if (/[ -]$/.test(name.trim())) {
-      return `${field} cannot end with a space or hyphen.`;
+    if (/[ '-]$/.test(name.trim())) {
+      return `${field} cannot end with a space, apostrophe, or hyphen.`;
     }
 
     if (/[ '-]{2}/.test(name.trim())) {

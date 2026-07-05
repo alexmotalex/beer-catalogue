@@ -28,7 +28,7 @@ export const HomePage = () => {
       return (
         <>
           <ul className={styles.picksList}>
-            {Array.from({ length: 5 }).map((_, i) => (
+            {Array.from({ length: 3 }).map((_, i) => (
               <li key={i} className={styles.picksItem}>
                 <ProductCardSkeleton />
               </li>
