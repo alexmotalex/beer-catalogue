@@ -9,7 +9,7 @@ import { ScrollToTop } from './utils/scrollToTop.ts';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <Router basename={import.meta.env.VITE_BASE_URL || '/'}>
+    <Router basename="/beer-catalogue/">
       <ScrollToTop />
       <AuthContextProvider>
         <BeerContextProvider>
