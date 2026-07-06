@@ -39,7 +39,7 @@ function App() {
           />
           <Route path={ROUTES.checkEmail} element={<CheckEmailPage />} />
           <Route path={ROUTES.catalogue} element={<Catalogue />} />
-          <Route path="product/:productId" element={<ProductPage />} />
+          <Route path={ROUTES.productPage} element={<ProductPage />} />
           <Route path={ROUTES.cart} element={<Cart />} />
           <Route path={ROUTES.about} element={<AboutUsPage />} />
           <Route path={ROUTES.help} element={<HelpCenterPage />} />
