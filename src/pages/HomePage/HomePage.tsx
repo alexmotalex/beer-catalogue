@@ -4,6 +4,7 @@ import { PrimaryButton } from '../../components/Buttons/PrimaryButton';
 import { SecondaryButton } from '../../components/Buttons/SecondaryButton';
 import { ProductCard } from '../../components/ProductCard';
 import { SlowServerMessage } from '../../components/SlowServerMessage';
+import { Toast } from '../../components/Toast';
 import { ProductCardSkeleton } from '../../components/ProductCardSkeleton';
 import { useBeers } from '../../hooks/useBeers';
 import { useSlowLoad } from '../../hooks/useSlowLoad';
@@ -12,7 +13,6 @@ import { beerDescriptions } from '../../constants/beerDescriptions';
 import { storyParagraphs } from '../../constants/storyParagraphs';
 import { ROUTES } from '../../constants/routes';
 import styles from './HomePage.module.scss';
-import { Toast } from '../../components/Toast';
 
 export const HomePage = () => {
   const [toast, setToast] = useState<string | null>(null);

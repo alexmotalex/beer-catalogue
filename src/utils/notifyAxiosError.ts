@@ -6,10 +6,16 @@ export const notifyAxiosError = (
   fallback = 'Something went wrong',
 ) => {
   const axiosError = error as AxiosError;
-  const status = axiosError?.response?.status;
+  const data = axiosError?.response?.data as
+    | Record<string, unknown>
+    | undefined;
+  const detail =
+    data && typeof data === 'object' && 'detail' in data
+      ? (data.detail as string | undefined)
+      : undefined;
 
-  if (status) {
-    notifyError(`Request failed with status code ${status}`);
+  if (detail) {
+    notifyError(detail);
     return;
   }
 
