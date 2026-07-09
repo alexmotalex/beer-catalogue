@@ -11,6 +11,7 @@ import { CheckEmailPage } from './pages/CheckEmailPage';
 import { ActivatePage } from './pages/ActivatePage';
 import { EditUserPage } from './pages/EditUserPage';
 import { NewPasswordPage } from './pages/NewPasswordPage';
+import { NotFoundPage } from './pages/NotFoundPage';
 import { ForgotPasswordPage } from './pages/ForgotPasswordPage';
 import { HelpCenterPage } from './pages/HelpCenterPage';
 import { AboutUsPage } from './pages/AboutUsPage';
@@ -43,8 +44,7 @@ function App() {
           <Route path={ROUTES.cart} element={<Cart />} />
           <Route path={ROUTES.about} element={<AboutUsPage />} />
           <Route path={ROUTES.help} element={<HelpCenterPage />} />
-
-          <Route path="*" element={<h1>Not Found</h1>} />
+          <Route path="*" element={<NotFoundPage />} />
         </Route>
       </Routes>
       <ToastContainer />
